@@ -62,14 +62,14 @@
 
 .recommend .swiper-button-next,
 .recommend .swiper-button-prev {
-    top: 81%;
+    top: 47%;
     width: 5%;
     color: var(--primary-color);
 }
 
 .schedule .swiper-button-next,
 .schedule .swiper-button-prev {
-    top: 56%;
+    top: 29%;
     width: 5%;
     color: var(--primary-color);
 }
