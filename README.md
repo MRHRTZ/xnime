@@ -20,9 +20,12 @@ Xnime, the newest free anime streaming platform! Enjoy thousands of your favorit
 
 ## Installation
 
-- clone this repository
-- ubah .env.example jadi .env
-- setting nama database di .env
+#### Instructions
+- clone or download this repository
+- change `.env.example` to `.env`
+- create database and configure database name at `.env`
+
+#### Install commands
 - `composer install`
 - `php artisan migrate`
 - `php artisan key:generate`
