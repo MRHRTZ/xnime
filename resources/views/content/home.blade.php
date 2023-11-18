@@ -29,7 +29,7 @@
             <h1 class="section__title">Update Terbaru</h1>
             <div class="cards__container">
                 @foreach ($homepage->ongoing as $ongoing)
-                <div class="episode-card">
+                <div class="episode-card card">
                     <div class="episode-card__thumbnail-box">
                         <a href="{{ route('detail-anime', ['id'=>$ongoing->id]) }}"><img
                                 src="{{ $ongoing->image_cover }}" class="episode-card__thumbnail-img"></a>
@@ -37,7 +37,7 @@
                             <ion-icon name="play-circle" class="play__icon"></ion-icon>
                         </a>
                         <span class="episode-card__language-box">
-                            {{ $ongoing->rating }}
+                            <i class="fa-regular fa-star" class="rating"></i>&nbsp;{{ $ongoing->rating }}
                         </span>
                     </div>
                     <div class="episode-card__info">
@@ -53,7 +53,7 @@
         </section>
         <aside class="aside">
             <h1 class="aside__title">Genre</h1>
-            <div class="aside__box">
+            <div class="aside__box card">
                 <ul class="genres-box__list">
                     @foreach ($genres as $genre)
                     <li class="genres-box__item">

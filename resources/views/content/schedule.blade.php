@@ -6,14 +6,15 @@
         <div class="swiper mySwiper">
             <div class="swiper-wrapper">
                 @foreach ($days as $day)
-                <div class="swiper-slide schedule-panel">
+                <div class="swiper-slide schedule-panel card">
                     <span class="day">{{ $day['day'] }}</span>
                     <div class="anime-list">
                         @foreach ($schedules->{$day['no']} as $schedule)
                         <div class="anime-item">
                             <a href="{{ route('detail-anime', ['id'=>$schedule->id]) }}">
                                 <img src="{{ $schedule->image_cover }}" class="swiper-slide__cover">
-                                <span class="title mt--10">{{ html_entity_decode($schedule->title) }}</span>
+                                <br>
+                                <span class="title">{{ html_entity_decode($schedule->title) }}</span>
                             </a>
                         </div>
                         @endforeach

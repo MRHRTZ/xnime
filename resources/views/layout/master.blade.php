@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ url('assets/css/styles.css') }}">
+    @yield('link')
 </head>
 
 <body>
@@ -37,6 +38,17 @@
                 </div>
             </div>
             <nav class="sidenav__nav">
+                <div class="nav-profile-mobile">
+                    @guest
+                    <img src="{{ url('assets/img/icons/profile.jpg') }}" class="profile-pic" />
+                    <span>Tamu</span>
+                    @endguest
+                    @auth
+                    <img src="{{ Auth::user()->picture ? url(env('PROFILE_FOLDER').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}"
+                        class="profile-pic" />
+                    <span>{{ Auth::user()->name }}</span>
+                    @endauth
+                </div>
                 <div class="sidenav__menu">
                     <ul class="sidenav-menu__list">
                         <li class="sidenav-menu__item">
@@ -53,9 +65,24 @@
                                 Rilis</a>
                         </li>
                         <li class="sidenav-menu__item">
-                            <a href="{{ route('bookmark') }}"
+                            <a href="{{ Auth::user() ? route('bookmark') : '#' }}"
+                                onclick="{{ Auth::user() ? '' : 'need_login("'.route('login').'")' }}"
                                 class="sidenav-menu__link {{ (request()->is('bookmark')) ? 'text--active' : ''}}">Bookmark</a>
                         </li>
+                        @guest
+                        <li class="sidenav-menu__item">
+                            <a href="{{ route('login') }}" class="sidenav-menu__link">Login</a>
+                        </li>
+                        @endguest
+                        @auth
+                        <form id="logout-form" action="{{ route('logout_process') }}" method="post">@csrf</form>
+                        <li class="sidenav-menu__item">
+                            <a href="{{ route('profile') }}" class="sidenav-menu__link">Edit Profil</a>
+                        </li>
+                        <li class="sidenav-menu__item">
+                            <a href="#logout" onclick="confirm_logout();" class="sidenav-menu__link">Logout</a>
+                        </li>
+                        @endauth
                     </ul>
                 </div>
                 <form action="{{ route('search') }}" class="sidenav__search">
@@ -92,7 +119,8 @@
                                 Rilis</a>
                         </li>
                         <li class="header-menu__item">
-                            <a href="{{ route('bookmark') }}"
+                            <a href="{{ Auth::user() ? route('bookmark') : '#' }}"
+                                onclick="{{ Auth::user() ? '' : 'need_login("'.route('login').'")' }}"
                                 class="header-menu__link {{ (request()->is('bookmark')) ? 'text--active' : ''}}">Bookmark</a>
                         </li>
                     </ul>
@@ -103,6 +131,31 @@
                         <ion-icon name="search" class="header-search__icon"></ion-icon>
                     </button>
                 </form>
+                <div class="nav-profile">
+                    @guest
+                    <img src="{{ url('assets/img/icons/profile.jpg') }}" class="profile-pic" />
+                    <ul>
+                        <li class="sub-item" onclick="window.location.href='{{ route('login') }}'">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            <p>Login</p>
+                        </li>
+                    </ul>
+                    @endguest
+                    @auth
+                    <img src="{{ Auth::user()->picture ? url(env('PROFILE_FOLDER').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}"
+                        class="profile-pic" />
+                    <ul>
+                        <li class="sub-item" onclick="window.location.href='{{ route('profile') }}'">
+                            <i class="fa-solid fa-gears"></i>
+                            <p>Edit Profil</p>
+                        </li>
+                        <li class="sub-item" onclick="confirm_logout();">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <p>Logout</p>
+                        </li>
+                    </ul>
+                    @endauth
+                </div>
             </nav>
         </div>
     </header>
@@ -136,17 +189,15 @@
             </div>
         </div>
     </footer>
-    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ url('assets/javascript/scripts.js') }}"></script>
-    {{-- crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
     <script>
         document.addEventListener("DOMContentLoaded", function (event) {
             document.querySelectorAll('img').forEach(function (img) {
                 img.onerror = function () {
-                    // this.style.display = 'none';
                     this.src = '{{ url("assets/img/logo/2.png") }}'
                 };
             })

@@ -1,5 +1,58 @@
 /**
  * =================================================================================
+ * SweetAlert
+ * =================================================================================
+ */
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+    }
+});
+
+
+function confirm_logout() {
+    Swal.fire({
+        title: "Yakin mau keluar akun?",
+        text: "Kamu harus login kembali untuk mengakses semua fitur!",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#6e7881",
+        confirmButtonText: "Iya",
+        cancelButtonText: `Tidak, tetap masuk`
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $("#logout-form").submit();
+        }
+    });
+}
+
+function need_login(login_url) {
+    Swal.fire({
+        title: "Fitur untuk member!",
+        text: "Silahkan login untuk mengakses fitur ini.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#6e7881",
+        confirmButtonText: "Login",
+        cancelButtonText: `Lain kali saja`
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = login_url
+        }
+    });
+}
+
+/**
+ * =================================================================================
  * MOBILE SIDENAV
  * =================================================================================
  */

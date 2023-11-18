@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\History;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class AnimeController extends Controller
@@ -30,9 +32,21 @@ class AnimeController extends Controller
         $id = $request->query('id');
         $animeDetail = getAnimeDetail($id);
         $animeDetail->episodes = array_reverse($animeDetail->episodes);
+
+        $history = [];
+
+        if (Auth::check())  {
+            $user = Auth::user();
+            $history = History::where('user_id', $user->user_id)
+            ->where('anime_id', $id)
+            ->get();
+        }
+
         $data = array(
-            'anime' => $animeDetail
+            'anime' => $animeDetail,
+            'history' => $history
         );
+
         return view('content.anime-detail')->with($data);
     }
     

@@ -2,6 +2,14 @@
 
 use GuzzleHttp\Client;
 
+if (!function_exists('secondToTime')) {
+    function secondToTime($seconds)
+    {
+        $t = round($seconds);
+        return sprintf('%02d:%02d:%02d', ($t / 3600), ($t / 60 % 60), $t % 60);
+    }
+}
+
 if (!function_exists('getDays')) {
     function getDays()
     {

@@ -19,7 +19,7 @@
             </div>
             @endif
             @foreach ($animeList as $anime)
-            <div class="anime-list__item">
+            <div class="anime-list__item card">
                 <div class="anime-list__cover">
                     <a href="{{ route('detail-anime', ['id'=>$anime->id]) }}">
                         <img src="{{ $anime->imageCover }}" class="anime-list__img" alt="">

@@ -4,6 +4,10 @@
 {{ Breadcrumbs::render('episodes', $anime, $episode_id) }}
 @endsection
 
+@section('link')
+<link rel="stylesheet" href="{{ url('assets/css/vjsdownload.css') }}">
+@endsection
+
 @section('content')
 <main class="main">
     <div class="wrapper mt--none">
@@ -17,7 +21,7 @@
                             <a href="{{ $server->id == $server_id ? '#' : route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>$episode_id,'server_id'=>$server->id]) }}"
                                 id="{{ $server->server }}" data-url="{{ $server->url }}"
                                 data-quality="{{ $server->size }}"
-                                class="anime-server__link {{ $server->id == $server_id ? 'active' : '' }}">{{
+                                class="anime-server__link {{ $server->id == $server_id ? 'active disabled' : '' }}">{{
                                 $server->server }}</a>
                         </li>
                         @endforeach
@@ -25,7 +29,7 @@
                 </div>
             </div>
 
-            <div class="episode-box">
+            <div class="episode-box card">
                 @if ($video_type == 'source')
                 <video id="normal-player" autoplay="true" playsinline controls data-poster="{{ $anime->image_video }}">
                     <source id="normal-source" src="{{ $video_url }}" type="video/mp4" onerror="player_onerror(event);">
@@ -33,18 +37,27 @@
                 @elseif ($video_type == 'stream')
                 <video id="stream-player" class="video-js vjs-fluid" controls preload
                     poster="{{ $anime->image_video }}">
-                    <source id="stream-source" src="{{ $video_url }}" type="application/x-mpegURL"
-                        onerror="player_onerror(event);">
+                    <source id="stream-source" src="{{ $video_url }}" type="application/x-mpegURL">
                 </video>
                 @elseif ($video_type == 'embed')
                 <iframe id="embed-player" height="540px" src="{{ $video_url }}" title="{{ $anime->title }}">
                 </iframe>
                 @elseif ($video_type == 'broken')
                 <div class="player-error">
-                    <div class="">
+                    <form action="{{ route('report-broken') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="anime_id" value="{{ app('request')->route('anime_id') }}">
+                        <input type="hidden" name="episode_id" value="{{ app('request')->route('episode_id') }}">
+                        <input type="hidden" name="server_id" value="{{ app('request')->query('server_id') }}">
                         <h2>Link Video Rusak :(</h2>
-                        <button class="button mt--10">Laporkan</button>
-                    </div>
+                        @if ($user_report != 'true')
+                        <button type="{{ Auth::check() ? 'submit' : 'button' }}" class="button mt--10"
+                            onclick="{{ Auth::check() ? '' : 'need_login("'.route(' login').'")' }}">Laporkan</button>
+                        @else
+                        <br>
+                        <p>Telah dilaporkan.</p>
+                        @endif
+                    </form>
                 </div>
                 @endif
                 <div class="anime-info">
@@ -67,6 +80,10 @@
                         </ul>
                         <p class="anime-info__synopsis mt--10">{{ html_entity_decode($anime->content) }}</p>
                         <table class="datasheet__table mt--10">
+                            <tr class="datasheet__tr">
+                                <td class="datasheet__td">Rating:</td>
+                                <td class="datasheet__td">{{ $anime->rating }}</td>
+                            </tr>
                             <tr class="datasheet__tr">
                                 <td class="datasheet__td">Tahun:</td>
                                 <td class="datasheet__td">{{ $anime->tahun }}</td>
@@ -110,24 +127,33 @@
         </section>
         <aside class="aside mt--6-5">
             <h1 class="aside__title">Episode</h1>
-            <div class="aside-eps__box">
+            <div class="aside-eps__box card">
                 <ul class="episode-box__list">
                     @foreach ($anime->episodes as $episode)
-                    <li class="episode-box__item">
-                        <a href="{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>$episode->id]) }}"
-                            class="episode-box__link {{ $episode->id == $episode_id ? 'box--active' : '' }}">{{
-                            $episode->episode }}</a>
+                    <li class="episode-box__item episode-box__link {{ $episode->id == $episode_id ? 'box--active' : '' }}"
+                        onclick="window.location.href = '{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>$episode->id]) }}'">
+                        <a class="{{ $episode->id == $episode_id ? 'active' : '' }}">
+                            {{ $episode->episode }}
+                        </a>
+                        @foreach ($history_list as $history)
+                        @if ($history->episode_id == $episode->id)
+                        <span class="anime-episodes-box-time {{ $episode->id == $episode_id ? 'active' : '' }}">
+                            {{ secondToTime($history->play_time) }}
+                        </span>
+                        @endif
+                        @endforeach
                     </li>
                     @endforeach
                 </ul>
             </div>
             <br>
-            <hr><br>
+            <hr class="divider">
+            <br>
             <h1 class="aside__title">Populer</h1>
-            <div id="popular" class="aside__box">
+            <div id="popular" class="popular-box">
                 @foreach ($anime_list as $popular)
                 <div class="popular-item">
-                    <div class="popular-item__cover">
+                    <div class="popular-item__cover card">
                         <a href="{{ route('detail-anime', ['id'=>$popular->id]) }}">
                             <img src="{{ $popular->imageCover }}" class="popular-item__img">
                         </a>
@@ -136,7 +162,7 @@
                         <a href="{{ route('detail-anime', ['id'=>$popular->id]) }}" class="popular-item__title">{{
                             html_entity_decode($popular->title) }}</a>
                         <span class="popular-item__description">{{ $popular->tahun }} | Eps. {{ $popular->episode }} |
-                            {{ $popular->rating }}</span>
+                            <i class="fa-regular fa-star" class="rating"></i> {{ $popular->rating }}</span>
                     </div>
                 </div>
                 @endforeach
@@ -151,79 +177,179 @@
 
 @section('script')
 <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-<script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
+<script src="https://vjs.zencdn.net/7.4.1/video.js"></script>
 <script src="https://cdn.streamroot.io/videojs-hlsjs-plugin/1/stable/videojs-hlsjs-plugin.js"></script>
-<script>
-
-</script>
+<script src="{{ url('assets/javascript/vjsdownload.js') }}"></script>
 <script>
     function player_onerror(event) {
         console.log(event)
         $('video').remove();
         $('iframe').remove();
-        $('.episode-box').prepend(`
+        let prependHtml = `
         <div class="player-error">
-            <div class="">
+            <form action="{{ route('report-broken') }}" method="POST">
+                @csrf
+                <input type="hidden" name="anime_id" value="{{ app('request')->route('anime_id') }}">
+                <input type="hidden" name="episode_id" value="{{ app('request')->route('episode_id') }}">
+                <input type="hidden" name="server_id" value="{{ app('request')->query('server_id') ? app('request')->query('server_id') : ':server_id' }}">
                 <h2>Link Video Rusak :(</h2>
-                <button class="button mt--10">Laporkan</button>
-            </div>
+                @if ($user_report != 'true')
+                <button type="{{ Auth::check() ? 'submit' : 'button' }}" class="button mt--10" 
+                onclick="{{ Auth::check() ? '' : 'need_login("'.route('login').'")' }}">Laporkan</button>
+                @else
+                <br><p>Telah dilaporkan.</p>
+                @endif
+            </form>
         </div>
-        `)
-    }
-    $(document).ready(function () {
-        if ($('#normal-player').length) {
-            var isStarted = false;
-
-            const player = new Plyr('#normal-player');
-            window.player = player;
-
-            
-
-            player.on('error', event => console.error('Doh!', player.error, event), false);
-
-            player.on('timeupdate', (event) => {
-                // console.log(event);
-                // const instance = event.detail.plyr;
-                // setTimeout(() => {
-                    // let currTime = event.timeStamp
-                    // if (currTime > 1000) {
-                    //     if (!isStarted) {
-                    //         isStarted = true;
-                    //         player.currentTime = 120
-                    //     }
-                    // } 
-                // }, 1000);
-            // const instance = event.detail.plyr;
-                // console.log(event)
-            });
-        } else if ($('#stream-player').length) {
-            var playerStream = videojs('#stream-player');
-
-            // playerStream.on('ended', function() {
-            //     this.dispose();
-            // });
-
-            // playerStream.ready(function() {
-            // // get
-            // var howLoudIsIt = playerStream.volume();
-            // // set
-            // playerStream.volume(0.5); // Set volume to half
-            // });
-        } else if ($('#embed-player').length) {
-            // const url = $('#embed-player').attr('src')
-            // $.ajax({
-            //     url,
-            //     type: 'HEAD',
-            //     error: function(data) {
-            //         player_onerror()
-            //     }
-            // });
-            // window.addEventListener('DOMContentLoaded', function(e) {
-            //     var iFrame = document.getElementById( 'embed-player' );
-            //     iFrame.width  = iFrame.contentWindow.document.body.scrollWidth;
-            //     iFrame.height = iFrame.contentWindow.document.body.scrollHeight;
-            // });
+        `
+        if (prependHtml.includes(':server_id')) {
+            prependHtml = prependHtml.replace(':server_id', servers[0].id)
         }
+        $('.episode-box').prepend(prependHtml)
+    }
+    
+    const episodes = [
+        @foreach ($anime->episodes as $episode)
+        {
+            play: {{ $episode->id == $episode_id ? 'true' : 'false' }},
+            id: "{{ $episode->id }}",
+            episode: "{{ $episode->episode }}"
+        },
+        @endforeach
+    ]
+    const servers = [
+        @foreach ($server_list as $server)
+        {
+            id: "{{ $server->id }}",
+            size: "{{ $server->size }}"
+        },
+        @endforeach
+    ]
+
+    const anime_id = {{ app('request')->route('anime_id') }};
+    const episode_id = {{ app('request')->route('episode_id') }};
+    let server_id = {{ app('request')->query('server_id') ? app('request')->query('server_id') : '0' }};
+    if (!server_id) server_id = servers[0].id
+    if (!$('input[name=server_id]').val()) $('input[name=server_id]').val(servers[0].id)
+
+    const isVideoPlaying = (video) => !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2);
+
+    function update_history() {
+        const formData = {
+            _token: "{{ csrf_token() }}",
+            user_id: "{{ Auth::user()->user_id }}",
+            anime_id: anime_id,
+            episode_id: episode_id,
+            server_id: server_id ? server_id : servers[0].id,
+            play_time: window.player.currentTime,
+            max_time: window.player.duration
+        }
+        $.ajax({
+            url : "{{ route('update-history') }}",
+            type: "POST",
+            data : formData,
+            success: function(data, textStatus, jqXHR)
+            {
+                // console.log(data);
+            }
+        });
+    }
+</script>
+<script>
+    function next_video() {
+        let indexNow = episodes.findIndex(v => v.play)
+        if (episodes[indexNow+1]) {
+            const nextEps = episodes[indexNow+1]
+            let urlNext = `{{ route('episodes', ['anime_id'=>':anime_id', 'episode_id'=>':episode_id','server_id'=>'id_server']) }}`
+            urlNext = urlNext.replace(':anime_id', anime_id)
+            .replace(':episode_id', nextEps.id)
+            .replace('id_server', server_id)
+            window.location.href = urlNext
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        document.querySelector('#stream-player source', function (src) {
+            src.onerror = player_onerror;
+        })
+    });
+        
+    $(document).ready(function () {
+        $("ul.episode-box__list").animate({ scrollTop : $('ul.episode-box__list li.box--active').position().top });
+
+        if ($('#normal-player').length) {
+            const player = new Plyr('#normal-player', {
+                controls: [
+                    'play-large',
+                    'restart',
+                    'play',
+                    'progress',
+                    'current-time',
+                    'mute',
+                    'volume',
+                    'settings',
+                    'pip',
+                    'airplay',
+                    'download',
+                    'fullscreen',
+                    'capture'
+                ]
+            });
+
+            player.on('ended', function (e) {
+                next_video()
+            })
+
+            window.player = $('#normal-player').get(0)
+        } else if ($('#stream-player').length) {
+            var playerStream = videojs('#stream-player', {
+                plugins: {
+                    vjsdownload:{
+                    beforeElement: 'playbackRateMenuButton',
+                    textControl: 'Download video',
+                    name: 'downloadButton',
+                    }
+                }
+            });
+
+            playerStream.on('ended', function (e) {
+                next_video()
+            })
+
+            window.player = $('#stream-player video').get(0)
+        } else if ($('#embed-player').length) {
+            $('#embed-player').on('load', function() {
+                console.log('created')
+                @auth
+                Toast.fire({
+                    icon: "warning",
+                    title: "Informasi",
+                    text: "Durasi video menggunakan player ini tidak akan tersimpan."
+                });
+                @endauth    
+            })
+        }
+
+        @auth
+        if (!$('#embed-player').length) {
+            @if ($history_data)  
+                window.player.currentTime = {{ $history_data->play_time }}
+            @endif
+
+            window.player.addEventListener("pause", (event) => {
+                update_history()
+            });
+
+            window.player.addEventListener("seeked", (event) => {
+                update_history()
+            });
+
+            setInterval(() => {
+                if (!isVideoPlaying(window.player)) return
+                update_history()
+            }, 30_000);
+        }
+        @endauth
     })
 </script>
 <script>
@@ -239,7 +365,7 @@
             for (const anime of data) {
                 $('#popular').append(`
                 <div class="popular-item">
-                    <div class="popular-item__cover">
+                    <div class="popular-item__cover card">
                         <a href="anime-detail?id=${anime.id}">
                             <img src="${anime.imageCover}" class="popular-item__img">
                         </a>

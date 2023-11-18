@@ -9,7 +9,7 @@
     <div class="wrapper mt--none">
         <aside class="aside filter">
             <h1 class="aside__title">Filter</h1>
-            <div class="aside__box">
+            <div class="aside__box card">
                 <form action="{{ route('anime') }}" method="get">
                     <div class="filter__item">
                         <div class="filter__heading collapsible">
@@ -89,7 +89,7 @@
                 </div>
             @endif
             @foreach ($animeList as $anime)
-            <div class="anime-list__item">
+            <div class="anime-list__item card">
                 <div class="anime-list__cover">
                     <a href="{{ route('detail-anime', ['id'=>$anime->id]) }}">
                         <img src="{{ $anime->imageCover }}" class="anime-list__img">
