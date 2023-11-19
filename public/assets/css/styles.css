@@ -135,7 +135,7 @@
     text-align: center;
 }
 
-.nav-profile:hover > ul,
+.nav-profile:hover>ul,
 .nav-profile ul:hover {
     visibility: visible;
     opacity: 1;
@@ -339,6 +339,26 @@ a.disabled {
 
 .mt--40 {
     margin-top: 40px !important;
+}
+
+.mb--5 {
+    margin-bottom: 5px !important;
+}
+
+.mb--10 {
+    margin-bottom: 10px !important;
+}
+
+.mb--20 {
+    margin-bottom: 20px !important;
+}
+
+.mb--30 {
+    margin-bottom: 30px !important;
+}
+
+.mb--40 {
+    margin-bottom: 40px !important;
 }
 
 .--danger {
@@ -1312,12 +1332,12 @@ body {
     text-align: justify;
 }
 
-.anime-episodes-box-time.active{
+.anime-episodes-box-time.active {
     color: #fff;
 }
 
 .episode-box__item:hover .anime-episodes-box-time,
-.anime-episodes-box-time:hover{
+.anime-episodes-box-time:hover {
     color: #8e8e8e;
 }
 
@@ -1643,6 +1663,7 @@ body {
 }
 
 .play__circle {
+    text-decoration: none;
     align-items: center;
     display: none;
     height: 40px;
@@ -1693,6 +1714,161 @@ body {
 }
 
 .episode-card__description {
+    color: var(--primary-color);
+    font-size: 11px;
+    font-family: var(--roboto-condensed);
+    margin: 5px 0 0 0;
+    word-break: break-word;
+}
+
+/**
+ * =================================================================================
+ * Bookmark
+ * =================================================================================
+ */
+
+.history.cards__container {
+    column-gap: 15px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 20px;
+}
+
+.history-card {
+    background: var(--background-color);
+    border-radius: var(--default-radius);
+    width: 100%;
+}
+
+.history-card__thumbnail-box {
+    height: 118px;
+    position: relative;
+}
+
+.history-card__thumbnail-box:hover {
+    opacity: .92;
+}
+
+.history-card__thumbnail-img {
+    border-radius: 4px 7px 0 0;
+    height: 121px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.history-card__thumbnail-box:hover .play__circle {
+    display: flex;
+}
+
+.history-card__progress {
+    position: relative;
+}
+
+.history-card__progress .progressbar {
+    width: 0%;
+    background-color: var(--primary-color);
+    border-radius: 5px;
+    height: 5px;
+}
+
+.history-card__info {
+    padding: 3px 8px 12px 8px;
+}
+
+.history-card__title {
+    color: var(--primary-color);
+    font-size: 15px;
+    font-family: var(--rajdhani-font);
+    font-weight: 700;
+    text-decoration: none;
+    word-break: break-word;
+}
+
+.history-card__title:hover {
+    text-decoration: underline;
+}
+
+.history-card__description {
+    color: var(--primary-color);
+    font-size: 11px;
+    font-family: var(--roboto-condensed);
+    margin: 5px 0 0 0;
+    word-break: break-word;
+}
+
+/**
+ * =================================================================================
+ * History
+ * =================================================================================
+ */
+
+.bookmark.cards__container {
+    column-gap: 15px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 20px;
+}
+
+.bookmark-card {
+    background: var(--background-color);
+    border-radius: var(--default-radius);
+    width: 100%;
+}
+
+.bookmark-card__thumbnail-box {
+    height: auto;
+    position: relative;
+}
+
+.bookmark-card__thumbnail-box:hover {
+    opacity: .92;
+}
+
+.bookmark-card__thumbnail-img {
+    border-radius: 4px 7px 0 0;
+    height: 100%;
+    width: 100%;
+}
+
+.bookmark-card__thumbnail-box:hover .play__circle {
+    display: flex;
+}
+
+.bookmark-card__language-box {
+    align-items: baseline;
+    background: var(--primary-color);
+    bottom: 6px;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    font-family: var(--rajdhani-font);
+    font-size: 13px;
+    font-weight: 700;
+    justify-content: center;
+    left: 4px;
+    padding: 4px 5px 4px 5px;
+    position: absolute;
+}
+
+.bookmark-card__info {
+    padding: 10px 8px 12px 8px;
+}
+
+.bookmark-card__title {
+    color: var(--primary-color);
+    font-size: 15px;
+    font-family: var(--rajdhani-font);
+    font-weight: 700;
+    text-decoration: none;
+    word-break: break-word;
+}
+
+.bookmark-card__title:hover {
+    text-decoration: underline;
+}
+
+.bookmark-card__description {
     color: var(--primary-color);
     font-size: 11px;
     font-family: var(--roboto-condensed);
@@ -2300,6 +2476,14 @@ body {
  */
 
 @media screen and (min-width: 320px) {
+    .history.cards__container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .bookmark.cards__container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .header__logo {
         background: url(../img/logo/logo-medium.png);
         width: 228px;
@@ -2320,6 +2504,14 @@ body {
 @media screen and (min-width: 420px) {
     .cards__container {
         grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .history.cards__container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .bookmark.cards__container {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -2483,6 +2675,14 @@ body {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
 
+    .history.cards__container {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .bookmark.cards__container {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
     .episode-card__info {
         padding: 10px 8px 12px 8px;
     }
@@ -2587,6 +2787,14 @@ body {
         grid-template-columns: 1fr 1fr;
     }
 
+    .history.cards__container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .bookmark.cards__container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
     .episode-card__title {
         font-size: 17px;
     }
@@ -2620,6 +2828,14 @@ body {
 @media screen and (min-width: 830px) {
     .cards__container {
         grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .history.cards__container {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .bookmark.cards__container {
+        grid-template-columns: repeat(5, 1fr);
     }
 
     .episode-card__title {
@@ -2714,6 +2930,14 @@ body {
 @media screen and (min-width: 1042px) {
     .cards__container {
         grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .history.cards__container {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .bookmark.cards__container {
+        grid-template-columns: repeat(6, 1fr);
     }
 
     .episode-card__info {

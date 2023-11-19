@@ -12,7 +12,7 @@
                 <img src="{{ $anime->image_cover }}" class="anime-summary__img">
             </div>
             <div class="anime-summary__info">
-                <h1 class="anime-summary__title">{{ html_entity_decode($anime->title) }}</h1>
+                <h1 class="anime-summary__title">{!! htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->title))) !!}</h1>
                 <span class="anime__language-box"><i class="fa-regular fa-star" class="rating"></i> {{ $anime->rating }}</span>
                 <ul class="anime-genres__list">
                     @foreach ($anime->categories as $genre)
@@ -24,7 +24,7 @@
                 </ul>
             </div>
             <div class="anime-summary__synopsis">
-                <p>{{ html_entity_decode($anime->content) }}</p>
+                <p>{!! htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->content)))!!}</p>
                 <br>
                 <table class="datasheet__table">
                     <tr class="datasheet__tr">

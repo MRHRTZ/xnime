@@ -15,8 +15,8 @@
                     <a href="{{ route('detail-anime', ['id'=>$recommend->id]) }}">
                         <img src="{{ $recommend->image_cover }}" class="swiper-slide__cover">
                     </a>
-                    <a href="{{ route('detail-anime', ['id'=>$recommend->id]) }}" class="swiper-slide__title">{{
-                        html_entity_decode($recommend->title) }}</a>
+                    <a href="{{ route('detail-anime', ['id'=>$recommend->id]) }}" class="swiper-slide__title">{!!
+                        htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($recommend->title))) !!}</a>
                 </div>
                 @endforeach
             </div>
@@ -34,7 +34,7 @@
                         <a href="{{ route('detail-anime', ['id'=>$ongoing->id]) }}"><img
                                 src="{{ $ongoing->image_cover }}" class="episode-card__thumbnail-img"></a>
                         <a href="{{ route('detail-anime', ['id'=>$ongoing->id]) }}" class="play__circle">
-                            <ion-icon name="play-circle" class="play__icon"></ion-icon>
+                            <i class="fa-solid fa-play play__icon"></i>
                         </a>
                         <span class="episode-card__language-box">
                             <i class="fa-regular fa-star" class="rating"></i>&nbsp;{{ $ongoing->rating }}
@@ -42,8 +42,8 @@
                     </div>
                     <div class="episode-card__info">
                         <p class="episode-card__description"><b>{{ $ongoing->tahun }}</b></p>
-                        <a href="{{ route('detail-anime', ['id'=>$ongoing->id]) }}" class="episode-card__title">{{
-                            html_entity_decode($ongoing->title) }}</a>
+                        <a href="{{ route('detail-anime', ['id'=>$ongoing->id]) }}" class="episode-card__title">{!!
+                            htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($ongoing->title))) !!}</a>
                         <p class="episode-card__description">Episode {{ $ongoing->episode }} / {{ $ongoing->totalEpisode
                             ?? '-' }}</p>
                     </div>

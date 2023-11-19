@@ -88,7 +88,7 @@
                 <form action="{{ route('search') }}" class="sidenav__search">
                     <input type="text" name="q" class="sidenav-search__input" placeholder="Cari anime...">
                     <button class="sidenav-search__button">
-                        <ion-icon name="search" class="sidenav-search__icon"></ion-icon>
+                        <i class="fa-solid fa-magnifying-glass sidenav-search__icon"></i>
                     </button>
                 </form>
             </nav>
@@ -128,7 +128,7 @@
                 <form action="{{ route('search') }}" class="header__search">
                     <input type="text" name="q" class="header-search__input" placeholder="Cari anime...">
                     <button type="submit" class="header-search__button">
-                        <ion-icon name="search" class="header-search__icon"></ion-icon>
+                        <i class="fa-solid fa-magnifying-glass sidenav-search__icon"></i>
                     </button>
                 </form>
                 <div class="nav-profile">

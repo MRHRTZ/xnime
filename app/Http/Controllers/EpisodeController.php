@@ -73,7 +73,7 @@ class EpisodeController extends Controller
         }
 
         $history_list = [];
-        $history = null;
+        $history_data = null;
         $user_report = "false";
 
         if (Auth::check()) {
@@ -82,17 +82,17 @@ class EpisodeController extends Controller
                 Anime::create([
                     'anime_id' => $animeDetail->id,
                     'title' => $animeDetail->title,
-                    'thumbnail' => $animeDetail->image_cover,
+                    'image' => $animeDetail->image_cover,
                     'year' => $animeDetail->tahun,
                     'rating' => $animeDetail->rating,
                 ]);
             }
 
             $history_data = History::where('user_id', $user->user_id)
-            ->where('anime_id', $anime_id)
-            ->where('episode_id', $episode_id)
-            ->first();
-            
+                ->where('anime_id', $anime_id)
+                ->where('episode_id', $episode_id)
+                ->first();
+
             $history_list = History::where('user_id', $user->user_id)
                 ->where('anime_id', $anime_id)
                 ->get();
@@ -146,11 +146,12 @@ class EpisodeController extends Controller
         $server_id = $request->input('server_id');
         $play_time = $request->input('play_time');
         $max_time = $request->input('max_time');
+        $episode = $request->input('episode');
 
         $history = History::where('user_id', $user->user_id)
-        ->where('anime_id', $anime_id)
-        ->where('episode_id', $episode_id)
-        ->first();
+            ->where('anime_id', $anime_id)
+            ->where('episode_id', $episode_id)
+            ->first();
 
         if (!$history) {
             History::updateOrCreate([
@@ -159,7 +160,8 @@ class EpisodeController extends Controller
                 'episode_id' => $episode_id,
                 'server_id' => $server_id,
                 'play_time' => $play_time,
-                'max_time' => $max_time
+                'max_time' => $max_time,
+                'episode' => $episode
             ]);
         } else {
             $history->server_id = $server_id;

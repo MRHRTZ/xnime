@@ -9,7 +9,7 @@
                 <form action="{{ route('search', ['page'=>$page]) }}" class="search-box__form">
                     <input type="text" class="search-box__input" name="q" value="{{ $keyword }}">
                     <button type="submit" class="search-box__button">
-                        <ion-icon name="search" class="search-box__icon"></ion-icon>
+                        <i class="fa-solid fa-magnifying-glass search-box__icon"></i>
                     </button>
                 </form>
             </div>

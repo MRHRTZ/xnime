@@ -12,5 +12,5 @@ class Anime extends Model
     protected $table = 'anime';
     protected $primaryKey = 'anime_id';
 
-    protected $fillable = ['anime_id','user_id','title','thumbnail','year','rating'];
+    protected $fillable = ['anime_id','user_id','title','image','year','rating'];
 }

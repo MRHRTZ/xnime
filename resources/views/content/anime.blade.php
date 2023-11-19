@@ -96,8 +96,8 @@
                     </a>
                 </div>
                 <div class="anime-list__info">
-                    <a href="{{ route('detail-anime', ['id'=>$anime->id]) }}" class="anime-list__title">{{ html_entity_decode($anime->title)
-                        }}</a>
+                    <a href="{{ route('detail-anime', ['id'=>$anime->id]) }}" class="anime-list__title">{!! htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->title)))
+                        !!}</a>
                     <br>
                     <table class="datasheet__table">
                         <tr class="datasheet__tr">

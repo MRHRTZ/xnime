@@ -12,5 +12,5 @@ class History extends Model
     protected $table = 'history';
     protected $primaryKey = 'history_id';
 
-    protected $fillable = ['user_id', 'anime_id', 'episode_id', 'server_id', 'play_time', 'max_time'];
+    protected $fillable = ['user_id', 'anime_id', 'episode_id', 'server_id', 'play_time', 'max_time', 'episode', 'thumbnail'];
 }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('anime', function (Blueprint $table) {
             $table->integer('anime_id')->unsigned()->primary();
-            $table->string("title");
-            $table->string("thumbnail");
+            $table->string("title", 100);
+            $table->string("image");
             $table->string("year", 4);
             $table->string("rating", 6);
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer("server_id");
             $table->float("play_time", 10, 6);
             $table->float("max_time", 10, 6);
+            $table->string("episode", 6);
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
             $table->foreign('user_id')->references('user_id')->on('users');

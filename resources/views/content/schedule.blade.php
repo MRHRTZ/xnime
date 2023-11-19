@@ -1,5 +1,9 @@
 @extends('layout.master')
 
+@section('breadcrumbs')
+    {{ Breadcrumbs::render('schedule') }}
+@endsection
+
 @section('content')
 <main class="main">
     <section class="schedule section featured">
@@ -14,7 +18,7 @@
                             <a href="{{ route('detail-anime', ['id'=>$schedule->id]) }}">
                                 <img src="{{ $schedule->image_cover }}" class="swiper-slide__cover">
                                 <br>
-                                <span class="title">{{ html_entity_decode($schedule->title) }}</span>
+                                <span class="title">{!! htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($schedule->title))) !!}</span>
                             </a>
                         </div>
                         @endforeach

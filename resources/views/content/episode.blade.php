@@ -78,7 +78,9 @@
                             </li>
                             @endforeach
                         </ul>
-                        <p class="anime-info__synopsis mt--10">{{ html_entity_decode($anime->content) }}</p>
+                        <p class="anime-info__synopsis mt--10">{!!
+                            htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->content))) !!}
+                        </p>
                         <table class="datasheet__table mt--10">
                             <tr class="datasheet__tr">
                                 <td class="datasheet__td">Rating:</td>
@@ -130,7 +132,8 @@
             <div class="aside-eps__box card">
                 <ul class="episode-box__list">
                     @foreach ($anime->episodes as $episode)
-                    <li class="episode-box__item episode-box__link {{ $episode->id == $episode_id ? 'box--active' : '' }}"
+                    <li id="{{ $episode->id }}"
+                        class="episode-box__item episode-box__link {{ $episode->id == $episode_id ? 'box--active' : '' }}"
                         onclick="window.location.href = '{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>$episode->id]) }}'">
                         <a class="{{ $episode->id == $episode_id ? 'active' : '' }}">
                             {{ $episode->episode }}
@@ -159,8 +162,9 @@
                         </a>
                     </div>
                     <div class="popular-item__info">
-                        <a href="{{ route('detail-anime', ['id'=>$popular->id]) }}" class="popular-item__title">{{
-                            html_entity_decode($popular->title) }}</a>
+                        <a href="{{ route('detail-anime', ['id'=>$popular->id]) }}" class="popular-item__title">{!!
+                            htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($popular->title)))
+                            !!}</a>
                         <span class="popular-item__description">{{ $popular->tahun }} | Eps. {{ $popular->episode }} |
                             <i class="fa-regular fa-star" class="rating"></i> {{ $popular->rating }}</span>
                     </div>
@@ -207,7 +211,7 @@
         }
         $('.episode-box').prepend(prependHtml)
     }
-    
+
     const episodes = [
         @foreach ($anime->episodes as $episode)
         {
@@ -237,21 +241,19 @@
     function update_history() {
         const formData = {
             _token: "{{ csrf_token() }}",
-            user_id: "{{ Auth::user()->user_id }}",
+            user_id: "{{ Auth::check() ? Auth::user()->user_id : '' }}",
             anime_id: anime_id,
             episode_id: episode_id,
             server_id: server_id ? server_id : servers[0].id,
             play_time: window.player.currentTime,
-            max_time: window.player.duration
+            max_time: window.player.duration,
+            episode: episodes.filter(v => v.play)[0].episode,
         }
         $.ajax({
             url : "{{ route('update-history') }}",
             type: "POST",
             data : formData,
-            success: function(data, textStatus, jqXHR)
-            {
-                // console.log(data);
-            }
+            success: function(data, textStatus, jqXHR){}
         });
     }
 </script>
@@ -281,7 +283,6 @@
             const player = new Plyr('#normal-player', {
                 controls: [
                     'play-large',
-                    'restart',
                     'play',
                     'progress',
                     'current-time',
@@ -335,6 +336,10 @@
             @if ($history_data)  
                 window.player.currentTime = {{ $history_data->play_time }}
             @endif
+
+            window.player.addEventListener("play", (event) => {
+                update_history()
+            });
 
             window.player.addEventListener("pause", (event) => {
                 update_history()
