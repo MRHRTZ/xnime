@@ -97,7 +97,7 @@ class AuthController extends Controller
             'password' => $request->input('password'),
         ];
 
-        if (Auth::attempt($data)) {
+        if (Auth::attempt($data, $request->input('remember'))) {
             return redirect('/');
         } else {
             return redirect()->route('login')->withErrors(['msg' => 'Email atau Password Salah']);
@@ -109,5 +109,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->flash('success', 'Berhasil keluar akun.');
         return redirect()->route('login');
+        // return redirect()->back();
     }
 }

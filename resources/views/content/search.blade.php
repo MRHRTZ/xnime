@@ -20,13 +20,34 @@
             @endif
             @foreach ($animeList as $anime)
             <div class="anime-list__item card">
+                @auth
+                @php
+                $history = findObjectByCustomId($history_list, $episode->id, 'episode_id');
+                @endphp
+                @endauth
+
                 <div class="anime-list__cover">
-                    <a href="{{ route('detail-anime', ['id'=>$anime->id]) }}">
-                        <img src="{{ $anime->imageCover }}" class="anime-list__img" alt="">
+                    @if (isset($history))
+                    @if ($history)
+                    <a target="_blank" href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}">
+                        <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ $anime->imageCover }}"
+                            class="anime-list__img" alt="">
                     </a>
+                    @else
+                    <a target="_blank" href="{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>'0']) }}">
+                        <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ $anime->imageCover }}"
+                            class="anime-list__img" alt="">
+                    </a>
+                    @endif
+                    @else
+                    <a target="_blank" href="{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>'0']) }}">
+                        <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ $anime->imageCover }}"
+                            class="anime-list__img" alt="">
+                    </a>
+                    @endif
                 </div>
                 <div class="anime-list__info">
-                    <a href="{{ route('detail-anime', ['id'=>$anime->id]) }}" class="anime-list__title">{{ $anime->title
+                    <a target="_blank" href="{{ route('detail-anime', ['id'=>$anime->id]) }}" class="anime-list__title">{{ $anime->title
                         }}</a>
                     <br>
                     <table class="datasheet__table">
@@ -64,10 +85,10 @@
                         <li class="pagination__item">
                             @if ($page == 1)
                             <span class="pagination__link box--false">«<span>
-                            @else
-                            <a href="{{ route('search', ['page'=>$page-1,'q'=>$keyword]) }}"
-                                class="pagination__link">«</a>
-                            @endif
+                                    @else
+                                    <a href="{{ route('search', ['page'=>$page-1,'q'=>$keyword]) }}"
+                                        class="pagination__link">«</a>
+                                    @endif
                         </li>
                         <li class="pagination__item">
                             <a href="#" class="pagination__link box--active">{{ $page }}</a>
@@ -78,7 +99,8 @@
                         </li>
                         @else
                         <li class="pagination__item">
-                            <a href="{{ route('search', ['page'=>$page+1,'q'=>$keyword]) }}" class="pagination__link">»</a>
+                            <a href="{{ route('search', ['page'=>$page+1,'q'=>$keyword]) }}"
+                                class="pagination__link">»</a>
                         </li>
                         @endif
                     </ul>
@@ -87,4 +109,12 @@
         </section>
     </div>
 </main>
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function () { 
+        $('title').text('Xnime - Cari anime {{ $keyword }}');
+    })
+</script>
 @endsection

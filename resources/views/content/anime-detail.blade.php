@@ -9,7 +9,7 @@
     <section class="section single-anime">
         <div class="anime-summary card">
             <div class="anime-summary__cover">
-                <img src="{{ $anime->image_cover }}" class="anime-summary__img">
+                <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ $anime->image_cover }}" class="anime-summary__img">
             </div>
             <div class="anime-summary__info">
                 <h1 class="anime-summary__title">{!! htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->title))) !!}</h1>
@@ -83,4 +83,12 @@
             
     </section>
 </main>
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function () { 
+        $('title').text('Xnime - Detail {!! htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->title))) !!}');
+    })
+</script>
 @endsection

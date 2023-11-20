@@ -242,3 +242,14 @@ if (!function_exists('findObjectById')) {
         return false;
     }
 }
+
+if (!function_exists('findObjectByCustomId')) {
+    function findObjectByCustomId($array, $id, $idKey)
+    {
+        foreach ($array as $row) {
+            if ($row->{$idKey} == $id) return $row;
+        }
+
+        return false;
+    }
+}

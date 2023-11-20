@@ -24,11 +24,19 @@
                 @csrf
                 <div class="form-control">
                     <label for="email" class="form-control__label">E-mail:</label>
-                    <input type="email" name="email" class="form-control__input" placeholder="Masukan email ..." required>
+                    <input type="email" name="email" class="form-control__input" placeholder="Masukan email ..."
+                        required>
                 </div>
                 <div class="form-control">
                     <label for="password" class="form-control__label">Password:</label>
-                    <input type="password" name="password" class="form-control__input" placeholder="Masukan password ..." required>
+                    <input type="password" name="password" class="form-control__input"
+                        placeholder="Masukan password ..." required>
+                </div>
+                <label class="label-checkbox">Ingat Saya
+                    <input type="checkbox" name="remember">
+                    <span class="checkbox"></span>
+                </label>
+                <div class="form-control">
                 </div>
                 <button type="submit" class="button mt--20">Login</button>
                 <div class="switch-auth">

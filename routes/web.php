@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Main Pages
 Route::get('/', [HomeController::class, 'index'])->name('beranda');
 Route::get('/anime', [AnimeController::class, 'index'])->name('anime');
 Route::get('/anime-detail', [AnimeController::class, 'detail'])->name('detail-anime');
@@ -30,11 +31,14 @@ Route::get('/live-action', [AnimeController::class, 'live_action'])->name('live-
 Route::get('/bookmark', [BookmarkController::class, 'index'])->name('bookmark');
 
 // Function
-Route::get('/fetch-anime', [AnimeController::class, 'fetch_anime'])->name('fetch-anime');
+Route::post('/fetch-popular', [EpisodeController::class, 'fetch_popular'])->name('fetch-popular');
 Route::post('/report-broken', [EpisodeController::class, 'report_broken'])->name('report-broken');
 Route::post('/update-history', [EpisodeController::class, 'update_history'])->name('update-history');
+Route::post('/fetch-comment', [EpisodeController::class, 'fetch_comment'])->name('fetch-comment');
+Route::post('/post-comment', [EpisodeController::class, 'post_comment'])->name('post-comment');
+Route::post('/post-like', [EpisodeController::class, 'post_like'])->name('post-like');
 
-// Auth
+// Auth Pages
 Route::get('/login', [AuthController::class, 'view_login'])->name('login');
 Route::get('/register', [AuthController::class, 'view_register'])->name('register');
 Route::get('/profile', [AuthController::class, 'view_profile'])->name('profile');

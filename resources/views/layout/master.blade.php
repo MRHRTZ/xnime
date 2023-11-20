@@ -40,11 +40,11 @@
             <nav class="sidenav__nav">
                 <div class="nav-profile-mobile">
                     @guest
-                    <img src="{{ url('assets/img/icons/profile.jpg') }}" class="profile-pic" />
+                    <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ url('assets/img/icons/profile.jpg') }}" class="profile-pic" />
                     <span>Tamu</span>
                     @endguest
                     @auth
-                    <img src="{{ Auth::user()->picture ? url(env('PROFILE_FOLDER').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}"
+                    <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ Auth::user()->picture ? url(env('PROFILE_FOLDER').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}"
                         class="profile-pic" />
                     <span>{{ Auth::user()->name }}</span>
                     @endauth
@@ -133,7 +133,7 @@
                 </form>
                 <div class="nav-profile">
                     @guest
-                    <img src="{{ url('assets/img/icons/profile.jpg') }}" class="profile-pic" />
+                    <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ url('assets/img/icons/profile.jpg') }}" class="profile-pic" />
                     <ul>
                         <li class="sub-item" onclick="window.location.href='{{ route('login') }}'">
                             <i class="fa-solid fa-right-to-bracket"></i>
@@ -142,7 +142,7 @@
                     </ul>
                     @endguest
                     @auth
-                    <img src="{{ Auth::user()->picture ? url(env('PROFILE_FOLDER').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}"
+                    <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ Auth::user()->picture ? url(env('PROFILE_FOLDER').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}"
                         class="profile-pic" />
                     <ul>
                         <li class="sub-item" onclick="window.location.href='{{ route('profile') }}'">
@@ -194,15 +194,6 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ url('assets/javascript/scripts.js') }}"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function (event) {
-            document.querySelectorAll('img').forEach(function (img) {
-                img.onerror = function () {
-                    this.src = '{{ url("assets/img/logo/2.png") }}'
-                };
-            })
-        });
-    </script>
     @yield('script')
 </body>
 

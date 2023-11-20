@@ -13,10 +13,12 @@
             @foreach ($history_data as $history)
             <div class="history-card card">
                 <div class="history-card__thumbnail-box">
-                    <a
+                    <a target="_blank"
                         href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}"><img
-                            src="{{ $history->image }}" class="history-card__thumbnail-img"></a>
-                    <a href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}"
+                            onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ $history->image }}"
+                            class="history-card__thumbnail-img"></a>
+                    <a target="_blank"
+                        href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}"
                         class="play__circle">
                         <i class="fa-solid fa-play play__icon"></i>
                     </a>
@@ -27,7 +29,7 @@
                 </div>
                 <div class="history-card__info">
                     <p class="history-card__description mb--5"><b>Episode {{ $history->episode }}</b></p>
-                    <a href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}"
+                    <a target="_blank" href="{{ route('detail-anime', ['id'=>$history->anime_id]) }}"
                         class="history-card__title">{!!
                         htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($history->title))) !!}</a>
                 </div>
@@ -42,8 +44,9 @@
             <div class="bookmark cards__container">
                 @for ($i=0;$i<6;$i++) <div class="bookmark-card card">
                     <div class="bookmark-card__thumbnail-box">
-                        <a href="{{ route('detail-anime', ['id'=>1]) }}"><img src="{{ url('assets/img/logo/1.png') }}"
-                                class="bookmark-card__thumbnail-img"></a>
+                        <a href="{{ route('detail-anime', ['id'=>1]) }}"><img
+                                onerror="this.src = '{{ url('assets/img/logo/2.png') }}'"
+                                src="{{ url('assets/img/logo/1.png') }}" class="bookmark-card__thumbnail-img"></a>
                         <a href="{{ route('detail-anime', ['id'=>1]) }}" class="play__circle">
                             <i class="fa-solid fa-play play__icon"></i>
                         </a>
@@ -90,5 +93,10 @@
         prevEl: ".swiper-button-prev",
     }
 });
+</script>
+<script>
+    $(document).ready(function () { 
+        $('title').text('Xnime - Bookmark');
+    })
 </script>
 @endsection

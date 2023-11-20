@@ -12,9 +12,23 @@
             <div class="swiper-wrapper">
                 @foreach ($homepage->recommend as $recommend)
                 <div class="swiper-slide">
-                    <a href="{{ route('detail-anime', ['id'=>$recommend->id]) }}">
-                        <img src="{{ $recommend->image_cover }}" class="swiper-slide__cover">
-                    </a>
+                    <div class="recommend-status">
+                        <div class="episode-card__status">
+                            <span class="episode-card__rating-box">
+                                <i class="fa-regular fa-star" class="rating"></i>&nbsp;{{ $recommend->rating }}
+                            </span>
+                            <span
+                                class="episode-card__status-box {{ $recommend->status_proses == '0' ? 'ongoing' : 'completed'  }}">
+                                <i class="fa-solid fa-circle-dot"></i></i>&nbsp;{{ $recommend->status_proses == 0 ? 'ON'
+                                :
+                                'END' }}
+                            </span>
+                            <a target="_blank" href="{{ route('detail-anime', ['id'=>$recommend->id]) }}">
+                                <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'"
+                                    src="{{ $recommend->image_cover }}" class="swiper-slide__cover">
+                            </a>
+                        </div>
+                    </div>
                     <a href="{{ route('detail-anime', ['id'=>$recommend->id]) }}" class="swiper-slide__title">{!!
                         htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($recommend->title))) !!}</a>
                 </div>
@@ -31,19 +45,56 @@
                 @foreach ($homepage->ongoing as $ongoing)
                 <div class="episode-card card">
                     <div class="episode-card__thumbnail-box">
-                        <a href="{{ route('detail-anime', ['id'=>$ongoing->id]) }}"><img
+                        @auth
+                        @php
+                        $history = findObjectByCustomId($history_list, $ongoing->id, 'anime_id');
+                        @endphp
+                        @endauth
+                        @if (isset($history))
+                        @if ($history)
+                        <a
+                            target="_blank"
+                            href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}"><img
+                                onerror="this.src = '{{ url('assets/img/logo/2.png') }}'"
                                 src="{{ $ongoing->image_cover }}" class="episode-card__thumbnail-img"></a>
-                        <a href="{{ route('detail-anime', ['id'=>$ongoing->id]) }}" class="play__circle">
+                        <a target="_blank" href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}"
+                            class="play__circle">
                             <i class="fa-solid fa-play play__icon"></i>
                         </a>
-                        <span class="episode-card__language-box">
-                            <i class="fa-regular fa-star" class="rating"></i>&nbsp;{{ $ongoing->rating }}
-                        </span>
+                        @else
+                        <a target="_blank" href="{{ route('episodes', ['anime_id'=>$ongoing->id,'episode_id'=>'0']) }}"><img
+                                onerror="this.src = '{{ url('assets/img/logo/2.png') }}'"
+                                src="{{ $ongoing->image_cover }}" class="episode-card__thumbnail-img"></a>
+                        <a target="_blank" href="{{ route('episodes', ['anime_id'=>$ongoing->id,'episode_id'=>'0']) }}"
+                            class="play__circle">
+                            <i class="fa-solid fa-play play__icon"></i>
+                        </a>
+                        @endif
+                        @else
+                        <a target="_blank" href="{{ route('episodes', ['anime_id'=>$ongoing->id,'episode_id'=>'0']) }}"><img
+                                onerror="this.src = '{{ url('assets/img/logo/2.png') }}'"
+                                src="{{ $ongoing->image_cover }}" class="episode-card__thumbnail-img"></a>
+                        <a target="_blank" href="{{ route('episodes', ['anime_id'=>$ongoing->id,'episode_id'=>'0']) }}"
+                            class="play__circle">
+                            <i class="fa-solid fa-play play__icon"></i>
+                        </a>
+                        @endif
+                        <div class="episode-card__status">
+                            <span class="episode-card__rating-box">
+                                <i class="fa-regular fa-star" class="rating"></i>&nbsp;{{ $ongoing->rating }}
+                            </span>
+                            <span
+                                class="episode-card__status-box {{ $ongoing->status_proses == '0' ? 'ongoing' : 'completed'  }}">
+                                <i class="fa-solid fa-circle-dot"></i></i>&nbsp;{{ $ongoing->status_proses == 0 ? 'ON' :
+                                'END' }}
+                            </span>
+                        </div>
                     </div>
                     <div class="episode-card__info">
                         <p class="episode-card__description"><b>{{ $ongoing->tahun }}</b></p>
                         <a href="{{ route('detail-anime', ['id'=>$ongoing->id]) }}" class="episode-card__title">{!!
-                            htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($ongoing->title))) !!}</a>
+                            htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($ongoing->title)))
+                            !!}</a>
                         <p class="episode-card__description">Episode {{ $ongoing->episode }} / {{ $ongoing->totalEpisode
                             ?? '-' }}</p>
                     </div>
@@ -72,13 +123,20 @@
 @section('script')
 <script>
     var swiper = new Swiper('.mySwiper', {
-    slidesPerView: 'auto',
+    // slidesPerView: 'auto',
+    slidesPerView: 1,
+    visibilityFullFit: true,
+    autoResize: false,
+    
     loop: true,
     loopFillGroupWithBlank: true,
     spaceBetween: 20,
     breakpoints: {
-        320: { spaceBetween: 10 },
-        480: { spaceBetween: 20 }
+        320: { slidesPerView: 2, spaceBetween: 10 },
+        480: { slidesPerView: 3, spaceBetween: 20 },
+        830: { slidesPerView: 4, spaceBetween: 20 },
+        1024: { slidesPerView: 5, spaceBetween: 20 },
+        1200: { slidesPerView: 6, spaceBetween: 20 }
     },
     navigation: {
         nextEl: ".swiper-button-next",

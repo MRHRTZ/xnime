@@ -14,7 +14,7 @@ Breadcrumbs::for('search', function (BreadcrumbTrail $trail) {
 
 Breadcrumbs::for('schedule', function (BreadcrumbTrail $trail) {
     $trail->parent('beranda');
-    $trail->push('Schedule', route('schedule'));
+    $trail->push('Jadwal Rilis', route('schedule'));
 });
 
 Breadcrumbs::for('bookmark', function (BreadcrumbTrail $trail) {
@@ -26,22 +26,6 @@ Breadcrumbs::for('anime', function (BreadcrumbTrail $trail) {
     $trail->parent('beranda');
     $trail->push('Anime', route('anime'));
 });
-
-Breadcrumbs::for('series', function (BreadcrumbTrail $trail) {
-    $trail->parent('anime');
-    $trail->push('Series', route('series'));
-});
-
-Breadcrumbs::for('movie', function (BreadcrumbTrail $trail) {
-    $trail->parent('anime');
-    $trail->push('Film', route('movie'));
-});
-
-Breadcrumbs::for('live-action', function (BreadcrumbTrail $trail) {
-    $trail->parent('anime');
-    $trail->push('Live Action', route('live-action'));
-});
-
 
 Breadcrumbs::for('detail-anime', function (BreadcrumbTrail $trail, $anime) {
     $trail->parent('anime');

@@ -53,6 +53,41 @@ function need_login(login_url) {
 
 /**
  * =================================================================================
+ * UTILITY
+ * =================================================================================
+ */
+
+function timeSince(date) {
+
+    var seconds = Math.floor((new Date() - date) / 1000);
+
+    var interval = seconds / 31536000;
+    var ago = " yang lalu"
+
+    if (interval > 1) {
+        return Math.floor(interval) + " tahun" + ago;
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+        return Math.floor(interval) + " bulan" + ago;
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+        return Math.floor(interval) + " hari" + ago;
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+        return Math.floor(interval) + " jam" + ago;
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+        return Math.floor(interval) + " menit" + ago;
+    }
+    return Math.floor(seconds) + " detik" + ago;
+}
+
+/**
+ * =================================================================================
  * MOBILE SIDENAV
  * =================================================================================
  */

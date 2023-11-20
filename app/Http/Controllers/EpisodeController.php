@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anime;
+use App\Models\Comment;
+use App\Models\CommentLike;
 use App\Models\History;
 use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 use stdClass;
 
 class EpisodeController extends Controller
@@ -17,8 +21,12 @@ class EpisodeController extends Controller
         $anime_id = $request->route('anime_id');
         $episode_id = $request->route('episode_id');
         $server_id = $request->query('server_id');
-        $animeList = getListAnime();
         $animeDetail = getAnimeDetail($anime_id);
+
+        if ($episode_id == '0') {
+            $episode_id = $animeDetail->episodes[0]->id;
+        }
+
         $server_video = getServerList($anime_id, $episode_id);
         $server_list = array();
 
@@ -107,7 +115,6 @@ class EpisodeController extends Controller
 
         $data = array(
             'anime' => $animeDetail,
-            'anime_list' => $animeList,
             'episode_id' => $episode_id,
             'server_list' => $server_list,
             'server_id' => $server_id,
@@ -171,5 +178,109 @@ class EpisodeController extends Controller
         }
 
         return 'Ok';
+    }
+
+    public function post_comment(Request $request)
+    {
+        $anime_id = $request->input('anime_id');
+        $episode_id = $request->input('episode_id');
+        $parent_id = $request->input('parent_id');
+        $content = $request->input('content');
+
+        if (Auth::check()) {
+            $user = Auth::user();
+            $user_comment = Comment::create([
+                'user_id' => $user->user_id,
+                'anime_id' => $anime_id,
+                'episode_id' => $episode_id,
+                'parent_id' => $parent_id,
+                'content' => $content
+            ]);
+            $user_comment->name = $user->name;
+            $user_comment->picture = $user->picture;
+            $data = array(
+                "status" => 200,
+                "result" => $user_comment
+            );
+            return Response::json($data);
+        } else {
+            $data = array(
+                "status" => 403
+            );
+            return Response::json($data);
+        }
+    }
+    
+    public function post_like(Request $request)
+    {
+        $comment_id = $request->input('comment_id');
+        $is_like = $request->input('is_like') == 'true';
+
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($is_like) {
+                CommentLike::create([
+                    'user_id' => $user->user_id,
+                    'comment_id' => $comment_id,
+                    'is_like' => $is_like
+                ]);
+            } else {
+                CommentLike::where('user_id', $user->user_id)
+                ->where('comment_id', $comment_id)
+                ->delete();
+            }
+            $data = array(
+                "status" => 200,
+            );
+            return Response::json($data);
+        } else {
+            $data = array(
+                "status" => 403
+            );
+            return Response::json($data);
+        }
+    }
+
+    public function fetch_comment(Request $request)
+    {
+        $anime_id = $request->input('anime_id');
+        $episode_id = $request->input('episode_id');
+        $page = $request->input('page') ?? 0;
+        $limit = $request->input('limit') ?? 10;
+        $ascending = $request->input('ascending') ?? 0;
+
+        $data_comment = Comment::select('comment.*', 'users.name', 'users.picture', DB::raw('COALESCE(COUNT(comment_like.is_like), 0) AS like_count'));
+        if (Auth::check()) {
+            $user_id = Auth::user()->user_id;
+            $data_comment->addSelect(DB::raw("EXISTS(SELECT 1 FROM comment_like WHERE comment_like.comment_id = comment.comment_id AND comment_like.user_id = $user_id LIMIT 1) as liked"));
+        }
+        $data_comment = $data_comment->join('users', 'users.user_id', '=', 'comment.user_id')
+            ->leftJoin('comment_like', 'comment_like.comment_id', '=', 'comment.comment_id')
+            ->where('anime_id', $anime_id)
+            ->where('episode_id', $episode_id)
+            ->groupBy('comment.comment_id')
+            ->orderBy($ascending == 0 ? 'like_count' : 'created_at', 'desc')
+            ->limit($limit)
+            ->offset($page*$limit)
+            ->get();
+
+        $length_comment = Comment::where('anime_id', $anime_id)
+        ->where('episode_id', $episode_id)->count();
+
+        $data = array(
+            "status" => 200,
+            "page" => $page,
+            "length" => $length_comment,
+            "result" => $data_comment
+        );
+
+        return Response::json($data);
+    }
+
+    public function fetch_popular(Request $request) {
+        $page = $request->input('page') ?? 0;
+        $limit = $request->input('limit') ?? 10;
+        $animeList = getListAnime($limit, $page*$limit);
+        return Response::json($animeList);
     }
 }

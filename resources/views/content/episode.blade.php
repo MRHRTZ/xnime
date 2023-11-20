@@ -10,9 +10,8 @@
 
 @section('content')
 <main class="main">
-    <div class="wrapper mt--none">
+    <div class="episode wrapper mt--none">
         <section class="section episode">
-
             <div class="server-info">
                 <div>
                     <ul class="anime-server__list">
@@ -60,118 +59,173 @@
                     </form>
                 </div>
                 @endif
-                <div class="anime-info">
-                    <div class="anime-info__cover">
-                        <a href="{{ route('detail-anime', ['id'=>$anime->id]) }}">
-                            <img src="{{ $anime->image_cover }}" class="anime-info__img">
-                        </a>
+            </div>
+            <div class="anime-info">
+                <div class="anime-info__summary">
+                    <a href="{{ route('detail-anime', ['id'=>$anime->id]) }}" class="anime-info__title">{{
+                        html_entity_decode($anime->title)
+                        }}</a>
+                    <ul class="anime-genres__list mt--10">
+                        @foreach ($anime->categories as $genre)
+                        <li class="anime-genres__item">
+                            <a href="{{ route('anime', ['genre'=>$genre->cat_id]) }}" class="anime-genres__link">{{
+                                $genre->title }}</a>
+                        </li>
+                        @endforeach
+                    </ul>
+                    <p class="anime-info__synopsis mt--10">{!!
+                        htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->content))) !!}
+                    </p>
+                    <table class="datasheet__table mt--10">
+                        <tr class="datasheet__tr">
+                            <td class="datasheet__td">Rating:</td>
+                            <td class="datasheet__td">{{ $anime->rating }}</td>
+                        </tr>
+                        <tr class="datasheet__tr">
+                            <td class="datasheet__td">Tahun:</td>
+                            <td class="datasheet__td">{{ $anime->tahun }}</td>
+                        </tr>
+                        <tr class="datasheet__tr">
+                            <td class="datasheet__td">Tipe:</td>
+                            <td class="datasheet__td">
+                                @if ($anime->jenis_anime == '1')
+                                Series
+                                @elseif ($anime->jenis_anime == '3')
+                                Movie
+                                @elseif ($anime->jenis_anime == '4')
+                                Live Action
+                                @else
+                                Anime
+                                @endif
+                            </td>
+                        </tr>
+                        <tr class="datasheet__tr">
+                            <td class="datasheet__td">Vote:</td>
+                            <td class="datasheet__td">{{ $anime->voting }}</td>
+                        </tr>
+                        <tr class="datasheet__tr">
+                            <td class="datasheet__td">Status:</td>
+                            <td class="datasheet__td">
+                                @if ($anime->status_tayang == '1')
+                                Ongoing
+                                @elseif ($anime->status_tayang == '2')
+                                Completed
+                                @endif
+                            </td>
+                        </tr>
+                        <tr class="datasheet__tr">
+                            <td class="datasheet__td">Total Episode:</td>
+                            <td class="datasheet__td">{{ $anime->total_episode }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <hr class="divider">
+            <div class="comment-header mt--20">
+                <p id="comment--title" class="section__title ">Komentar</p>
+                <div class="comment--option">
+                    <a onclick="ascending_comment(0)" class="comment-best active">Terbaik</a>
+                    <a onclick="ascending_comment(1)" class="comment-latest">Terbaru</a>
+                </div>
+            </div>
+            @auth
+            <div class="comments-box__content">
+                <div class="user comment">
+                    <div class="user-avatar">
+                        <img
+                            src="{{ Auth::user()->picture ? url(env('PROFILE_FOLDER').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}">
                     </div>
-                    <div class="anime-info__summary">
-                        <a href="{{ route('detail-anime', ['id'=>$anime->id]) }}" class="anime-info__title">{{
-                            html_entity_decode($anime->title)
-                            }}</a>
-                        <ul class="anime-genres__list mt--10">
-                            @foreach ($anime->categories as $genre)
-                            <li class="anime-genres__item">
-                                <a href="{{ route('anime', ['genre'=>$genre->cat_id]) }}" class="anime-genres__link">{{
-                                    $genre->title }}</a>
-                            </li>
-                            @endforeach
-                        </ul>
-                        <p class="anime-info__synopsis mt--10">{!!
-                            htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->content))) !!}
-                        </p>
-                        <table class="datasheet__table mt--10">
-                            <tr class="datasheet__tr">
-                                <td class="datasheet__td">Rating:</td>
-                                <td class="datasheet__td">{{ $anime->rating }}</td>
-                            </tr>
-                            <tr class="datasheet__tr">
-                                <td class="datasheet__td">Tahun:</td>
-                                <td class="datasheet__td">{{ $anime->tahun }}</td>
-                            </tr>
-                            <tr class="datasheet__tr">
-                                <td class="datasheet__td">Tipe:</td>
-                                <td class="datasheet__td">
-                                    @if ($anime->jenis_anime == '1')
-                                    Series
-                                    @elseif ($anime->jenis_anime == '3')
-                                    Movie
-                                    @elseif ($anime->jenis_anime == '4')
-                                    Live Action
-                                    @else
-                                    Anime
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr class="datasheet__tr">
-                                <td class="datasheet__td">Vote:</td>
-                                <td class="datasheet__td">{{ $anime->voting }}</td>
-                            </tr>
-                            <tr class="datasheet__tr">
-                                <td class="datasheet__td">Status:</td>
-                                <td class="datasheet__td">
-                                    @if ($anime->status_tayang == '1')
-                                    Ongoing
-                                    @elseif ($anime->status_tayang == '2')
-                                    Completed
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr class="datasheet__tr">
-                                <td class="datasheet__td">Total Episode:</td>
-                                <td class="datasheet__td">{{ $anime->total_episode }}</td>
-                            </tr>
-                        </table>
+                    <div class="comment-content">
+                        <div class="input--area">
+                            <textarea id="input--comment" data-parent_id="0" cols="1" rows="2" placeholder="Tulis komentar ..."></textarea>
+                        </div>
+                        <div class="send--button">
+                            <a id="post--button" class="disabled">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                Kirim
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+            @endauth
+            @guest
+            <div class="comments-box__content" onclick="return need_login('{{ route('login') }}')">
+                <div class="user comment">
+                    <div class="user-avatar">
+                        <img src="{{ url('assets/img/icons/profile.jpg') }}">
+                    </div>
+                    <div class="comment-content">
+                        <div class="input--area">
+                            <textarea id="input--comment" cols="1" rows="2" placeholder="Tulis komentar ..."
+                                readonly></textarea>
+                        </div>
+                        <div class="send--button">
+                            <a id="post--button" class="disabled">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                Kirim
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endguest
+            <div id="comment--content"></div>
         </section>
         <aside class="aside mt--6-5">
             <h1 class="aside__title">Episode</h1>
             <div class="aside-eps__box card">
                 <ul class="episode-box__list">
                     @foreach ($anime->episodes as $episode)
+                    @auth
+                    @php
+                    $history = findObjectByCustomId($history_list, $episode->id, 'episode_id');
+                    @endphp
+                    @endauth
+                    @if (isset($history))
+                    @if ($history)
+                    <li id="{{ $episode->id }}"
+                        class="episode-box__item episode-box__link {{ $episode->id == $episode_id ? 'box--active' : '' }}"
+                        onclick="window.location.href = '{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}'">
+                        <a class="{{ $episode->id == $episode_id ? 'active' : '' }}">
+                            {{ $episode->episode }}
+                        </a>
+                        <span class="anime-episodes-box-time {{ $episode->id == $episode_id ? 'active' : '' }}">
+                            {{ secondToTime($history->play_time) }}
+                        </span>
+                    </li>
+                    @else
                     <li id="{{ $episode->id }}"
                         class="episode-box__item episode-box__link {{ $episode->id == $episode_id ? 'box--active' : '' }}"
                         onclick="window.location.href = '{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>$episode->id]) }}'">
                         <a class="{{ $episode->id == $episode_id ? 'active' : '' }}">
                             {{ $episode->episode }}
                         </a>
-                        @foreach ($history_list as $history)
-                        @if ($history->episode_id == $episode->id)
-                        <span class="anime-episodes-box-time {{ $episode->id == $episode_id ? 'active' : '' }}">
-                            {{ secondToTime($history->play_time) }}
-                        </span>
-                        @endif
-                        @endforeach
                     </li>
+                    @endif
+                    @else
+                    <li id="{{ $episode->id }}"
+                        class="episode-box__item episode-box__link {{ $episode->id == $episode_id ? 'box--active' : '' }}"
+                        onclick="window.location.href = '{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>$episode->id]) }}'">
+                        <a class="{{ $episode->id == $episode_id ? 'active' : '' }}">
+                            {{ $episode->episode }}
+                        </a>
+                    </li>
+                    @endif
                     @endforeach
                 </ul>
             </div>
             <br>
             <hr class="divider">
             <br>
-            <h1 class="aside__title">Populer</h1>
-            <div id="popular" class="popular-box">
-                @foreach ($anime_list as $popular)
-                <div class="popular-item">
-                    <div class="popular-item__cover card">
-                        <a href="{{ route('detail-anime', ['id'=>$popular->id]) }}">
-                            <img src="{{ $popular->imageCover }}" class="popular-item__img">
-                        </a>
-                    </div>
-                    <div class="popular-item__info">
-                        <a href="{{ route('detail-anime', ['id'=>$popular->id]) }}" class="popular-item__title">{!!
-                            htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($popular->title)))
-                            !!}</a>
-                        <span class="popular-item__description">{{ $popular->tahun }} | Eps. {{ $popular->episode }} |
-                            <i class="fa-regular fa-star" class="rating"></i> {{ $popular->rating }}</span>
-                    </div>
+            <div class="popular--header">
+                <p class="aside__title">Populer</p>
+                <div class="popular--navigation">
+                    <i id="popular-prev" class="fa-solid fa-chevron-left"></i>
+                    <i id="popular-next" class="fa-solid fa-chevron-right available"></i>
                 </div>
-                @endforeach
-
             </div>
+            <div id="popular" class="popular-box"></div>
         </aside>
     </div>
     </aside>
@@ -231,8 +285,8 @@
     ]
 
     const anime_id = {{ app('request')->route('anime_id') }};
-    const episode_id = {{ app('request')->route('episode_id') }};
-    let server_id = {{ app('request')->query('server_id') ? app('request')->query('server_id') : '0' }};
+    const episode_id = {{ $episode_id }};
+    let server_id = {{ $server_id }};
     if (!server_id) server_id = servers[0].id
     if (!$('input[name=server_id]').val()) $('input[name=server_id]').val(servers[0].id)
 
@@ -358,41 +412,308 @@
     })
 </script>
 <script>
-    window.animePage = 1
-    function fetchAnime() {
-        $('#popular').append(`<div class="popular-item popular-load">
-            <div class="lds-hourglass"></div>
-        </div>`)
-        var url = "{{ route('fetch-anime', ['page'=>'']) }}"
-        url += window.animePage
-        $.getJSON(url, function( data ) {
-            $('.popular-load').remove()
-            for (const anime of data) {
-                $('#popular').append(`
-                <div class="popular-item">
-                    <div class="popular-item__cover card">
-                        <a href="anime-detail?id=${anime.id}">
-                            <img src="${anime.imageCover}" class="popular-item__img">
-                        </a>
-                    </div>
-                    <div class="popular-item__info">
-                        <a href="/anime-detail?id=${anime.id}" class="popular-item__title">${anime.title}</a>
-                        <span class="popular-item__description">${anime.tahun} | Eps. ${anime.episode} |
-                            ${anime.rating}</span>
-                    </div>
-                </div>
-                `)
-            }
+    window.animePage = 0
+    fetch_popular()
+
+    $(document).ready(function() { 
+        $('#popular-next').on('click', function () {
+            window.animePage += 1
+            fetch_popular()
         })
-        window.animePage += 1
+        
+        $('#popular-prev').on('click', function () {
+            if (!window.animePage) return
+            window.animePage -= 1
+            fetch_popular()
+        })
+    })
+
+    function check_available_page() {
+        if (window.animePage == 0) {
+            $('#popular-prev').removeClass('available')
+        } else {
+            if (!$('#popular-prev').hasClass('available')) {
+                $('#popular-prev').addClass('available')
+            }
+        }
     }
 
-    $(window).scroll(function() {
-    var scrollTop = $(window).scrollTop()
-    var windowHeight = $(document).height() - $(window).height() - 1
-    if(scrollTop > windowHeight) {
-        fetchAnime()
+    function fetch_popular(limit=10) {
+        const formData = {
+            _token: "{{ csrf_token() }}",
+            page: window.animePage,
+            limit
+        }
+        $('#popular').html(`<div class="popular-item popular-load">
+            <div class="lds-hourglass"></div>
+        </div>`)
+        $.ajax({
+            url : "{{ route('fetch-popular') }}",
+            type: "POST",
+            data : formData,
+            success: function(data, textStatus, jqXHR){
+                let populars = ''
+                for (const anime of data) {
+                    var popular = `
+                    <div class="popular-item">
+                        <div class="popular-item__cover card">
+                        @if (isset($history))
+                        @if ($history)
+                            <a target="_blank" href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}">
+                                <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="${anime.imageCover}" class="popular-item__img">
+                            </a>
+                        @else
+                            <a target="_blank" href="{{ route('episodes', ['anime_id'=>'id_anime', 'episode_id'=>'0']) }}">
+                                <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="${anime.imageCover}" class="popular-item__img">
+                            </a>
+                        @endif
+                        @else
+                            <a target="_blank" href="{{ route('episodes', ['anime_id'=>'id_anime', 'episode_id'=>'0']) }}">
+                                <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="${anime.imageCover}" class="popular-item__img">
+                            </a>
+                        @endif
+                        </div>
+                        <div class="popular-item__info">
+                            <a target="_blank" href="{{ route('detail-anime', ['id'=>'id_anime']) }}" class="popular-item__title">${anime.title}</a>
+                            <span class="popular-item__description">${anime.tahun} | Eps. ${anime.episode} |
+                                ${anime.rating}</span>
+                        </div>
+                    </div>
+                    `
+                    popular = popular.replace(/id_anime/g, anime.id)
+                    populars += popular
+                }
+                $('#popular').html(populars)
+                check_available_page()
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                Toast.fire('Terdapat kesalahan', 'Gagal mengambil data populer.', 'warning')
+            }
+        });
     }
-});
+</script>
+<script>
+    window.commentPage = 0
+    window.commentAscending = 0
+
+    $(document).ready(function() {
+
+        fetch_comment();
+
+        $(window).scroll(function() {
+            var scrollTop = Math.round($(window).scrollTop())
+            var windowHeight = $(document).height() - $(window).height() - 1
+            if(scrollTop >= windowHeight) {
+                fetch_comment();
+            }
+        })
+
+        // setInterval(() => {
+        //     fetch_comment()
+        // }, 60_000);
+
+        $("textarea#input--comment").on('change keyup paste', function() {
+            const text = $(this).val();
+            const classText = 'disabled';
+            if (text) {
+                if ($('#post--button').hasClass(classText)) {
+                    $('#post--button').removeClass(classText)
+                }
+            } else {
+                if (!$('#post--button').hasClass(classText)) {
+                    $('#post--button').addClass(classText)
+                    $('#input--comment').data('parent_id', 0)
+                }
+            }
+        });
+
+        $('#post--button').on('click', function() {
+            send_comment()
+        })
+
+        $('#input--comment').keydown(function (e) {
+            if (e.ctrlKey && e.keyCode == 13) {
+                send_comment()
+            }
+        });
+
+        $("textarea#input--comment").on('change keyup paste', function() {
+            const text = $(this).val();
+            const classText = 'disabled';
+            if (text) {
+                if ($('#post--button').hasClass(classText)) {
+                    $('#post--button').removeClass(classText)
+                }
+            } else {
+                if (!$('#post--button').hasClass(classText)) {
+                    $('#post--button').addClass(classText)
+                }
+            }
+        });
+    })
+
+    function send_comment() {
+        post_comment()
+        $('textarea#input--comment').val('')
+        $('#post--button').addClass('disabled')
+        window.commentPage = 0
+        $('#comment--content').html('')
+        fetch_comment()
+    }
+    
+    const render_comment = (data) => {
+        const comments = data.result
+        const dataPage = Number(data.page)
+        window.commentCount = data.length
+        if (comments.length > 0 && dataPage == window.commentPage) {
+            window.commentPage += 1
+            $('#comment--title').text(window.commentCount + ' Komentar')
+            for (let i = 0; i < comments.length; i++) {
+                const comment = comments[i];
+                const comment_content = comment.content.replace(/@([^ ]+)/g, '<a href="#comment-'+comment.parent_id+'" class="comment-reply">@$1</a>').replace(/_/g, ' ')
+                var comment_box = `<div id="comment-${ comment.comment_id }" class="comments-box">
+                    <div class="comments-box__content">
+                        <div class="comment">
+                            <div class="user-avatar">
+                                <img src="${ comment.picture ? ('{{ url(env("PROFILE_FOLDER"))."/" }}' + comment.picture) : '{{ url("assets/img/icons/profile.jpg") }}' }">
+                            </div>
+                            <div class="comment-content">
+                                <div class="user-info">
+                                    <h4>${ comment.name }</h4>
+                                    <span class="comment-date">${ timeSince(Date.now() - (Date.now()-new Date(comment.created_at))) }</span>
+                                </div>
+                                <p class="comment-text">${ comment_content }</p>
+                                <div class="comment-actions">
+                                    <a class="like_comment ${comment.liked ? 'active' : ''}" onclick="send_like(${ comment.comment_id })">
+                                        <i class="fa-${comment.liked ? 'solid' : 'regular'} fa-heart"></i>
+                                        <span>&nbsp;${ comment.like_count }</span>
+                                    </a>
+                                    <a class="like_comment" onclick="reply_comment(${ comment.comment_id }, \`${ comment.name.replace(/ +/g, '_') }\`)">
+                                        <i class="fa-regular fa-comment-dots"></i>
+                                        <span>&nbsp; Balas</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+                $('#comment--content').append(comment_box)
+            }
+        } else {
+            if (window.commentPage == 0) {
+                let empty_comment = `
+                <div class="comments-box">
+                    <div class="comments-box__content mt--30" style="text-align: center;">
+                            <span>Tidak ada komentar</span>
+                    </div>
+                </div>
+                `
+                $('#comment--content').html(empty_comment)
+            }
+        }
+    }
+
+    function reply_comment(id, name) {
+        $('#input--comment').data('parent_id', id)
+        $('#input--comment').val($('#input--comment').val() + '@' + name + ' ')
+        $('#input--comment').focus()
+    }
+
+    function send_like(comment_id) {
+        @guest
+            need_login('{{ route("login") }}')
+            return
+        @endguest
+        const isLiked = $(`#comment-${ comment_id } .like_comment`).hasClass('active')
+        post_like(comment_id, !isLiked)
+        window.commentPage = 0
+        $('#comment--content').html('')
+        fetch_comment()
+    }
+
+    function ascending_comment(mode) {
+        /*
+            0: Best
+            1: Latest
+        */
+        if (mode == 0) {
+            $('.comment-best').addClass('active')
+            $('.comment-latest').removeClass('active')
+        } else {
+            $('.comment-best').removeClass('active')
+            $('.comment-latest').addClass('active')
+        }
+        window.commentPage = 0
+        window.commentAscending = mode
+        $('#comment--content').html('')
+        fetch_comment()
+    }
+
+    function fetch_comment() {
+        const formData = {
+            _token: "{{ csrf_token() }}",
+            anime_id: anime_id,
+            episode_id: episode_id,
+            page: window.commentPage,
+            ascending: window.commentAscending
+        }
+        $.ajax({
+            url : "{{ route('fetch-comment') }}",
+            type: "POST",
+            data : formData,
+            success: function(data, textStatus, jqXHR){
+                render_comment(data)
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                Toast.fire('Terdapat kesalahan', 'Gagal mengambil data komentar.', 'warning')
+            }
+        });
+    }
+
+    function post_comment() {
+        const parent_id = $('#input--comment').data('parent_id')
+        const formData = {
+            _token: "{{ csrf_token() }}",
+            anime_id: anime_id,
+            episode_id: episode_id,
+            parent_id: parent_id,
+            content: $('#input--comment').val(),
+        }
+        $.ajax({
+            url : "{{ route('post-comment') }}",
+            type: "POST",
+            data : formData,
+            success: function(data, textStatus, jqXHR){
+                $('#input--comment').data('parent_id', 0)
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                Toast.fire('Terdapat kesalahan', 'Gagal mengambil data komentar.', 'warning')
+            }
+        });
+    }
+    
+    function post_like(comment_id, is_like) {
+        const formData = {
+            _token: "{{ csrf_token() }}",
+            comment_id: comment_id,
+            is_like: is_like
+        }
+        $.ajax({
+            url : "{{ route('post-like') }}",
+            type: "POST",
+            data : formData,
+            success: function(data, textStatus, jqXHR){
+                // console.log(data)
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                Toast.fire('Terdapat kesalahan', 'Gagal mengambil data komentar.', 'warning')
+            }
+        });
+    }
+</script>
+<script>
+    $(document).ready(function () { 
+        $('title').text('Xnime - {!! htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->title))) !!}');
+    })
 </script>
 @endsection

@@ -12,5 +12,5 @@ class Comment extends Model
     protected $table = 'comment';
     protected $primaryKey = 'comment_id';
 
-    protected $fillable = ['user_id','content'];
+    protected $fillable = ['user_id','anime_id','episode_id','parent_id','content'];
 }

@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comment', function (Blueprint $table) {
-            $table->bigIncrements('comment_id')->unsigned();
+        Schema::create('comment_like', function (Blueprint $table) {
+            $table->integerIncrements('like_id')->unsigned();
+            $table->bigInteger('comment_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->integer("anime_id");
-            $table->integer("episode_id");
-            $table->integer("parent_id")->default(0);
-            $table->text('content');
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
-            $table->timestamp('created_at')->useCurrent();
+            $table->tinyInteger('is_like');
+            $table->timestamps();
+            $table->foreign('comment_id')->references('comment_id')->on('comment');
             $table->foreign('user_id')->references('user_id')->on('users');
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comment');
+        Schema::dropIfExists('comment_like');
     }
 };

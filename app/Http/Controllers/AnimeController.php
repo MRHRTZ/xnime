@@ -15,6 +15,11 @@ class AnimeController extends Controller
         $filterGenre = $request->query('genre') ?? '';
         $filterSort = $request->query('sort') ?? '';
 
+        $history_list = null;
+        if (Auth::check()) {
+            $history_list = History::getBookmark(Auth::user());
+        }
+
         $animeList = getListAnime(15, $pageNow-1, $filterGenre, $filterJenisAnime, $filterSort);
         $genreList = getGenres();
         $data = array(
@@ -23,7 +28,8 @@ class AnimeController extends Controller
             'genreList' => $genreList,
             'jenisanime' => $filterJenisAnime,
             'genre' => $filterGenre,
-            'sort' => $filterSort
+            'sort' => $filterSort,
+            'history_list' => $history_list
         );
         return view('content.anime')->with($data);
     }
@@ -65,16 +71,17 @@ class AnimeController extends Controller
     public function schedule() {
         $days = getDays();
         $homepage = getHomepage();
+
+        $history_list = null;
+        if (Auth::check()) {
+            $history_list = History::getBookmark(Auth::user());
+        }
+
         $data = array(
             'days' => $days,
-            'schedules' => $homepage->schedule
+            'schedules' => $homepage->schedule,
+            'history_list' => $history_list
         );
         return view('content.schedule')->with($data);
-    }
-
-    public function fetch_anime(Request $request) {
-        $page = $request->query('page');
-        $animeList = getListAnime(15, $page);
-        return Response::json($animeList);
     }
 }
