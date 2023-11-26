@@ -34,7 +34,6 @@ jobs:
       - name: 🔌 Prepare Files for Public
         run: |
           cp -rf public/* .
-          rm index.php
           mv public.php index.php
 
       - name: 💾 Give Directory Permissions
@@ -49,6 +48,6 @@ jobs:
           protocol: ${{ secrets.FTP_PROTOCOL }}
           port: ${{ secrets.FTP_PORT }}
           exclude: |
-            **/.git*
+            **/.git/**
             **/.github/**
             **/node_modules/**
