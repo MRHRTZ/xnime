@@ -14,7 +14,7 @@ class HomeController extends Controller
 
         $history_list = null;
         if (Auth::check()) {
-            $history_list = History::getBookmark(Auth::user());
+            $history_list = History::getHistory(Auth::user());
         }
 
         $data = array(

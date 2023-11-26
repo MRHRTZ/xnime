@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anime;
+use App\Models\Bookmark;
 use App\Models\Comment;
 use App\Models\CommentLike;
 use App\Models\History;
@@ -83,6 +84,7 @@ class EpisodeController extends Controller
         $history_list = [];
         $history_data = null;
         $user_report = "false";
+        $bookmark = null;
 
         if (Auth::check()) {
             $user = Auth::user();
@@ -111,6 +113,10 @@ class EpisodeController extends Controller
                 ->where('server_id', $server_id ? $server_id : $server_list[0]->id)
                 ->first();
             $user_report = $report ? "true" : "false";
+
+            $bookmark = Bookmark::where('user_id', $user->user_id)
+            ->where('anime_id', $anime_id)
+            ->first();
         }
 
         $data = array(
@@ -123,6 +129,7 @@ class EpisodeController extends Controller
             'user_report' => $user_report,
             'history_data' => $history_data,
             'history_list' => $history_list,
+            'bookmark' => $bookmark
         );
         return view('content.episode')->with($data);
     }
@@ -275,6 +282,22 @@ class EpisodeController extends Controller
         );
 
         return Response::json($data);
+    }
+
+    function delete_comment(Request $request) {
+        if (Auth::check()) {
+            $user = Auth::user();
+            $id = $request->input('id');
+            $comment = Comment::find($id);
+            if ($comment->user_id == $user->user_id) {
+                $comment->delete();
+                return Response::json('Ok');
+            } else {
+                return Response::json('Unauthorized', 403);
+            }
+        } else {
+            return Response::json('Unauthorized', 403);
+        }
     }
 
     public function fetch_popular(Request $request) {

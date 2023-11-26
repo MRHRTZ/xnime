@@ -10,8 +10,9 @@
         <div class="swiper mySwiper">
             <div class="swiper-wrapper">
                 @foreach ($days as $day)
-                <div class="swiper-slide schedule-panel card">
+                <div id="day-{{ $day['no'] }}" class="swiper-slide schedule-panel card">
                     <span class="day">{{ $day['day'] }}</span>
+                    <span class="week"></span>
                     <div class="anime-list">
                         @foreach ($schedules->{$day['no']} as $schedule)
                         <div class="anime-item">
@@ -27,7 +28,8 @@
                                 <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'"
                                     src="{{ $schedule->image_cover }}" class="swiper-slide__cover">
                                 <br>
-                                <a target="_blank" href="{{ route('detail-anime', ['id'=>$schedule->id]) }}" class="title">{!!
+                                <a target="_blank" href="{{ route('detail-anime', ['id'=>$schedule->id]) }}"
+                                    class="title">{!!
                                     htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($schedule->title)))
                                     !!}</a>
                             </a>
@@ -37,7 +39,8 @@
                                 <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'"
                                     src="{{ $schedule->image_cover }}" class="swiper-slide__cover">
                                 <br>
-                                <a target="_blank" href="{{ route('detail-anime', ['id'=>$schedule->id]) }}" class="title">{!!
+                                <a target="_blank" href="{{ route('detail-anime', ['id'=>$schedule->id]) }}"
+                                    class="title">{!!
                                     htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($schedule->title)))
                                     !!}</a>
                             </a>
@@ -48,7 +51,8 @@
                                 <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'"
                                     src="{{ $schedule->image_cover }}" class="swiper-slide__cover">
                                 <br>
-                                <a target="_blank" href="{{ route('detail-anime', ['id'=>$schedule->id]) }}" class="title">{!!
+                                <a target="_blank" href="{{ route('detail-anime', ['id'=>$schedule->id]) }}"
+                                    class="title">{!!
                                     htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($schedule->title)))
                                     !!}</a>
                             </a>
@@ -69,7 +73,30 @@
 
 @section('script')
 <script>
+    function dayNow() {
+        var today = new Date();
+        var dayNumber = today.getDay();
+        return (dayNumber === 0) ? 7 : dayNumber;
+    }
+
+    function weekNow() {
+        var today = new Date();
+        var dayOfWeek = today.getDay();
+        var daysToMonday = (dayOfWeek + 6) % 7;
+        var mondayDate = new Date(today);
+        mondayDate.setDate(today.getDate() - daysToMonday);
+        var weekDates = [];
+        for (var i = 0; i < 7; i++) {
+            var currentDate = new Date(mondayDate);
+            currentDate.setDate(mondayDate.getDate() + i);
+            var formattedDate = currentDate.getDate() + '/' + (currentDate.getMonth() + 1);
+            weekDates.push(formattedDate);
+        }
+        return weekDates
+    }
+
     var swiper = new Swiper(".mySwiper", {
+        initialSlide: dayNow(),
         slidesPerView: 1,
         spaceBetween: 10,
         navigation: {
@@ -95,6 +122,12 @@
 <script>
     $(document).ready(function () { 
         $('title').text('Xnime - Jadwal Rilis');
+        var day_now = dayNow()
+        $(`#day-${day_now} .day`).addClass('active');
+        var week_now = weekNow()
+        $(`div[id*=day-]`).each(function (i, el) {
+            $(el).find('.week').text(week_now[i])
+        })
     })
 </script>
 @endsection

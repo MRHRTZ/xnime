@@ -258,6 +258,14 @@
  * =================================================================================
  */
 
+.empty-message {
+    margin-top: 10px;
+}
+
+.empty-message p {
+    color: #8e8e8e;
+}
+
 a.disabled {
     pointer-events: none;
     cursor: default;
@@ -390,7 +398,7 @@ a.disabled {
 *,
 *::before,
 *::after {
-    box-sizing: border-box !important;
+    box-sizing: border-box;
     text-rendering: optimizeLegibility !important;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, .004) !important;
 }
@@ -1601,6 +1609,8 @@ body {
 .comment-content p {
     margin: 10px 0;
     white-space: pre-wrap;
+    word-wrap: break-word;
+    width: 58vw;
 }
 
 .comment-actions {
@@ -1728,6 +1738,16 @@ body {
 
 .comment-reply:hover {
     text-decoration: underline;
+}
+
+.comment .delete-button {
+    padding: 0;
+    margin-left: auto;
+    display: none;
+}
+
+.comment:hover .delete-button {
+    display: block;
 }
 
 /**
@@ -2009,6 +2029,24 @@ body {
  * =================================================================================
  */
 
+
+@keyframes float {
+    0% {
+        text-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+        transform: translatey(0px);
+    }
+
+    50% {
+        text-shadow: 0 25px 15px 0px rgba(0, 0, 0, 0.2);
+        transform: translatey(-10px);
+    }
+
+    100% {
+        text-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+        transform: translatey(0px);
+    }
+}
+
 .bookmark.cards__container {
     column-gap: 15px;
     display: grid;
@@ -2033,8 +2071,9 @@ body {
 
 .bookmark-card__thumbnail-img {
     border-radius: 4px 7px 0 0;
-    height: 100%;
+    height: 270px;
     width: 100%;
+    object-fit: cover;
 }
 
 .bookmark-card__thumbnail-box:hover .play__circle {
@@ -2081,6 +2120,50 @@ body {
     font-family: var(--roboto-condensed);
     margin: 5px 0 0 0;
     word-break: break-word;
+}
+
+.bookmark-area {
+    float: right;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.bookmark-area {
+    animation: float 6s ease-in-out infinite;
+}
+
+.bookmark-area .bookmark-button,
+.bookmark-area .bookmark-button-active {
+    padding: 12px;
+}
+
+.bookmark-button .fa-plus {
+    position: absolute;
+    right: 17.9px;
+    top: 15.5px;
+}
+
+.bookmark-button-active .fa-circle-check {
+    color: var(--background-color);
+    position: absolute;
+    right: 17.1px;
+    top: 16.5px;
+}
+
+.bookmark-button:hover {
+    color: #ff5d5d;
+    animation: none;
+}
+
+.delete-button {
+    float: right;
+    padding: 6px;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    color: #ff5d5d;
 }
 
 /**
@@ -2156,7 +2239,7 @@ body {
 }
 
 .genres-box__link:hover {
-    background: #fff;
+    background: var(--secondary-background-color);
     color: var(--primary-color) !important;
 }
 
@@ -2529,11 +2612,24 @@ body {
     margin: 20px 20px 0px 20px;
     font-size: 25px;
     font-weight: 500;
-    /* color: var(--primary-color); */
     font-family: var(--rajdhani-font);
     text-decoration: none;
     word-break: break-word;
 }
+
+.schedule-panel .week {
+    color: var(--secondary-color);
+    font-family: var(--rajdhani-font);
+    text-align: center;
+    font-weight: 500;
+}
+
+.schedule-panel .day.active,
+.schedule-panel .day.active + .week {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
 
 .schedule-panel .anime-list {
     margin: 10px 0px 10px 0px;

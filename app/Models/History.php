@@ -15,7 +15,7 @@ class History extends Model
 
     protected $fillable = ['user_id', 'anime_id', 'episode_id', 'server_id', 'play_time', 'max_time', 'episode'];
 
-    public static function getBookmark($user)
+    public static function getHistory($user)
     {
         return DB::table('history')
             ->select('anime.title', 'anime.image', 'history.*', DB::raw('(history.play_time / history.max_time * 100) as progress'))
@@ -29,7 +29,7 @@ class History extends Model
             )
             ->join('anime', 'anime.anime_id', '=', 'history.anime_id')
             ->where('user_id', '=', $user->user_id)
-            ->orderBy('created_at','desc')
+            ->orderBy('updated_at','desc')
             ->get();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bookmark;
 use App\Models\History;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,7 @@ class AnimeController extends Controller
 
         $history_list = null;
         if (Auth::check()) {
-            $history_list = History::getBookmark(Auth::user());
+            $history_list = History::getHistory(Auth::user());
         }
 
         $animeList = getListAnime(15, $pageNow-1, $filterGenre, $filterJenisAnime, $filterSort);
@@ -38,19 +39,25 @@ class AnimeController extends Controller
         $id = $request->query('id');
         $animeDetail = getAnimeDetail($id);
         $animeDetail->episodes = array_reverse($animeDetail->episodes);
-
+        
         $history = [];
+        $bookmark = null;
 
         if (Auth::check())  {
             $user = Auth::user();
             $history = History::where('user_id', $user->user_id)
             ->where('anime_id', $id)
             ->get();
+
+            $bookmark = Bookmark::where('user_id', $user->user_id)
+            ->where('anime_id', $id)
+            ->first();
         }
 
         $data = array(
             'anime' => $animeDetail,
-            'history' => $history
+            'history' => $history,
+            'bookmark' => $bookmark
         );
 
         return view('content.anime-detail')->with($data);
@@ -74,7 +81,7 @@ class AnimeController extends Controller
 
         $history_list = null;
         if (Auth::check()) {
-            $history_list = History::getBookmark(Auth::user());
+            $history_list = History::getHistory(Auth::user());
         }
 
         $data = array(

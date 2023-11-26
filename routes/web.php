@@ -25,9 +25,6 @@ Route::get('/anime-detail', [AnimeController::class, 'detail'])->name('detail-an
 Route::get('/search', [AnimeController::class, 'search'])->name('search');
 Route::get('/schedule', [AnimeController::class, 'schedule'])->name('schedule');
 Route::get('/episode/{anime_id}/{episode_id}', [EpisodeController::class, 'index'])->name('episodes');
-Route::get('/series', [AnimeController::class, 'series'])->name('series');
-Route::get('/movie', [AnimeController::class, 'movie'])->name('movie');
-Route::get('/live-action', [AnimeController::class, 'live_action'])->name('live-action');
 Route::get('/bookmark', [BookmarkController::class, 'index'])->name('bookmark');
 
 // Function
@@ -36,7 +33,11 @@ Route::post('/report-broken', [EpisodeController::class, 'report_broken'])->name
 Route::post('/update-history', [EpisodeController::class, 'update_history'])->name('update-history');
 Route::post('/fetch-comment', [EpisodeController::class, 'fetch_comment'])->name('fetch-comment');
 Route::post('/post-comment', [EpisodeController::class, 'post_comment'])->name('post-comment');
+Route::post('/delete-comment', [EpisodeController::class, 'delete_comment'])->name('delete-comment');
 Route::post('/post-like', [EpisodeController::class, 'post_like'])->name('post-like');
+Route::post('/post-bookmark', [BookmarkController::class, 'post_bookmark'])->name('post-bookmark');
+Route::post('/delete-bookmark', [BookmarkController::class, 'delete_bookmark'])->name('delete-bookmark');
+Route::post('/delete-history', [BookmarkController::class, 'delete_history'])->name('delete-history');
 
 // Auth Pages
 Route::get('/login', [AuthController::class, 'view_login'])->name('login');

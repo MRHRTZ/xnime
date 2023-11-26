@@ -92,7 +92,7 @@
                     </div>
                     <div class="episode-card__info">
                         <p class="episode-card__description"><b>{{ $ongoing->tahun }}</b></p>
-                        <a href="{{ route('detail-anime', ['id'=>$ongoing->id]) }}" class="episode-card__title">{!!
+                        <a target="_blank" href="{{ route('detail-anime', ['id'=>$ongoing->id]) }}" class="episode-card__title">{!!
                             htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($ongoing->title)))
                             !!}</a>
                         <p class="episode-card__description">Episode {{ $ongoing->episode }} / {{ $ongoing->totalEpisode

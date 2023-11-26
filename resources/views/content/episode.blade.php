@@ -62,6 +62,21 @@
             </div>
             <div class="anime-info">
                 <div class="anime-info__summary">
+                    @if ($bookmark)
+                    <div class="bookmark-area" data-bookmark="1" onclick="save_bookmark(this);">
+                        <div class="bookmark-button-active">
+                            <i class="fa-solid fa-bookmark fa-2xl"></i>
+                            <i class="fa-regular fa-circle-check fa-sm"></i>
+                        </div>
+                    </div>
+                    @else
+                    <div class="bookmark-area" data-bookmark="0" onclick="save_bookmark(this);">
+                        <div class="bookmark-button">
+                            <i class="fa-regular fa-bookmark fa-2xl"></i>
+                            <i class="fa-solid fa-plus fa-sm"></i>
+                        </div>
+                    </div>
+                    @endif
                     <a href="{{ route('detail-anime', ['id'=>$anime->id]) }}" class="anime-info__title">{{
                         html_entity_decode($anime->title)
                         }}</a>
@@ -137,7 +152,8 @@
                     </div>
                     <div class="comment-content">
                         <div class="input--area">
-                            <textarea id="input--comment" data-parent_id="0" cols="1" rows="2" placeholder="Tulis komentar ..."></textarea>
+                            <textarea id="input--comment" data-parent_id="0" cols="1" rows="2"
+                                placeholder="Tulis komentar ..."></textarea>
                         </div>
                         <div class="send--button">
                             <a id="post--button" class="disabled">
@@ -457,21 +473,9 @@
                     var popular = `
                     <div class="popular-item">
                         <div class="popular-item__cover card">
-                        @if (isset($history))
-                        @if ($history)
-                            <a target="_blank" href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}">
-                                <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="${anime.imageCover}" class="popular-item__img">
-                            </a>
-                        @else
                             <a target="_blank" href="{{ route('episodes', ['anime_id'=>'id_anime', 'episode_id'=>'0']) }}">
                                 <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="${anime.imageCover}" class="popular-item__img">
                             </a>
-                        @endif
-                        @else
-                            <a target="_blank" href="{{ route('episodes', ['anime_id'=>'id_anime', 'episode_id'=>'0']) }}">
-                                <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="${anime.imageCover}" class="popular-item__img">
-                            </a>
-                        @endif
                         </div>
                         <div class="popular-item__info">
                             <a target="_blank" href="{{ route('detail-anime', ['id'=>'id_anime']) }}" class="popular-item__title">${anime.title}</a>
@@ -581,6 +585,9 @@
                                 <div class="user-info">
                                     <h4>${ comment.name }</h4>
                                     <span class="comment-date">${ timeSince(Date.now() - (Date.now()-new Date(comment.created_at))) }</span>
+                                    ${ comment.user_id == {{ Auth::check() ? Auth::user()->user_id : '0'}} ? `<a class="delete-button" onclick="delete_comment(${comment.comment_id})">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </a>` : ''}
                                 </div>
                                 <p class="comment-text">${ comment_content }</p>
                                 <div class="comment-actions">
@@ -629,6 +636,12 @@
         window.commentPage = 0
         $('#comment--content').html('')
         fetch_comment()
+    }
+
+    function delete_comment(id) {
+        post_delete_comment(id).then(() => {
+            $('#comment-'+id).remove();
+        })
     }
 
     function ascending_comment(mode) {
@@ -707,6 +720,73 @@
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 Toast.fire('Terdapat kesalahan', 'Gagal mengambil data komentar.', 'warning')
+            }
+        });
+    }
+
+    async function post_delete_comment(id) {
+        const formData = {
+            _token: "{{ csrf_token() }}",
+            id
+        }
+        $.ajax({
+            url : "{{ route('delete-comment') }}",
+            type: "POST",
+            data : formData,
+            success: function(data, textStatus, jqXHR){
+                Toast.fire('Berhasil', 'Komentar Berhasil dihapus.', 'success')
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                Toast.fire('Terdapat kesalahan', 'Gagal menghapus komentar.', 'warning')
+            }
+        });
+    }
+</script>
+<script>
+    function save_bookmark(el) {
+        @guest
+            return need_login("{{ route('login') }}");
+        @endguest
+        const is_bookmark = $(el).data('bookmark');
+        post_bookmark(is_bookmark).then(() => {
+            if (is_bookmark) {
+                $('.bookmark-area').html(`
+                <div class="bookmark-button">
+                    <i class="fa-regular fa-bookmark fa-2xl"></i>
+                    <i class="fa-solid fa-plus fa-sm"></i>
+                </div>`)
+                $(el).data('bookmark', 0);
+            } else {
+                $('.bookmark-area').html(`
+                <div class="bookmark-button-active">
+                    <i class="fa-solid fa-bookmark fa-2xl"></i>
+                    <i class="fa-regular fa-circle-check fa-sm"></i>
+                </div>`)
+                $(el).data('bookmark', 1);
+            }
+        })
+
+    }
+
+    async function post_bookmark(is_bookmark) {
+        const formData = {
+            _token: "{{ csrf_token() }}",
+            anime_id: {{ $anime->id }},
+            is_bookmark: is_bookmark
+        }
+        $.ajax({
+            url : "{{ route('post-bookmark') }}",
+            type: "POST",
+            data : formData,
+            success: function(data, textStatus, jqXHR){
+                if (!is_bookmark) {
+                    Toast.fire('Berhasil', 'Bookmark Berhasil ditambahkan.', 'success')
+                } else {
+                    Toast.fire('Berhasil', 'Bookmark Berhasil dihapus.', 'success')
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                Toast.fire('Terdapat kesalahan', 'Gagal menyimpan bookmark.', 'warning')
             }
         });
     }
