@@ -21,7 +21,7 @@ jobs:
 
       - name: 🏙 Create env file
         run: |
-          echo "${{ xnime.ENV_PRODUCTION }}" > .env
+          echo "${{ secrets.ENV_PRODUCTION }}" > .env
           
       - name: 🔨 Build Composer
         run: |
@@ -43,11 +43,11 @@ jobs:
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ xnime.FTP_SERVER }}
-          username: ${{ xnime.FTP_USER }}
-          password: ${{ xnime.FTP_PASS }}
-          protocol: ${{ xnime.FTP_PROTOCOL }}
-          port: ${{ xnime.FTP_PORT }}
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          protocol: ${{ secrets.FTP_PROTOCOL }}
+          port: ${{ secrets.FTP_PORT }}
           exclude: |
             **/.git*
             **/.git*/**
