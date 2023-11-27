@@ -569,9 +569,9 @@
         const comments = data.result
         const dataPage = Number(data.page)
         window.commentCount = data.length
+        $('#comment--title').text(window.commentCount + ' Komentar')
         if (comments.length > 0 && dataPage == window.commentPage) {
             window.commentPage += 1
-            $('#comment--title').text(window.commentCount + ' Komentar')
             for (let i = 0; i < comments.length; i++) {
                 const comment = comments[i];
                 const comment_content = comment.content.replace(/@([^ ]+)/g, '<a href="#comment-'+comment.parent_id+'" class="comment-reply">@$1</a>').replace(/_/g, ' ')
@@ -637,7 +637,9 @@
 
     function delete_comment(id) {
         post_delete_comment(id).then(() => {
-            $('#comment-'+id).remove();
+            window.commentPage = 0
+            $('#comment--content').html('')
+            fetch_comment()
         })
     }
 
