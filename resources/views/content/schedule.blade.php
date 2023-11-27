@@ -96,7 +96,7 @@
     }
 
     var swiper = new Swiper(".mySwiper", {
-        initialSlide: dayNow(),
+        initialSlide: dayNow()-1,
         slidesPerView: 1,
         spaceBetween: 10,
         navigation: {
