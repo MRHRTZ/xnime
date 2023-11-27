@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('user_id')->unsigned();
             $table->tinyInteger('is_like');
             $table->timestamps();
-            $table->foreign('comment_id')->references('comment_id')->on('comment');
+            $table->foreign('comment_id')->references('comment_id')->on('comment')->onDelete('cascade');
             $table->foreign('user_id')->references('user_id')->on('users');
         });
     }
