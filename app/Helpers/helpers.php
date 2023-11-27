@@ -165,6 +165,7 @@ if (!function_exists('getServerList')) {
             $baseurl = \config('vunime.baseurl');
             $apikey = \config('vunime.apikey');
             $userid = \config('vunime.userid');
+            $userid = $userid ? $userid : 300000;
             $client = new Client();
             $res = $client->request("POST", $baseurl . "/vunime/anime/get-server-list", [
                 "headers" => [
