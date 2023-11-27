@@ -2609,7 +2609,7 @@ body {
 
 .schedule-panel .day {
     text-align: center;
-    margin: 20px 20px 0px 20px;
+    margin: 35px 20px 0px 20px;
     font-size: 25px;
     font-weight: 500;
     font-family: var(--rajdhani-font);
@@ -2632,7 +2632,7 @@ body {
 
 
 .schedule-panel .anime-list {
-    margin: 10px 0px 10px 0px;
+    margin: 0px 0px 10px 0px;
     text-align: center;
 }
 
