@@ -633,9 +633,6 @@
         @endguest
         const isLiked = $(`#comment-${ comment_id } .like_comment`).hasClass('active')
         post_like(comment_id, !isLiked)
-        window.commentPage = 0
-        $('#comment--content').html('')
-        fetch_comment()
     }
 
     function delete_comment(id) {
@@ -716,7 +713,9 @@
             type: "POST",
             data : formData,
             success: function(data, textStatus, jqXHR){
-                // console.log(data)
+                window.commentPage = 0
+                $('#comment--content').html('')
+                fetch_comment()
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 Toast.fire('Terdapat kesalahan', 'Gagal mengambil data komentar.', 'warning')
