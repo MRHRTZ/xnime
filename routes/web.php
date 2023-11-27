@@ -9,12 +9,13 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| IDENTITAS DIRI
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+|   NIM    : 10121161
+|   NAMA   : Hanif Ahmad Syauqi
+|   KELAS  : IF-4 2021
+|   MATKUL : Penerapan Teknologi Internet
 |
 */
 
