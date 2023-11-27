@@ -22,7 +22,7 @@
 
         <div class="contact-box">
             <div class="profile-wrapper" onclick="filePick()">
-                <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ Auth::user()->picture ? url(config('files.profile_folder').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}" class="profile-pic-big" />
+                <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ Auth::user()->picture ? url('profiles/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}" class="profile-pic-big" />
                 <i class="fa-solid fa-camera"></i>
                 <form id="change-pic" action="{{ route('upload_profile') }}" method="post"
                     enctype="multipart/form-data">

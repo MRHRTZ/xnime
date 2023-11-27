@@ -148,7 +148,7 @@
                 <div class="user comment">
                     <div class="user-avatar">
                         <img
-                            src="{{ Auth::user()->picture ? url(config('files.profile_folder').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}">
+                            src="{{ Auth::user()->picture ? url('profiles/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}">
                     </div>
                     <div class="comment-content">
                         <div class="input--area">
@@ -579,7 +579,7 @@
                     <div class="comments-box__content">
                         <div class="comment">
                             <div class="user-avatar">
-                                <img src="${ comment.picture ? ('{{ url(env("PROFILE_FOLDER"))."/" }}' + comment.picture) : '{{ url("assets/img/icons/profile.jpg") }}' }">
+                                <img src="${ comment.picture ? ('{{ url("profiles") }}/' + comment.picture) : '{{ url("assets/img/icons/profile.jpg") }}' }">
                             </div>
                             <div class="comment-content">
                                 <div class="user-info">
