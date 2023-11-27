@@ -13,4 +13,11 @@ class Report extends Model
     protected $primaryKey = 'report_id';
 
     protected $fillable = ['user_id','anime_id','episode_id','server_id'];
+
+    protected $casts = [
+        'user_id' => 'integer',
+        'anime_id' => 'integer',
+        'episode_id' => 'integer',
+        'server_id' => 'integer',
+    ];
 }

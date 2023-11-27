@@ -13,4 +13,9 @@ class Anime extends Model
     protected $primaryKey = 'anime_id';
 
     protected $fillable = ['anime_id','user_id','title','image','year','rating'];
+
+    protected $casts = [
+        'anime_id' => 'integer',
+        'user_id' => 'integer'
+    ];
 }

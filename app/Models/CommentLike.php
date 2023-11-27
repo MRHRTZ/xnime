@@ -13,4 +13,9 @@ class CommentLike extends Model
     protected $primaryKey = 'like_id';
 
     protected $fillable = ['comment_id','user_id','is_like'];
+
+    protected $casts = [
+        'user_id' => 'integer',
+        'is_like' => 'integer'
+    ];
 }

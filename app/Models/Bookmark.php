@@ -27,4 +27,9 @@ class Bookmark extends Model
             ->orderBy('bookmark.created_at', 'desc')
             ->get();
     }
+    
+    protected $casts = [
+        'user_id' => 'integer',
+        'anime_id' => 'integer'
+    ];
 }

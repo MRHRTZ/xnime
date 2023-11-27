@@ -32,4 +32,14 @@ class History extends Model
             ->orderBy('updated_at','desc')
             ->get();
     }
+
+    
+    protected $casts = [
+        'user_id' => 'integer',
+        'anime_id' => 'integer',
+        'episode_id' => 'integer',
+        'server_id' => 'integer',
+        'play_time' => 'double',
+        'max_time' => 'double'
+    ];
 }
