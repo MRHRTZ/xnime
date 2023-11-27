@@ -18,7 +18,7 @@ class History extends Model
     public static function getHistory($user)
     {
         return DB::table('history')
-            ->select('anime.title', 'anime.image', 'history.*', DB::raw('(history.play_time / history.max_time * 100) as progress'))
+            ->select('anime.title', 'anime.image', DB::raw('COALESCE(anime.total_episode, "-") as total_episode'), 'history.*', DB::raw('(history.play_time / history.max_time * 100) as progress'))
             ->join(
                 DB::raw('(SELECT anime_id, MAX(episode) AS max_episode
                             FROM history GROUP BY anime_id) history_sub'),

@@ -31,7 +31,7 @@
                     <a class="delete-button" onclick="delete_history({{ $history->history_id }})">
                         <i class="fa-solid fa-trash-can"></i>
                     </a>
-                    <p class="history-card__description mb--5"><b>Episode {{ $history->episode }}</b></p>
+                    <p class="history-card__description mb--5"><b>Episode {{ $history->episode }} / {{ $history->total_episode }}</b></p>
                     <a target="_blank" href="{{ route('detail-anime', ['id'=>$history->anime_id]) }}"
                         class="history-card__title">{!!
                         htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($history->title))) !!}</a>

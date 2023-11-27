@@ -43,6 +43,7 @@ class BookmarkController extends Controller
                         'image' => $animeDetail->image_cover,
                         'year' => $animeDetail->tahun,
                         'rating' => $animeDetail->rating,
+                        'total_episode' => $animeDetail->total_episode,
                     ]);
                 }
                 Bookmark::create([

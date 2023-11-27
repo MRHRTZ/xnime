@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("image");
             $table->string("year", 4);
             $table->string("rating", 6);
+            $table->string("total_episode", 5)->nullable(true);
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
         });
