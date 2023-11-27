@@ -35,7 +35,7 @@ class AuthController extends Controller
         $user = Auth::user();
 
         $file = $request->file('file');
-        $target_upload = env('PROFILE_FOLDER');
+        $target_upload = config('files.profile_folder');
         $filename = Str::uuid() . "." . $file->getClientOriginalExtension();
         $file->move($target_upload, $filename);
 

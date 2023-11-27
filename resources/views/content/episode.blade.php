@@ -148,7 +148,7 @@
                 <div class="user comment">
                     <div class="user-avatar">
                         <img
-                            src="{{ Auth::user()->picture ? url(env('PROFILE_FOLDER').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}">
+                            src="{{ Auth::user()->picture ? url(config('files.profile_folder').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}">
                     </div>
                     <div class="comment-content">
                         <div class="input--area">

@@ -44,7 +44,7 @@
                     <span>Tamu</span>
                     @endguest
                     @auth
-                    <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ Auth::user()->picture ? url(env('PROFILE_FOLDER').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}"
+                    <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ Auth::user()->picture ? url(config('files.profile_folder').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}"
                         class="profile-pic" />
                     <span>{{ Auth::user()->name }}</span>
                     @endauth
@@ -142,7 +142,7 @@
                     </ul>
                     @endguest
                     @auth
-                    <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ Auth::user()->picture ? url(env('PROFILE_FOLDER').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}"
+                    <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ Auth::user()->picture ? url(config('files.profile_folder').'/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}"
                         class="profile-pic" />
                     <ul>
                         <li class="sub-item" onclick="window.location.href='{{ route('profile') }}'">
