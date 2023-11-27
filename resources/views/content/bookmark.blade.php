@@ -48,7 +48,7 @@
     <div class="wrapper mt--none">
         <section class="section cards">
             <h1 class="section__title">Bookmark</h1>
-            @if ($history_data->count() > 0)
+            @if ($bookmark_data->count() > 0)
             <div class="bookmark cards__container mt--10">
                 @foreach ($bookmark_data as $bookmark)
                 <div id="bookmark-{{ $bookmark->bookmark_id }}" class="bookmark-card card">
