@@ -66,10 +66,17 @@ class AnimeController extends Controller
         $keyword = $request->query('q');
         $page = $request->query('page') ?? 1;
         $animeList = searchAnime(15, $page-1, $keyword);
+
+        $history_list = null;
+        if (Auth::check()) {
+            $history_list = History::getHistory(Auth::user());
+        }
+
         $data = array(
             'animeList' => $animeList,
             'keyword' => $keyword,
-            'page' => $page
+            'page' => $page,
+            'history_list' => $history_list
         );
         return view('content.search')->with($data);
     }

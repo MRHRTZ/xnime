@@ -22,7 +22,7 @@
             <div class="anime-list__item card">
                 @auth
                 @php
-                $history = findObjectByCustomId($history_list, $episode->id, 'episode_id');
+                $history = findObjectByCustomId($history_list, $anime->id, 'episode_id');
                 @endphp
                 @endauth
 
