@@ -109,6 +109,5 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->flash('success', 'Berhasil keluar akun.');
         return redirect()->route('login');
-        // return redirect()->back();
     }
 }

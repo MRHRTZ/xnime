@@ -24,7 +24,7 @@ class BookmarkController extends Controller
             );
             return view('content.bookmark')->with($data);
         } else {
-            return redirect()->back();
+            return redirect()->route('beranda');
         }
     }
 

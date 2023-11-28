@@ -150,7 +150,7 @@ class EpisodeController extends Controller
             'server_id' => $server_id
         ]);
 
-        return redirect()->back();
+        return redirect()->route('beranda');
     }
 
     public function update_history(Request $request)
