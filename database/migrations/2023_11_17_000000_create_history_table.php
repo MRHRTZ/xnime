@@ -20,6 +20,7 @@ return new class extends Migration
             $table->float("play_time", 10, 6);
             $table->float("max_time", 10, 6);
             $table->string("episode", 6);
+            $table->tinyInteger('is_ended')->default(0);
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
             $table->foreign('user_id')->references('user_id')->on('users');

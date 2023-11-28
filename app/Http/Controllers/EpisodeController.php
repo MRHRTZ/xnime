@@ -162,6 +162,7 @@ class EpisodeController extends Controller
         $play_time = $request->input('play_time');
         $max_time = $request->input('max_time');
         $episode = $request->input('episode');
+        $is_ended = $play_time == $max_time ? 1 : 0;
 
         $history = History::where('user_id', $user->user_id)
             ->where('anime_id', $anime_id)
@@ -176,12 +177,14 @@ class EpisodeController extends Controller
                 'server_id' => $server_id,
                 'play_time' => $play_time,
                 'max_time' => $max_time,
-                'episode' => $episode
+                'episode' => $episode,
+                'is_ended' => $is_ended
             ]);
         } else {
             $history->server_id = $server_id;
             $history->play_time = $play_time;
             $history->max_time = $max_time;
+            $history->is_ended = $is_ended;
             $history->save();
         }
 

@@ -367,6 +367,7 @@
             });
 
             player.on('ended', function (e) {
+                update_history()
                 next_video()
             })
 
@@ -403,7 +404,7 @@
         @auth
         if (!$('#embed-player').length) {
             @if ($history_data)  
-                window.player.currentTime = {{ $history_data->play_time }}
+                window.player.currentTime = {{ $history_data->is_ended ? 0 : $history_data->play_time }}
             @endif
 
             window.player.addEventListener("play", (event) => {
@@ -765,7 +766,6 @@
                 $(el).data('bookmark', 1);
             }
         })
-
     }
 
     async function post_bookmark(is_bookmark) {
