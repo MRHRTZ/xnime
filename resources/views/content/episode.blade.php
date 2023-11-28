@@ -560,9 +560,6 @@
         post_comment()
         $('textarea#input--comment').val('')
         $('#post--button').addClass('disabled')
-        window.commentPage = 0
-        $('#comment--content').html('')
-        fetch_comment()
     }
     
     const render_comment = (data) => {
@@ -636,11 +633,7 @@
     }
 
     function delete_comment(id) {
-        post_delete_comment(id).then(() => {
-            window.commentPage = 0
-            $('#comment--content').html('')
-            fetch_comment()
-        })
+        post_delete_comment(id)
     }
 
     function ascending_comment(mode) {
@@ -697,6 +690,9 @@
             data : formData,
             success: function(data, textStatus, jqXHR){
                 $('#input--comment').data('parent_id', 0)
+                window.commentPage = 0
+                $('#comment--content').html('')
+                fetch_comment()
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 Toast.fire('Terdapat kesalahan', 'Gagal mengambil data komentar.', 'warning')
@@ -736,6 +732,9 @@
             data : formData,
             success: function(data, textStatus, jqXHR){
                 Toast.fire('Berhasil', 'Komentar Berhasil dihapus.', 'success')
+                window.commentPage = 0
+                $('#comment--content').html('')
+                fetch_comment()
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 Toast.fire('Terdapat kesalahan', 'Gagal menghapus komentar.', 'warning')
