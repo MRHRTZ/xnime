@@ -332,7 +332,7 @@
         let indexNow = episodes.findIndex(v => v.play)
         if (episodes[indexNow+1]) {
             const nextEps = episodes[indexNow+1]
-            let urlNext = `{{ route('episodes', ['anime_id'=>':anime_id', 'episode_id'=>':episode_id','server_id'=>'0']) }}`
+            let urlNext = `{{ route('episodes', ['anime_id'=>':anime_id', 'episode_id'=>':episode_id']) }}`
             urlNext = urlNext.replace(':anime_id', anime_id)
             .replace(':episode_id', nextEps.id)
             window.location.href = urlNext
