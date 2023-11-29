@@ -1528,7 +1528,7 @@ body {
 }
 
 .anime-info__title:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .anime-info__summary {

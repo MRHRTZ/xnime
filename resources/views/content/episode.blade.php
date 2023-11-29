@@ -77,7 +77,7 @@
                         </div>
                     </div>
                     @endif
-                    <a href="{{ route('detail-anime', ['id'=>$anime->id]) }}" class="anime-info__title">{{
+                    <a class="anime-info__title">{{
                         html_entity_decode($anime->title)
                         }}</a>
                     <ul class="anime-genres__list mt--10">
