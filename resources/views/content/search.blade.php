@@ -1,7 +1,7 @@
 @extends('layout.master')
 
 @section('content')
-<div class="wrapper mt--none">
+<div class="wrapper mt--40">
     <section class="section anime-list">
         <h1 class="section__title">Hasil Pencarian:</h1>
         <div class="search-box">

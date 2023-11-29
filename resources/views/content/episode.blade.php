@@ -347,7 +347,6 @@
         if ($('#normal-player').length) {
             const player = new Plyr('#normal-player', {
                 controls: [
-                    'play-large',
                     'play',
                     'progress',
                     'current-time',
@@ -355,10 +354,8 @@
                     'volume',
                     'settings',
                     'pip',
-                    'airplay',
                     'download',
                     'fullscreen',
-                    'capture'
                 ]
             });
 
