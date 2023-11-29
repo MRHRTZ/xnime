@@ -51,7 +51,7 @@
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--danger-border);
+    background: #ff2727;
 }
 
 /**
@@ -99,6 +99,8 @@
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    text-decoration: none;
+    color: #000;
 }
 
 .nav-profile-mobile span {
@@ -112,7 +114,7 @@
 
 .nav-profile {
     z-index: 2;
-    margin-left: 40px;
+    margin: 0px 6px 0px 30px;
 }
 
 .nav-profile ul {
@@ -600,8 +602,12 @@ body {
 .header {
     background: var(--background-color);
     border-bottom: 3px solid var(--primary-color);
-    box-shadow: 0px 2px 2.97px 0.03px rgb(14, 14, 14);
+    box-shadow: 0px 2px 6px 0.3px rgb(54 54 54);
     height: 100px;
+    /* Sticky */
+    position: fixed;
+    z-index: 11;
+    width: 100%;
 }
 
 .header__container {
@@ -635,11 +641,12 @@ body {
 }
 
 .header__logo {
-    background: url(../img/logo/logo-mini.png) center no-repeat;
+    background: url(../img/logo/logo-mini.png) no-repeat;
     height: 60px;
     margin: 0 0 0 16px;
     text-indent: -9999px;
     width: 182px;
+    background-position: left;
 }
 
 .header__nav {
@@ -707,6 +714,10 @@ body {
     font-size: 26px;
 }
 
+.sticky-gap {
+    margin-top: 100px;
+}
+
 /**
  * =================================================================================
  * BREADCRUMBS
@@ -754,6 +765,13 @@ body {
 
 .main {
     margin: 38px 0 90px 0;
+    /* Sticky */
+    position: fixed;
+    top: 53px;
+    left: 0;
+    right: 0;
+    bottom: -98px;
+    overflow-y: scroll;
 }
 
 /**
@@ -987,6 +1005,7 @@ body {
     border-radius: var(--default-radius);
     height: 100%;
     width: 100%;
+    object-fit: cover;
 }
 
 .anime-list__info {
@@ -1752,24 +1771,24 @@ body {
 
 /**
  * =================================================================================
- * CONTACT (BASE)
+ * AUTH (BASE)
  * =================================================================================
  */
 
-.contact {
-    margin: 0 auto;
+.auth {
+    margin: 35px auto;
     max-width: 510px;
     padding: 0 8px 0 8px;
 }
 
 /**
  * =================================================================================
- * CONTACT (CONTACT BOX)
+ * AUTH (AUTH BOX)
  * =================================================================================
  */
 
 
-.contact-box {
+.auth-box {
     background: var(--background-color);
     border-radius: var(--default-radius);
     padding: 28px 10px 28px 10px;
@@ -2770,7 +2789,6 @@ body {
 }
 
 .footer__copy {
-    border-top: 1px solid var(--secondary-color);
     padding: 12px 0 12px 0;
 }
 
@@ -2807,8 +2825,10 @@ body {
     }
 
     .header__logo {
-        background: url(../img/logo/logo-medium.png);
-        width: 228px;
+        background: url(../img/logo/logo-mini.png) no-repeat;
+        width: 100%;
+        margin-right: auto;
+        background-position: left;
     }
 
     .footer__logo {
@@ -2952,11 +2972,11 @@ body {
         padding: 28px 20px 28px 20px;
     }
 
-    .contact {
+    .auth {
         padding: 0 10px 0 10px;
     }
 
-    .contact-box {
+    .auth-box {
         padding: 28px 20px 28px 20px;
     }
 

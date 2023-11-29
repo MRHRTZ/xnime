@@ -9,244 +9,240 @@
 @endsection
 
 @section('content')
-<main class="main">
-    <div class="episode wrapper mt--none">
-        <section class="section episode">
-            <div class="server-info">
-                <div>
-                    <ul class="anime-server__list">
-                        @foreach ($server_list as $server)
-                        <li class="anime-server__item">
-                            <a href="{{ $server->id == $server_id ? '#' : route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>$episode_id,'server_id'=>$server->id]) }}"
-                                id="{{ $server->server }}" data-url="{{ $server->url }}"
-                                data-quality="{{ $server->size }}"
-                                class="anime-server__link {{ $server->id == $server_id ? 'active disabled' : '' }}">{{
-                                $server->server }}</a>
-                        </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-
-            <div class="episode-box card">
-                @if ($video_type == 'source')
-                <video id="normal-player" autoplay="true" playsinline controls data-poster="{{ $anime->image_video }}">
-                    <source id="normal-source" src="{{ $video_url }}" type="video/mp4" onerror="player_onerror(event);">
-                </video>
-                @elseif ($video_type == 'stream')
-                <video id="stream-player" class="video-js vjs-fluid" controls preload
-                    poster="{{ $anime->image_video }}">
-                    <source id="stream-source" src="{{ $video_url }}" type="application/x-mpegURL">
-                </video>
-                @elseif ($video_type == 'embed')
-                <iframe id="embed-player" height="540px" src="{{ $video_url }}" title="{{ $anime->title }}">
-                </iframe>
-                @elseif ($video_type == 'broken')
-                <div class="player-error">
-                    <form action="{{ route('report-broken') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="anime_id" value="{{ app('request')->route('anime_id') }}">
-                        <input type="hidden" name="episode_id" value="{{ app('request')->route('episode_id') }}">
-                        <input type="hidden" name="server_id" value="{{ app('request')->query('server_id') }}">
-                        <h2>Link Video Rusak :(</h2>
-                        @if ($user_report != 'true')
-                        <button type="{{ Auth::check() ? 'submit' : 'button' }}" class="button mt--10"
-                            onclick="{{ Auth::check() ? '' : 'need_login("'.route(' login').'")' }}">Laporkan</button>
-                        @else
-                        <br>
-                        <p>Telah dilaporkan.</p>
-                        @endif
-                    </form>
-                </div>
-                @endif
-            </div>
-            <div class="anime-info">
-                <div class="anime-info__summary">
-                    @if ($bookmark)
-                    <div class="bookmark-area" data-bookmark="1" onclick="save_bookmark(this);">
-                        <div class="bookmark-button-active">
-                            <i class="fa-solid fa-bookmark fa-2xl"></i>
-                            <i class="fa-regular fa-circle-check fa-sm"></i>
-                        </div>
-                    </div>
-                    @else
-                    <div class="bookmark-area" data-bookmark="0" onclick="save_bookmark(this);">
-                        <div class="bookmark-button">
-                            <i class="fa-regular fa-bookmark fa-2xl"></i>
-                            <i class="fa-solid fa-plus fa-sm"></i>
-                        </div>
-                    </div>
-                    @endif
-                    <a class="anime-info__title">{{
-                        html_entity_decode($anime->title)
-                        }}</a>
-                    <ul class="anime-genres__list mt--10">
-                        @foreach ($anime->categories as $genre)
-                        <li class="anime-genres__item">
-                            <a href="{{ route('anime', ['genre'=>$genre->cat_id]) }}" class="anime-genres__link">{{
-                                $genre->title }}</a>
-                        </li>
-                        @endforeach
-                    </ul>
-                    <p class="anime-info__synopsis mt--10">{!!
-                        htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->content))) !!}
-                    </p>
-                    <table class="datasheet__table mt--10">
-                        <tr class="datasheet__tr">
-                            <td class="datasheet__td">Rating:</td>
-                            <td class="datasheet__td">{{ $anime->rating }}</td>
-                        </tr>
-                        <tr class="datasheet__tr">
-                            <td class="datasheet__td">Tahun:</td>
-                            <td class="datasheet__td">{{ $anime->tahun }}</td>
-                        </tr>
-                        <tr class="datasheet__tr">
-                            <td class="datasheet__td">Tipe:</td>
-                            <td class="datasheet__td">
-                                @if ($anime->jenis_anime == '1')
-                                Series
-                                @elseif ($anime->jenis_anime == '3')
-                                Movie
-                                @elseif ($anime->jenis_anime == '4')
-                                Live Action
-                                @else
-                                Anime
-                                @endif
-                            </td>
-                        </tr>
-                        <tr class="datasheet__tr">
-                            <td class="datasheet__td">Vote:</td>
-                            <td class="datasheet__td">{{ $anime->voting }}</td>
-                        </tr>
-                        <tr class="datasheet__tr">
-                            <td class="datasheet__td">Status:</td>
-                            <td class="datasheet__td">
-                                @if ($anime->status_tayang == '1')
-                                Ongoing
-                                @elseif ($anime->status_tayang == '2')
-                                Completed
-                                @endif
-                            </td>
-                        </tr>
-                        <tr class="datasheet__tr">
-                            <td class="datasheet__td">Total Episode:</td>
-                            <td class="datasheet__td">{{ $anime->total_episode }}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <hr class="divider">
-            <div class="comment-header mt--20">
-                <p id="comment--title" class="section__title ">Komentar</p>
-                <div class="comment--option">
-                    <a onclick="ascending_comment(0)" class="comment-best active">Terbaik</a>
-                    <a onclick="ascending_comment(1)" class="comment-latest">Terbaru</a>
-                </div>
-            </div>
-            @auth
-            <div class="comments-box__content">
-                <div class="user comment">
-                    <div class="user-avatar">
-                        <img
-                            src="{{ Auth::user()->picture ? url('profiles/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}">
-                    </div>
-                    <div class="comment-content">
-                        <div class="input--area">
-                            <textarea id="input--comment" data-parent_id="0" cols="1" rows="2"
-                                placeholder="Tulis komentar ..."></textarea>
-                        </div>
-                        <div class="send--button">
-                            <a id="post--button" class="disabled">
-                                <i class="fa-solid fa-paper-plane"></i>
-                                Kirim
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endauth
-            @guest
-            <div class="comments-box__content" onclick="return need_login('{{ route('login') }}')">
-                <div class="user comment">
-                    <div class="user-avatar">
-                        <img src="{{ url('assets/img/icons/profile.jpg') }}">
-                    </div>
-                    <div class="comment-content">
-                        <div class="input--area">
-                            <textarea id="input--comment" cols="1" rows="2" placeholder="Tulis komentar ..."
-                                readonly></textarea>
-                        </div>
-                        <div class="send--button">
-                            <a id="post--button" class="disabled">
-                                <i class="fa-solid fa-paper-plane"></i>
-                                Kirim
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endguest
-            <div id="comment--content"></div>
-        </section>
-        <aside class="aside mt--6-5">
-            <h1 class="aside__title">Episode</h1>
-            <div class="aside-eps__box card">
-                <ul class="episode-box__list">
-                    @foreach ($anime->episodes as $episode)
-                    @auth
-                    @php
-                    $history = findObjectByCustomId($history_list, $episode->id, 'episode_id');
-                    @endphp
-                    @endauth
-                    @if (isset($history))
-                    @if ($history)
-                    <li id="{{ $episode->id }}"
-                        class="episode-box__item episode-box__link {{ $episode->id == $episode_id ? 'box--active' : '' }}"
-                        onclick="window.location.href = '{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}'">
-                        <a class="{{ $episode->id == $episode_id ? 'active' : '' }}">
-                            {{ $episode->episode }}
-                        </a>
-                        <span class="anime-episodes-box-time {{ $episode->id == $episode_id ? 'active' : '' }}">
-                            {{ secondToTime($history->play_time) }}
-                        </span>
+<div class="episode wrapper mt--none">
+    <section class="section episode">
+        <div class="server-info">
+            <div>
+                <ul class="anime-server__list">
+                    @foreach ($server_list as $server)
+                    <li class="anime-server__item">
+                        <a href="{{ $server->id == $server_id ? '#' : route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>$episode_id,'server_id'=>$server->id]) }}"
+                            id="{{ $server->server }}" data-url="{{ $server->url }}" data-quality="{{ $server->size }}"
+                            class="anime-server__link {{ $server->id == $server_id ? 'active disabled' : '' }}">{{
+                            $server->server }}</a>
                     </li>
-                    @else
-                    <li id="{{ $episode->id }}"
-                        class="episode-box__item episode-box__link {{ $episode->id == $episode_id ? 'box--active' : '' }}"
-                        onclick="window.location.href = '{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>$episode->id]) }}'">
-                        <a class="{{ $episode->id == $episode_id ? 'active' : '' }}">
-                            {{ $episode->episode }}
-                        </a>
-                    </li>
-                    @endif
-                    @else
-                    <li id="{{ $episode->id }}"
-                        class="episode-box__item episode-box__link {{ $episode->id == $episode_id ? 'box--active' : '' }}"
-                        onclick="window.location.href = '{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>$episode->id]) }}'">
-                        <a class="{{ $episode->id == $episode_id ? 'active' : '' }}">
-                            {{ $episode->episode }}
-                        </a>
-                    </li>
-                    @endif
                     @endforeach
                 </ul>
             </div>
-            <br>
-            <hr class="divider">
-            <br>
-            <div class="popular--header">
-                <p class="aside__title">Populer</p>
-                <div class="popular--navigation">
-                    <i id="popular-prev" class="fa-solid fa-chevron-left"></i>
-                    <i id="popular-next" class="fa-solid fa-chevron-right available"></i>
+        </div>
+
+        <div class="episode-box card">
+            @if ($video_type == 'source')
+            <video id="normal-player" autoplay="true" playsinline controls data-poster="{{ $anime->image_video }}">
+                <source id="normal-source" src="{{ $video_url }}" type="video/mp4" onerror="player_onerror(event);">
+            </video>
+            @elseif ($video_type == 'stream')
+            <video id="stream-player" class="video-js vjs-fluid" controls preload poster="{{ $anime->image_video }}">
+                <source id="stream-source" src="{{ $video_url }}" type="application/x-mpegURL">
+            </video>
+            @elseif ($video_type == 'embed')
+            <iframe id="embed-player" height="540px" src="{{ $video_url }}" title="{{ $anime->title }}">
+            </iframe>
+            @elseif ($video_type == 'broken')
+            <div class="player-error">
+                <form action="{{ route('report-broken') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="anime_id" value="{{ app('request')->route('anime_id') }}">
+                    <input type="hidden" name="episode_id" value="{{ app('request')->route('episode_id') }}">
+                    <input type="hidden" name="server_id" value="{{ app('request')->query('server_id') }}">
+                    <h2>Link Video Rusak :(</h2>
+                    @if ($user_report != 'true')
+                    <button type="{{ Auth::check() ? 'submit' : 'button' }}" class="button mt--10"
+                        onclick="{{ Auth::check() ? '' : 'need_login("'.route('login').'")' }}">Laporkan</button>
+                    @else
+                    <br>
+                    <p>Telah dilaporkan.</p>
+                    @endif
+                </form>
+            </div>
+            @endif
+        </div>
+        <div class="anime-info">
+            <div class="anime-info__summary">
+                @if ($bookmark)
+                <div class="bookmark-area" data-bookmark="1" onclick="save_bookmark(this);">
+                    <div class="bookmark-button-active">
+                        <i class="fa-solid fa-bookmark fa-2xl"></i>
+                        <i class="fa-regular fa-circle-check fa-sm"></i>
+                    </div>
+                </div>
+                @else
+                <div class="bookmark-area" data-bookmark="0" onclick="save_bookmark(this);">
+                    <div class="bookmark-button">
+                        <i class="fa-regular fa-bookmark fa-2xl"></i>
+                        <i class="fa-solid fa-plus fa-sm"></i>
+                    </div>
+                </div>
+                @endif
+                <a class="anime-info__title">{{
+                    html_entity_decode($anime->title)
+                    }}</a>
+                <ul class="anime-genres__list mt--10">
+                    @foreach ($anime->categories as $genre)
+                    <li class="anime-genres__item">
+                        <a href="{{ route('anime', ['genre'=>$genre->cat_id]) }}" class="anime-genres__link">{{
+                            $genre->title }}</a>
+                    </li>
+                    @endforeach
+                </ul>
+                <p class="anime-info__synopsis mt--10">{!!
+                    htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->content))) !!}
+                </p>
+                <table class="datasheet__table mt--10">
+                    <tr class="datasheet__tr">
+                        <td class="datasheet__td">Rating:</td>
+                        <td class="datasheet__td">{{ $anime->rating }}</td>
+                    </tr>
+                    <tr class="datasheet__tr">
+                        <td class="datasheet__td">Tahun:</td>
+                        <td class="datasheet__td">{{ $anime->tahun }}</td>
+                    </tr>
+                    <tr class="datasheet__tr">
+                        <td class="datasheet__td">Tipe:</td>
+                        <td class="datasheet__td">
+                            @if ($anime->jenis_anime == '1')
+                            Series
+                            @elseif ($anime->jenis_anime == '3')
+                            Movie
+                            @elseif ($anime->jenis_anime == '4')
+                            Live Action
+                            @else
+                            Anime
+                            @endif
+                        </td>
+                    </tr>
+                    <tr class="datasheet__tr">
+                        <td class="datasheet__td">Vote:</td>
+                        <td class="datasheet__td">{{ $anime->voting }}</td>
+                    </tr>
+                    <tr class="datasheet__tr">
+                        <td class="datasheet__td">Status:</td>
+                        <td class="datasheet__td">
+                            @if ($anime->status_tayang == '1')
+                            Ongoing
+                            @elseif ($anime->status_tayang == '2')
+                            Completed
+                            @endif
+                        </td>
+                    </tr>
+                    <tr class="datasheet__tr">
+                        <td class="datasheet__td">Total Episode:</td>
+                        <td class="datasheet__td">{{ $anime->total_episode }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <hr class="divider">
+        <div class="comment-header mt--20">
+            <p id="comment--title" class="section__title ">Komentar</p>
+            <div class="comment--option">
+                <a onclick="ascending_comment(0)" class="comment-best active">Terbaik</a>
+                <a onclick="ascending_comment(1)" class="comment-latest">Terbaru</a>
+            </div>
+        </div>
+        @auth
+        <div class="comments-box__content">
+            <div class="user comment">
+                <div class="user-avatar">
+                    <img
+                        src="{{ Auth::user()->picture ? url('profiles/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}">
+                </div>
+                <div class="comment-content">
+                    <div class="input--area">
+                        <textarea id="input--comment" data-parent_id="0" cols="1" rows="2"
+                            placeholder="Tulis komentar ..."></textarea>
+                    </div>
+                    <div class="send--button">
+                        <a id="post--button" class="disabled">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Kirim
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div id="popular" class="popular-box"></div>
-        </aside>
-    </div>
+        </div>
+        @endauth
+        @guest
+        <div class="comments-box__content" onclick="return need_login('{{ route('login') }}')">
+            <div class="user comment">
+                <div class="user-avatar">
+                    <img src="{{ url('assets/img/icons/profile.jpg') }}">
+                </div>
+                <div class="comment-content">
+                    <div class="input--area">
+                        <textarea id="input--comment" cols="1" rows="2" placeholder="Tulis komentar ..."
+                            readonly></textarea>
+                    </div>
+                    <div class="send--button">
+                        <a id="post--button" class="disabled">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Kirim
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endguest
+        <div id="comment--content"></div>
+    </section>
+    <aside class="aside mt--6-5">
+        <h1 class="aside__title">Episode</h1>
+        <div class="aside-eps__box card">
+            <ul class="episode-box__list">
+                @foreach ($anime->episodes as $episode)
+                @auth
+                @php
+                $history = findObjectByCustomId($history_list, $episode->id, 'episode_id');
+                @endphp
+                @endauth
+                @if (isset($history))
+                @if ($history)
+                <li id="{{ $episode->id }}"
+                    class="episode-box__item episode-box__link {{ $episode->id == $episode_id ? 'box--active' : '' }}"
+                    onclick="window.location.href = '{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}'">
+                    <a class="{{ $episode->id == $episode_id ? 'active' : '' }}">
+                        {{ $episode->episode }}
+                    </a>
+                    <span class="anime-episodes-box-time {{ $episode->id == $episode_id ? 'active' : '' }}">
+                        {{ secondToTime($history->play_time) }}
+                    </span>
+                </li>
+                @else
+                <li id="{{ $episode->id }}"
+                    class="episode-box__item episode-box__link {{ $episode->id == $episode_id ? 'box--active' : '' }}"
+                    onclick="window.location.href = '{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>$episode->id]) }}'">
+                    <a class="{{ $episode->id == $episode_id ? 'active' : '' }}">
+                        {{ $episode->episode }}
+                    </a>
+                </li>
+                @endif
+                @else
+                <li id="{{ $episode->id }}"
+                    class="episode-box__item episode-box__link {{ $episode->id == $episode_id ? 'box--active' : '' }}"
+                    onclick="window.location.href = '{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>$episode->id]) }}'">
+                    <a class="{{ $episode->id == $episode_id ? 'active' : '' }}">
+                        {{ $episode->episode }}
+                    </a>
+                </li>
+                @endif
+                @endforeach
+            </ul>
+        </div>
+        <br>
+        <hr class="divider">
+        <br>
+        <div class="popular--header">
+            <p class="aside__title">Populer</p>
+            <div class="popular--navigation">
+                <i id="popular-prev" class="fa-solid fa-chevron-left"></i>
+                <i id="popular-next" class="fa-solid fa-chevron-right available"></i>
+            </div>
+        </div>
+        <div id="popular" class="popular-box"></div>
     </aside>
-    </div>
-</main>
+</div>
+</aside>
+</div>
 @endsection
 
 @section('script')
@@ -504,9 +500,10 @@
 
         fetch_comment();
 
-        $(window).scroll(function() {
-            var scrollTop = Math.round($(window).scrollTop())
-            var windowHeight = $(document).height() - $(window).height() - 1
+        $('main').scroll(function() {
+            var scrollTop = Math.round($(this).scrollTop())
+            var windowHeight = $(this).get(0).scrollHeight - $(this).get(0).clientHeight
+            console.log({scrollTop, windowHeight})
             if(scrollTop >= windowHeight) {
                 fetch_comment();
             }

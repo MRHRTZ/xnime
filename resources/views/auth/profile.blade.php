@@ -1,59 +1,59 @@
 @extends('layout.master')
 
 @section('content')
-<main class="main">
-    <section class="section contact">
-        <h1 class="section__title">Edit Profil</h1>
-        @if ($errors->any())
-        <ul>
-            @foreach ($errors->all() as $error)
-            <div class="alert-message --danger">
-                <p>{{ $error }}</p>
-            </div>
-            @endforeach
-        </ul>
-        @endif
-
-        @if(session('success'))
-        <div class="alert-message --success">
-            <p>{{session('success')}}</p>
+<section class="section auth">
+    <h1 class="section__title">Edit Profil</h1>
+    @if ($errors->any())
+    <ul>
+        @foreach ($errors->all() as $error)
+        <div class="alert-message --danger">
+            <p>{{ $error }}</p>
         </div>
-        @endif
+        @endforeach
+    </ul>
+    @endif
 
-        <div class="contact-box">
-            <div class="profile-wrapper" onclick="filePick()">
-                <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ Auth::user()->picture ? url('profiles/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}" class="profile-pic-big" />
-                <i class="fa-solid fa-camera"></i>
-                <form id="change-pic" action="{{ route('upload_profile') }}" method="post"
-                    enctype="multipart/form-data">
-                    @csrf
-                    <input type="file" id="file-profile" name="file" accept="image/*" class="hidden">
-                </form>
-            </div>
-            <form action="{{ route('profile_process') }}" method="POST" class="contact-box__form">
+    @if(session('success'))
+    <div class="alert-message --success">
+        <p>{{session('success')}}</p>
+    </div>
+    @endif
+
+    <div class="auth-box">
+        <div class="profile-wrapper" onclick="filePick()">
+            <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'"
+                src="{{ Auth::user()->picture ? url('profiles/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}"
+                class="profile-pic-big" />
+            <i class="fa-solid fa-camera"></i>
+            <form id="change-pic" action="{{ route('upload_profile') }}" method="post" enctype="multipart/form-data">
                 @csrf
-                <div class="form-control">
-                    <label for="name" class="form-control__label">Nama:</label>
-                    <input type="text" name="name" class="form-control__input inputable" value="{{ Auth::user()->name }}">
-                </div>
-                <div class="form-control">
-                    <label for="email" class="form-control__label">E-mail:</label>
-                    <input type="email" name="email" class="form-control__input disabled" value="{{ Auth::user()->email }}" readonly>
-                </div>
-                <div class="form-control">
-                    <label for="password" class="form-control__label">Password:</label>
-                    <input type="password" name="password" class="form-control__input inputable"
-                        placeholder="Isi jika ingin mengubah password ...">
-                </div>
-                <div class="form-control">
-                    <label for="password_confirmation" class="form-control__label">Konfirmasi Password:</label>
-                    <input type="password" name="password_confirmation" class="form-control__input inputable">
-                </div>
-                <button type="submit" class="button mt--20">Simpan</button>
+                <input type="file" id="file-profile" name="file" accept="image/*" class="hidden">
             </form>
         </div>
-    </section>
-</main>
+        <form action="{{ route('profile_process') }}" method="POST" class="auth-box__form">
+            @csrf
+            <div class="form-control">
+                <label for="name" class="form-control__label">Nama:</label>
+                <input type="text" name="name" class="form-control__input inputable" value="{{ Auth::user()->name }}">
+            </div>
+            <div class="form-control">
+                <label for="email" class="form-control__label">E-mail:</label>
+                <input type="email" name="email" class="form-control__input disabled" value="{{ Auth::user()->email }}"
+                    readonly>
+            </div>
+            <div class="form-control">
+                <label for="password" class="form-control__label">Password:</label>
+                <input type="password" name="password" class="form-control__input inputable"
+                    placeholder="Isi jika ingin mengubah password ...">
+            </div>
+            <div class="form-control">
+                <label for="password_confirmation" class="form-control__label">Konfirmasi Password:</label>
+                <input type="password" name="password_confirmation" class="form-control__input inputable">
+            </div>
+            <button type="submit" class="button mt--20">Simpan</button>
+        </form>
+    </div>
+</section>
 @endsection
 
 @section('script')
