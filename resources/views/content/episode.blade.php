@@ -505,12 +505,12 @@
                     var popular = `
                     <div class="popular-item">
                         <div class="popular-item__cover card">
-                            <a target="_blank" href="{{ route('episodes', ['anime_id'=>'id_anime', 'episode_id'=>'0']) }}">
+                            <a target="_self" href="{{ route('episodes', ['anime_id'=>'id_anime', 'episode_id'=>'0']) }}">
                                 <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="${anime.imageCover}" class="popular-item__img">
                             </a>
                         </div>
                         <div class="popular-item__info">
-                            <a target="_blank" href="{{ route('detail-anime', ['id'=>'id_anime']) }}" class="popular-item__title">${anime.title}</a>
+                            <a target="_self" href="{{ route('detail-anime', ['id'=>'id_anime']) }}" class="popular-item__title">${anime.title}</a>
                             <span class="popular-item__description">${anime.tahun} | Eps. ${anime.episode} |
                                 ${anime.rating}</span>
                         </div>

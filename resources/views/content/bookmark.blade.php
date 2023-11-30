@@ -12,11 +12,11 @@
         @foreach ($history_data as $history)
         <div id="history-{{ $history->history_id }}" class="history-card card">
             <div class="history-card__thumbnail-box">
-                <a target="_blank"
+                <a target="_self"
                     href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}"><img
                         onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ $history->image }}"
                         class="history-card__thumbnail-img"></a>
-                <a target="_blank"
+                <a target="_self"
                     href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}"
                     class="play__circle">
                     <i class="fa-solid fa-play play__icon"></i>
@@ -32,7 +32,7 @@
                 </a>
                 <p class="history-card__description mb--5"><b>Episode {{ $history->episode }} / {{
                         $history->total_episode }}</b></p>
-                <a target="_blank" href="{{ route('detail-anime', ['id'=>$history->anime_id]) }}"
+                <a target="_self" href="{{ route('detail-anime', ['id'=>$history->anime_id]) }}"
                     class="history-card__title">{!!
                     htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($history->title))) !!}</a>
             </div>
@@ -54,21 +54,21 @@
             <div id="bookmark-{{ $bookmark->bookmark_id }}" class="bookmark-card card">
                 <div class="bookmark-card__thumbnail-box">
                     @if ($bookmark->history_id)
-                    <a target="_blank"
+                    <a target="_self"
                         href="{{ route('episodes', ['anime_id'=>$bookmark->anime_id,'episode_id'=>$bookmark->history_episode_id,'server_id'=>$bookmark->history_server_id]) }}"><img
                             onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ $bookmark->image }}"
                             class="bookmark-card__thumbnail-img"></a>
-                    <a target="_blank"
+                    <a target="_self"
                         href="{{ route('episodes', ['anime_id'=>$bookmark->anime_id,'episode_id'=>$bookmark->history_episode_id,'server_id'=>$bookmark->history_server_id]) }}"
                         class="play__circle">
                         <i class="fa-solid fa-play play__icon"></i>
                     </a>
                     @else
-                    <a target="_blank"
+                    <a target="_self"
                         href="{{ route('episodes', ['anime_id'=>$bookmark->anime_id,'episode_id'=>'0']) }}"><img
                             onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ $bookmark->image }}"
                             class="bookmark-card__thumbnail-img"></a>
-                    <a target="_blank"
+                    <a target="_self"
                         href="{{ route('episodes', ['anime_id'=>$bookmark->anime_id,'episode_id'=>'0']) }}"
                         class="play__circle">
                         <i class="fa-solid fa-play play__icon"></i>

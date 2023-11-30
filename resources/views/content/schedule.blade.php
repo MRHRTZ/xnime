@@ -22,35 +22,35 @@
                         @endauth
                         @if (isset($history))
                         @if ($history)
-                        <a target="_blank"
+                        <a target="_self"
                             href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}">
                             <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'"
                                 src="{{ $schedule->image_cover }}" class="swiper-slide__cover">
                             <br>
-                            <a target="_blank" href="{{ route('detail-anime', ['id'=>$schedule->id]) }}"
+                            <a target="_self" href="{{ route('detail-anime', ['id'=>$schedule->id]) }}"
                                 class="title">{!!
                                 htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($schedule->title)))
                                 !!}</a>
                         </a>
                         @else
-                        <a target="_blank"
+                        <a target="_self"
                             href="{{ route('episodes', ['anime_id'=>$schedule->id,'episode_id'=>'0']) }}">
                             <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'"
                                 src="{{ $schedule->image_cover }}" class="swiper-slide__cover">
                             <br>
-                            <a target="_blank" href="{{ route('detail-anime', ['id'=>$schedule->id]) }}"
+                            <a target="_self" href="{{ route('detail-anime', ['id'=>$schedule->id]) }}"
                                 class="title">{!!
                                 htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($schedule->title)))
                                 !!}</a>
                         </a>
                         @endif
                         @else
-                        <a target="_blank"
+                        <a target="_self"
                             href="{{ route('episodes', ['anime_id'=>$schedule->id,'episode_id'=>'0']) }}">
                             <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'"
                                 src="{{ $schedule->image_cover }}" class="swiper-slide__cover">
                             <br>
-                            <a target="_blank" href="{{ route('detail-anime', ['id'=>$schedule->id]) }}"
+                            <a target="_self" href="{{ route('detail-anime', ['id'=>$schedule->id]) }}"
                                 class="title">{!!
                                 htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($schedule->title)))
                                 !!}</a>

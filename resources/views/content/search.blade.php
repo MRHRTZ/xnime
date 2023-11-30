@@ -28,26 +28,26 @@
             <div class="anime-list__cover">
                 @if (isset($history))
                 @if ($history)
-                <a target="_blank"
+                <a target="_self"
                     href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}">
                     <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ $anime->imageCover }}"
                         class="anime-list__img" alt="">
                 </a>
                 @else
-                <a target="_blank" href="{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>'0']) }}">
+                <a target="_self" href="{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>'0']) }}">
                     <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ $anime->imageCover }}"
                         class="anime-list__img" alt="">
                 </a>
                 @endif
                 @else
-                <a target="_blank" href="{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>'0']) }}">
+                <a target="_self" href="{{ route('episodes', ['anime_id'=>$anime->id, 'episode_id'=>'0']) }}">
                     <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ $anime->imageCover }}"
                         class="anime-list__img" alt="">
                 </a>
                 @endif
             </div>
             <div class="anime-list__info">
-                <a target="_blank" href="{{ route('detail-anime', ['id'=>$anime->id]) }}" class="anime-list__title">{{
+                <a target="_self" href="{{ route('detail-anime', ['id'=>$anime->id]) }}" class="anime-list__title">{{
                     $anime->title
                     }}</a>
                 <br>

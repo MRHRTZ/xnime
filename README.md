@@ -1,4 +1,4 @@
-<p align="center"><a href="https://xnime.mrhrtz.my.id" target="_blank"><img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="./public/assets/img/logo/logo-medium.png" width="200" alt="Xnime Logo"></a></p>
+<p align="center"><a href="https://xnime.mrhrtz.my.id" target="_self"><img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="./public/assets/img/logo/logo-medium.png" width="200" alt="Xnime Logo"></a></p>
 
 
 ## About Xnime

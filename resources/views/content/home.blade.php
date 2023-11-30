@@ -22,7 +22,7 @@
                             :
                             'END' }}
                         </span>
-                        <a target="_blank" href="{{ route('detail-anime', ['id'=>$recommend->id]) }}">
+                        <a target="_self" href="{{ route('detail-anime', ['id'=>$recommend->id]) }}">
                             <img onerror="this.src = '{{ url('assets/img/logo/2.png') }}'"
                                 src="{{ $recommend->image_cover }}" class="swiper-slide__cover">
                         </a>
@@ -51,29 +51,29 @@
                     @endauth
                     @if (isset($history))
                     @if ($history)
-                    <a target="_blank"
+                    <a target="_self"
                         href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}"><img
                             onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ $ongoing->image_cover }}"
                             class="episode-card__thumbnail-img"></a>
-                    <a target="_blank"
+                    <a target="_self"
                         href="{{ route('episodes', ['anime_id'=>$history->anime_id,'episode_id'=>$history->episode_id,'server_id'=>$history->server_id]) }}"
                         class="play__circle">
                         <i class="fa-solid fa-play play__icon"></i>
                     </a>
                     @else
-                    <a target="_blank" href="{{ route('episodes', ['anime_id'=>$ongoing->id,'episode_id'=>'0']) }}"><img
+                    <a target="_self" href="{{ route('episodes', ['anime_id'=>$ongoing->id,'episode_id'=>'0']) }}"><img
                             onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ $ongoing->image_cover }}"
                             class="episode-card__thumbnail-img"></a>
-                    <a target="_blank" href="{{ route('episodes', ['anime_id'=>$ongoing->id,'episode_id'=>'0']) }}"
+                    <a target="_self" href="{{ route('episodes', ['anime_id'=>$ongoing->id,'episode_id'=>'0']) }}"
                         class="play__circle">
                         <i class="fa-solid fa-play play__icon"></i>
                     </a>
                     @endif
                     @else
-                    <a target="_blank" href="{{ route('episodes', ['anime_id'=>$ongoing->id,'episode_id'=>'0']) }}"><img
+                    <a target="_self" href="{{ route('episodes', ['anime_id'=>$ongoing->id,'episode_id'=>'0']) }}"><img
                             onerror="this.src = '{{ url('assets/img/logo/2.png') }}'" src="{{ $ongoing->image_cover }}"
                             class="episode-card__thumbnail-img"></a>
-                    <a target="_blank" href="{{ route('episodes', ['anime_id'=>$ongoing->id,'episode_id'=>'0']) }}"
+                    <a target="_self" href="{{ route('episodes', ['anime_id'=>$ongoing->id,'episode_id'=>'0']) }}"
                         class="play__circle">
                         <i class="fa-solid fa-play play__icon"></i>
                     </a>
@@ -91,7 +91,7 @@
                 </div>
                 <div class="episode-card__info">
                     <p class="episode-card__description"><b>{{ $ongoing->tahun }}</b></p>
-                    <a target="_blank" href="{{ route('detail-anime', ['id'=>$ongoing->id]) }}"
+                    <a target="_self" href="{{ route('detail-anime', ['id'=>$ongoing->id]) }}"
                         class="episode-card__title">{!!
                         htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($ongoing->title)))
                         !!}</a>
