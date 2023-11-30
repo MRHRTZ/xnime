@@ -6,9 +6,6 @@
 
 @section('link')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vidstack@^1.0.0/player/styles/default/theme.min.css" />
-{{--
-<link rel="stylesheet" --}} {{--
-    href="https://cdn.jsdelivr.net/npm/vidstack@^1.0.0/player/styles/default/layouts/video.min.css" /> --}}
 <link rel="stylesheet" crossorigin href="/assets/css/index-xTQDPgBD.css">
 
 @endsection
@@ -315,8 +312,6 @@
 
 @section('script')
 <script type="module" crossorigin src="/assets/javascript/index-DsPXEYOx.js"></script>
-{{-- <script src="https://cdn.jsdelivr.net/npm/vidstack@^1.0.0/cdn/with-layouts/vidstack.js" type="module"></script>
---}}
 <script>
     function player_onerror(event) {
         console.log(event)
@@ -543,10 +538,6 @@
                 fetch_comment();
             }
         })
-
-        // setInterval(() => {
-        //     fetch_comment()
-        // }, 60_000);
 
         $("textarea.input--comment").on('change keyup paste', function() {
             const text = $(this).val();
