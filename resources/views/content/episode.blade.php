@@ -48,7 +48,7 @@
                     <h2>Link Video Rusak :(</h2>
                     @if ($user_report != 'true')
                     <button type="{{ Auth::check() ? 'submit' : 'button' }}" class="button mt--10"
-                        onclick="{{ Auth::check() ? '' : 'need_login("'.route('login').'")' }}">Laporkan</button>
+                        onclick="{{ Auth::check() ? '' : 'need_login("'.route(' login').'")' }}">Laporkan</button>
                     @else
                     <br>
                     <p>Telah dilaporkan.</p>
@@ -133,57 +133,59 @@
             </div>
         </div>
         <hr class="divider">
-        <div class="comment-header mt--20">
-            <p id="comment--title" class="section__title ">Komentar</p>
-            <div class="comment--option">
-                <a onclick="ascending_comment(0)" class="comment-best active">Terbaik</a>
-                <a onclick="ascending_comment(1)" class="comment-latest">Terbaru</a>
-            </div>
-        </div>
-        @auth
-        <div class="comments-box__content">
-            <div class="user comment">
-                <div class="user-avatar">
-                    <img
-                        src="{{ Auth::user()->picture ? url('profiles/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}">
-                </div>
-                <div class="comment-content">
-                    <div class="input--area">
-                        <textarea id="input--comment" data-parent_id="0" cols="1" rows="2"
-                            placeholder="Tulis komentar ..."></textarea>
-                    </div>
-                    <div class="send--button">
-                        <a id="post--button" class="disabled">
-                            <i class="fa-solid fa-paper-plane"></i>
-                            Kirim
-                        </a>
-                    </div>
+        <div class="comment-section">
+            <div class="comment-header mt--20">
+                <p id="comment--title" class="section__title ">Komentar</p>
+                <div class="comment--option">
+                    <a onclick="ascending_comment(0)" class="comment-best active">Terbaik</a>
+                    <a onclick="ascending_comment(1)" class="comment-latest">Terbaru</a>
                 </div>
             </div>
-        </div>
-        @endauth
-        @guest
-        <div class="comments-box__content" onclick="return need_login('{{ route('login') }}')">
-            <div class="user comment">
-                <div class="user-avatar">
-                    <img src="{{ url('assets/img/icons/profile.jpg') }}">
-                </div>
-                <div class="comment-content">
-                    <div class="input--area">
-                        <textarea id="input--comment" cols="1" rows="2" placeholder="Tulis komentar ..."
-                            readonly></textarea>
+            @auth
+            <div class="comments-box__content">
+                <div class="user comment">
+                    <div class="user-avatar">
+                        <img
+                            src="{{ Auth::user()->picture ? url('profiles/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}">
                     </div>
-                    <div class="send--button">
-                        <a id="post--button" class="disabled">
-                            <i class="fa-solid fa-paper-plane"></i>
-                            Kirim
-                        </a>
+                    <div class="comment-content">
+                        <div class="input--area">
+                            <textarea id="input--comment" data-parent_id="0" cols="1" rows="2"
+                                placeholder="Tulis komentar ..."></textarea>
+                        </div>
+                        <div class="send--button">
+                            <a id="post--button" class="disabled">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                Kirim
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+            @endauth
+            @guest
+            <div class="comments-box__content" onclick="return need_login('{{ route('login') }}')">
+                <div class="user comment">
+                    <div class="user-avatar">
+                        <img src="{{ url('assets/img/icons/profile.jpg') }}">
+                    </div>
+                    <div class="comment-content">
+                        <div class="input--area">
+                            <textarea id="input--comment" cols="1" rows="2" placeholder="Tulis komentar ..."
+                                readonly></textarea>
+                        </div>
+                        <div class="send--button">
+                            <a id="post--button" class="disabled">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                Kirim
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endguest
+            <div class="users__comment--content"></div>
         </div>
-        @endguest
-        <div id="comment--content"></div>
     </section>
     <aside class="aside mt--6-5">
         <h1 class="aside__title">Episode</h1>
@@ -240,8 +242,60 @@
         </div>
         <div id="popular" class="popular-box"></div>
     </aside>
-</div>
-</aside>
+    <div class="mobile-comment-section">
+        <hr class="divider">
+        <div class="comment-header mt--20">
+            <p id="comment--title" class="section__title ">Komentar</p>
+            <div class="comment--option">
+                <a onclick="ascending_comment(0)" class="comment-best active">Terbaik</a>
+                <a onclick="ascending_comment(1)" class="comment-latest">Terbaru</a>
+            </div>
+        </div>
+        @auth
+        <div class="comments-box__content">
+            <div class="user comment">
+                <div class="user-avatar">
+                    <img
+                        src="{{ Auth::user()->picture ? url('profiles/'.Auth::user()->picture) : url('assets/img/icons/profile.jpg') }}">
+                </div>
+                <div class="comment-content">
+                    <div class="input--area">
+                        <textarea id="input--comment" data-parent_id="0" cols="1" rows="2"
+                            placeholder="Tulis komentar ..."></textarea>
+                    </div>
+                    <div class="send--button">
+                        <a id="post--button" class="disabled">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Kirim
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endauth
+        @guest
+        <div class="comments-box__content" onclick="return need_login('{{ route('login') }}')">
+            <div class="user comment">
+                <div class="user-avatar">
+                    <img src="{{ url('assets/img/icons/profile.jpg') }}">
+                </div>
+                <div class="comment-content">
+                    <div class="input--area">
+                        <textarea id="input--comment" cols="1" rows="2" placeholder="Tulis komentar ..."
+                            readonly></textarea>
+                    </div>
+                    <div class="send--button">
+                        <a id="post--button" class="disabled">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Kirim
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endguest
+        <div class="users__comment--content"></div>
+    </div>
 </div>
 @endsection
 
@@ -595,7 +649,7 @@
                         </div>
                     </div>
                 </div>`
-                $('#comment--content').append(comment_box)
+                $('.users__comment--content').append(comment_box)
             }
         } else {
             if (window.commentPage == 0) {
@@ -606,7 +660,7 @@
                     </div>
                 </div>
                 `
-                $('#comment--content').html(empty_comment)
+                $('.users__comment--content').html(empty_comment)
             }
         }
     }
@@ -644,7 +698,7 @@
         }
         window.commentPage = 0
         window.commentAscending = mode
-        $('#comment--content').html('')
+        $('.users__comment--content').html('')
         fetch_comment()
     }
 
@@ -685,7 +739,7 @@
             success: function(data, textStatus, jqXHR){
                 $('#input--comment').data('parent_id', 0)
                 window.commentPage = 0
-                $('#comment--content').html('')
+                $('.users__comment--content').html('')
                 fetch_comment()
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -706,7 +760,7 @@
             data : formData,
             success: function(data, textStatus, jqXHR){
                 window.commentPage = 0
-                $('#comment--content').html('')
+                $('.users__comment--content').html('')
                 fetch_comment()
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -727,7 +781,7 @@
             success: function(data, textStatus, jqXHR){
                 Toast.fire('Berhasil', 'Komentar Berhasil dihapus.', 'success')
                 window.commentPage = 0
-                $('#comment--content').html('')
+                $('.users__comment--content').html('')
                 fetch_comment()
             },
             error: function(jqXHR, textStatus, errorThrown) {

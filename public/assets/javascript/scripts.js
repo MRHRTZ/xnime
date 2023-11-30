@@ -88,6 +88,24 @@ function timeSince(date) {
 
 /**
  * =================================================================================
+ * PROFILE DROPDOWN
+ * =================================================================================
+ */
+
+$(document).ready(function() {
+    $('.nav-profile').on('click', function() {
+        const isActive = $(this).hasClass('active');
+        if (isActive) {
+            $(this).removeClass('active');
+        } else {
+            $(this).addClass('active');
+        }
+        console.log('click')
+    })
+});
+
+/**
+ * =================================================================================
  * MOBILE SIDENAV
  * =================================================================================
  */
