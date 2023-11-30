@@ -369,7 +369,6 @@
     function update_history() {
         const formData = {
             _token: "{{ csrf_token() }}",
-            user_id: "{{ Auth::check() ? Auth::user()->user_id : '' }}",
             anime_id: anime_id,
             episode_id: episode_id,
             server_id: server_id ? server_id : servers[0].id,
