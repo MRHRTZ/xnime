@@ -476,7 +476,7 @@ body {
     position: fixed;
     display: none;
     width: 100%;
-    z-index: 9999;
+    z-index: 12;
 }
 
 .sidenav {
