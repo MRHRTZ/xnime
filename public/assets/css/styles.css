@@ -5,9 +5,10 @@
  */
 
 :root {
-    --plyr-color-main: #fb0b0b;
     --roboto-condensed: 'Roboto Condensed', sans-serif;
     --rajdhani-font: 'Rajdhani', sans-serif;
+    --video-font-family: 'Roboto Condensed', sans-serif;
+    --video-brand: #fb0b0b;
     --primary-color: #fb0b0b;
     --secondary-color: #232323;
     --background-color: #fff;
@@ -63,7 +64,7 @@
 
 .recommend .swiper-button-next,
 .recommend .swiper-button-prev {
-    top: 47%;
+    top: 34%;
     width: 5%;
     color: var(--primary-color);
 }
@@ -1284,7 +1285,7 @@ body {
 }
 
 .anime-episodes {
-    column-gap: auto;
+    column-gap: 19.2px;
     display: flex;
     flex-wrap: wrap;
     row-gap: 14px;
@@ -2216,7 +2217,7 @@ body {
 }
 
 .aside {
-    flex-basis: 0;
+    flex-basis: 300px;
     width: 100%;
 }
 
@@ -2237,7 +2238,7 @@ body {
 .aside-eps__box {
     background: var(--background-color);
     border-radius: var(--default-radius);
-    padding: 28px 10px 10px 10px;
+    padding: 19px 9px 16px 22px
 }
 
 /**
@@ -2285,7 +2286,7 @@ body {
  */
 
 .episode-box__list {
-    column-gap: auto;
+    column-gap: 18px;
     display: flex;
     flex-wrap: wrap;
     margin: 0 0 0 0;
@@ -3005,7 +3006,7 @@ body {
     }
 
     .wrapper {
-        padding: 0 10px 0 10px;
+        /* padding: 0 10px 0 10px; */
     }
 
     .aside__box {
@@ -3017,11 +3018,11 @@ body {
     }
 
     .aside-eps__box {
-        padding: 28px 20px 30px 20px;
+        /* padding: 28px 20px 30px 20px; */
     }
 
     .aside-eps__box {
-        padding: 28px 20px 20px 20px;
+        /* padding: 28px 20px 20px 20px; */
     }
 
     .anime-list__item {
@@ -3211,7 +3212,7 @@ body {
     .wrapper {
         flex-direction: row;
         gap: 30px;
-        padding: 0 20px 0 20px;
+        /* padding: 0 20px 0 20px; */
     }
 
     .cards {
@@ -3372,7 +3373,7 @@ body {
     }
 
     .wrapper {
-        padding: 0 30px 0 30px;
+        /* padding: 0 30px 0 30px; */
     }
 
     .footer__container {

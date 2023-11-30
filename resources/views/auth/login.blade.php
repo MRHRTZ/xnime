@@ -22,8 +22,8 @@
         <form action="{{ route('login_process') }}" method="POST" class="auth-box__form">
             @csrf
             <div class="form-control">
-                <label for="email" class="form-control__label">E-mail:</label>
-                <input type="email" name="email" class="form-control__input" placeholder="Masukan email ..." required>
+                <label for="usermail" class="form-control__label">Username atau E-mail:</label>
+                <input type="text" name="usermail" class="form-control__input" placeholder="Masukan username atau email ..." required>
             </div>
             <div class="form-control">
                 <label for="password" class="form-control__label">Password:</label>

@@ -233,6 +233,16 @@ if (!function_exists('getUrlVideo')) {
     }
 }
 
+if (!function_exists('getRequest')) {
+    function getRequest($url)
+    {
+        $client = new Client();
+        $res = $client->request("GET", $url);
+        $result = $res->getBody()->getContents();
+        return $result;
+    }
+}
+
 if (!function_exists('findObjectById')) {
     function findObjectById($array, $id)
     {

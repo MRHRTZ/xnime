@@ -5,7 +5,9 @@
 @endsection
 
 @section('link')
-<link rel="stylesheet" href="{{ url('assets/css/vjsdownload.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vidstack@^1.0.0/player/styles/default/theme.min.css" />
+<link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/vidstack@^1.0.0/player/styles/default/layouts/video.min.css" />
 @endsection
 
 @section('content')
@@ -27,14 +29,23 @@
         </div>
 
         <div class="episode-box card">
-            @if ($video_type == 'source')
-            <video id="normal-player" autoplay="true" playsinline controls data-poster="{{ $anime->image_video }}">
+            @if ($video_type == 'source' || $video_type == 'stream')
+            <media-player autoplay>
+                <media-provider>
+                    <media-poster class="vds-poster" src="{{ $anime->image_video }}"></media-poster>
+                    <source src="{{ $video_url }}"
+                        type="{{ $video_type == 'source' ? 'video/mp4' : 'application/x-mpegURL' }}"
+                        onerror="player_onerror(event);">
+                </media-provider>
+                <media-video-layout></media-video-layout>
+            </media-player>
+            {{-- <video id="normal-player" autoplay="true" playsinline controls data-poster="{{ $anime->image_video }}">
                 <source id="normal-source" src="{{ $video_url }}" type="video/mp4" onerror="player_onerror(event);">
             </video>
             @elseif ($video_type == 'stream')
             <video id="stream-player" class="video-js vjs-fluid" controls preload poster="{{ $anime->image_video }}">
                 <source id="stream-source" src="{{ $video_url }}" type="application/x-mpegURL">
-            </video>
+            </video> --}}
             @elseif ($video_type == 'embed')
             <iframe id="embed-player" height="540px" src="{{ $video_url }}" title="{{ $anime->title }}">
             </iframe>
@@ -150,11 +161,11 @@
                     </div>
                     <div class="comment-content">
                         <div class="input--area">
-                            <textarea id="input--comment" data-parent_id="0" cols="1" rows="2"
+                            <textarea name="text-comment" class="input--comment" data-parent_id="0" cols="1" rows="2"
                                 placeholder="Tulis komentar ..."></textarea>
                         </div>
                         <div class="send--button">
-                            <a id="post--button" class="disabled">
+                            <a class="post--button disabled">
                                 <i class="fa-solid fa-paper-plane"></i>
                                 Kirim
                             </a>
@@ -171,11 +182,11 @@
                     </div>
                     <div class="comment-content">
                         <div class="input--area">
-                            <textarea id="input--comment" cols="1" rows="2" placeholder="Tulis komentar ..."
-                                readonly></textarea>
+                            <textarea name="text-comment" class="input--comment" cols="1" rows="2"
+                                placeholder="Tulis komentar ..." readonly></textarea>
                         </div>
                         <div class="send--button">
-                            <a id="post--button" class="disabled">
+                            <a class="post--button disabled">
                                 <i class="fa-solid fa-paper-plane"></i>
                                 Kirim
                             </a>
@@ -260,11 +271,11 @@
                 </div>
                 <div class="comment-content">
                     <div class="input--area">
-                        <textarea id="input--comment" data-parent_id="0" cols="1" rows="2"
+                        <textarea name="text-comment" class="input--comment" data-parent_id="0" cols="1" rows="2"
                             placeholder="Tulis komentar ..."></textarea>
                     </div>
                     <div class="send--button">
-                        <a id="post--button" class="disabled">
+                        <a class="post--button disabled">
                             <i class="fa-solid fa-paper-plane"></i>
                             Kirim
                         </a>
@@ -281,11 +292,11 @@
                 </div>
                 <div class="comment-content">
                     <div class="input--area">
-                        <textarea id="input--comment" cols="1" rows="2" placeholder="Tulis komentar ..."
-                            readonly></textarea>
+                        <textarea name="text-comment" class="input--comment" cols="1" rows="2"
+                            placeholder="Tulis komentar ..." readonly></textarea>
                     </div>
                     <div class="send--button">
-                        <a id="post--button" class="disabled">
+                        <a class="disabled post--button">
                             <i class="fa-solid fa-paper-plane"></i>
                             Kirim
                         </a>
@@ -300,10 +311,7 @@
 @endsection
 
 @section('script')
-<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-<script src="https://vjs.zencdn.net/7.4.1/video.js"></script>
-<script src="https://cdn.streamroot.io/videojs-hlsjs-plugin/1/stable/videojs-hlsjs-plugin.js"></script>
-<script src="{{ url('assets/javascript/vjsdownload.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/vidstack@^1.0.0/cdn/with-layouts/vidstack.js" type="module"></script>
 <script>
     function player_onerror(event) {
         console.log(event)
@@ -394,50 +402,22 @@
             src.onerror = player_onerror;
         })
     });
+
+    
         
     $(document).ready(function () {
         $("ul.episode-box__list").animate({ scrollTop : $('ul.episode-box__list li.box--active').position().top });
 
-        if ($('#normal-player').length) {
-            const player = new Plyr('#normal-player', {
-                controls: [
-                    'play',
-                    'progress',
-                    'current-time',
-                    'mute',
-                    'volume',
-                    'settings',
-                    'pip',
-                    'download',
-                    'fullscreen',
-                ]
-            });
+        if ($('media-player').length) {
+            var player = $('media-player')
 
             player.on('ended', function (e) {
-                update_history()
                 next_video()
             })
 
-            window.player = $('#normal-player').get(0)
-        } else if ($('#stream-player').length) {
-            var playerStream = videojs('#stream-player', {
-                plugins: {
-                    vjsdownload:{
-                    beforeElement: 'playbackRateMenuButton',
-                    textControl: 'Download video',
-                    name: 'downloadButton',
-                    }
-                }
-            });
-
-            playerStream.on('ended', function (e) {
-                next_video()
-            })
-
-            window.player = $('#stream-player video').get(0)
+            window.player = $('media-player video').get(0)
         } else if ($('#embed-player').length) {
             $('#embed-player').on('load', function() {
-                console.log('created')
                 @auth
                 Toast.fire({
                     icon: "warning",
@@ -451,7 +431,7 @@
         @auth
         if (!$('#embed-player').length) {
             @if ($history_data)  
-                window.player.currentTime = {{ $history_data->is_ended ? 0 : $history_data->play_time }}
+                $('media-player').get(0).currentTime = {{ $history_data->is_ended ? 0 : $history_data->play_time }}
             @endif
 
             window.player.addEventListener("play", (event) => {
@@ -554,7 +534,6 @@
         $('main').scroll(function() {
             var scrollTop = Math.round($(this).scrollTop())
             var windowHeight = $(this).get(0).scrollHeight - $(this).get(0).clientHeight
-            console.log({scrollTop, windowHeight})
             if(scrollTop >= windowHeight) {
                 fetch_comment();
             }
@@ -564,41 +543,42 @@
         //     fetch_comment()
         // }, 60_000);
 
-        $("textarea#input--comment").on('change keyup paste', function() {
+        $("textarea.input--comment").on('change keyup paste', function() {
             const text = $(this).val();
+            window.commentContent = text
             const classText = 'disabled';
             if (text) {
-                if ($('#post--button').hasClass(classText)) {
-                    $('#post--button').removeClass(classText)
+                if ($('.post--button').hasClass(classText)) {
+                    $('.post--button').removeClass(classText)
                 }
             } else {
-                if (!$('#post--button').hasClass(classText)) {
-                    $('#post--button').addClass(classText)
-                    $('#input--comment').data('parent_id', 0)
+                if (!$('.post--button').hasClass(classText)) {
+                    $('.post--button').addClass(classText)
+                    $('.input--comment').data('parent_id', 0)
                 }
             }
         });
 
-        $('#post--button').on('click', function() {
+        $('.post--button').on('click', function() {
             send_comment()
         })
 
-        $('#input--comment').keydown(function (e) {
+        $('.input--comment').keydown(function (e) {
             if (e.ctrlKey && e.keyCode == 13) {
                 send_comment()
             }
         });
 
-        $("textarea#input--comment").on('change keyup paste', function() {
+        $("textarea.input--comment").on('change keyup paste', function() {
             const text = $(this).val();
             const classText = 'disabled';
             if (text) {
-                if ($('#post--button').hasClass(classText)) {
-                    $('#post--button').removeClass(classText)
+                if ($('.post--button').hasClass(classText)) {
+                    $('.post--button').removeClass(classText)
                 }
             } else {
-                if (!$('#post--button').hasClass(classText)) {
-                    $('#post--button').addClass(classText)
+                if (!$('.post--button').hasClass(classText)) {
+                    $('.post--button').addClass(classText)
                 }
             }
         });
@@ -606,8 +586,8 @@
 
     function send_comment() {
         post_comment()
-        $('textarea#input--comment').val('')
-        $('#post--button').addClass('disabled')
+        $('textarea.input--comment').val('')
+        $('.post--button').addClass('disabled')
     }
     
     const render_comment = (data) => {
@@ -619,7 +599,7 @@
             window.commentPage += 1
             for (let i = 0; i < comments.length; i++) {
                 const comment = comments[i];
-                const comment_content = comment.content.replace(/@([^ ]+)/g, '<a href="#comment-'+comment.parent_id+'" class="comment-reply">@$1</a>').replace(/_/g, ' ')
+                const comment_content = comment.content.replace(/@([^ ]+)/g, '<a href="#comment-'+comment.parent_id+'" class="comment-reply">@$1</a>')
                 var comment_box = `<div id="comment-${ comment.comment_id }" class="comments-box">
                     <div class="comments-box__content">
                         <div class="comment">
@@ -628,7 +608,7 @@
                             </div>
                             <div class="comment-content">
                                 <div class="user-info">
-                                    <h4>${ comment.name }</h4>
+                                    <h4>${ comment.username }</h4>
                                     <span class="comment-date">${ timeSince(Date.now() - (Date.now()-new Date(comment.created_at))) }</span>
                                     ${ comment.user_id == {{ Auth::check() ? Auth::user()->user_id : '0'}} ? `<a class="delete-button" onclick="delete_comment(${comment.comment_id})">
                                         <i class="fa-solid fa-trash-can"></i>
@@ -640,7 +620,7 @@
                                         <i class="fa-${comment.liked ? 'solid' : 'regular'} fa-heart"></i>
                                         <span>&nbsp;${ comment.like_count }</span>
                                     </a>
-                                    <a class="like_comment" onclick="reply_comment(${ comment.comment_id }, \`${ comment.name.replace(/ +/g, '_') }\`)">
+                                    <a class="like_comment" onclick="reply_comment(${ comment.comment_id }, \`${ comment.username }\`)">
                                         <i class="fa-regular fa-comment-dots"></i>
                                         <span>&nbsp; Balas</span>
                                     </a>
@@ -666,9 +646,9 @@
     }
 
     function reply_comment(id, name) {
-        $('#input--comment').data('parent_id', id)
-        $('#input--comment').val($('#input--comment').val() + '@' + name + ' ')
-        $('#input--comment').focus()
+        $('.input--comment').data('parent_id', id)
+        $('.input--comment').val($('.input--comment').val() + '@' + name + ' ')
+        $('.input--comment').focus()
     }
 
     function send_like(comment_id) {
@@ -724,20 +704,20 @@
     }
 
     function post_comment() {
-        const parent_id = $('#input--comment').data('parent_id')
+        const parent_id = $('.input--comment').data('parent_id')
         const formData = {
             _token: "{{ csrf_token() }}",
             anime_id: anime_id,
             episode_id: episode_id,
             parent_id: parent_id,
-            content: $('#input--comment').val(),
+            content: window.commentContent,
         }
         $.ajax({
             url : "{{ route('post-comment') }}",
             type: "POST",
             data : formData,
             success: function(data, textStatus, jqXHR){
-                $('#input--comment').data('parent_id', 0)
+                $('.input--comment').data('parent_id', 0)
                 window.commentPage = 0
                 $('.users__comment--content').html('')
                 fetch_comment()

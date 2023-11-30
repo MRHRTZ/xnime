@@ -81,6 +81,21 @@ class EpisodeController extends Controller
             }
         }
 
+        if ($video_type == "embed") {
+            $pattern = '/<iframe[^>]*src=[\'"]([^\'"]*)[\'"][^>]*>/';
+            $string = getRequest($video_url);
+            if (preg_match($pattern, $string, $matches)) {
+                $srcValue = $matches[1];
+                if ($srcValue) {
+                    $video_url = $srcValue;
+                    $video_type = "embed";
+                } else {
+                    $video_url = "";
+                    $video_type = "broken";
+                }
+            }
+        }
+
         $history_list = [];
         $history_data = null;
         $user_report = "false";
@@ -138,19 +153,23 @@ class EpisodeController extends Controller
 
     public function report_broken(Request $request)
     {
-        $user = Auth::user();
-        $anime_id = $request->input('anime_id');
-        $episode_id = $request->input('episode_id');
-        $server_id = $request->input('server_id');
+        if (Auth::check()) {
+            $user = Auth::user();
+            $anime_id = $request->input('anime_id');
+            $episode_id = $request->input('episode_id');
+            $server_id = $request->input('server_id');
+    
+            Report::create([
+                'user_id' => $user->user_id,
+                'anime_id' => $anime_id,
+                'episode_id' => $episode_id,
+                'server_id' => $server_id
+            ]);
 
-        Report::create([
-            'user_id' => $user->user_id,
-            'anime_id' => $anime_id,
-            'episode_id' => $episode_id,
-            'server_id' => $server_id
-        ]);
-
-        return redirect()->route('beranda');
+            return redirect()->back();
+        } else {
+            return redirect()->route('beranda');
+        }
     }
 
     public function update_history(Request $request)
@@ -260,7 +279,7 @@ class EpisodeController extends Controller
         $limit = $request->input('limit') ?? 10;
         $ascending = $request->input('ascending') ?? 0;
 
-        $data_comment = Comment::select('comment.*', 'users.name', 'users.picture', DB::raw('COALESCE(COUNT(comment_like.is_like), 0) AS like_count'));
+        $data_comment = Comment::select('comment.*', 'users.username', 'users.picture', DB::raw('COALESCE(COUNT(comment_like.is_like), 0) AS like_count'));
         if (Auth::check()) {
             $user_id = Auth::user()->user_id;
             $data_comment->addSelect(DB::raw("EXISTS(SELECT 1 FROM comment_like WHERE comment_like.comment_id = comment.comment_id AND comment_like.user_id = $user_id LIMIT 1) as liked"));

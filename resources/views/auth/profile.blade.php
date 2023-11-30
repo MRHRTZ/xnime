@@ -37,6 +37,11 @@
                 <input type="text" name="name" class="form-control__input inputable" value="{{ Auth::user()->name }}">
             </div>
             <div class="form-control">
+                <label for="username" class="form-control__label">Username:</label>
+                <input type="text" name="username" class="form-control__input inputable"
+                    value="{{ Auth::user()->username }}">
+            </div>
+            <div class="form-control">
                 <label for="email" class="form-control__label">E-mail:</label>
                 <input type="email" name="email" class="form-control__input disabled" value="{{ Auth::user()->email }}"
                     readonly>

@@ -92,16 +92,20 @@ function timeSince(date) {
  * =================================================================================
  */
 
-$(document).ready(function() {
-    $('.nav-profile').on('click', function() {
+$(document).ready(function () {
+    $('.nav-profile').on('click', function () {
         const isActive = $(this).hasClass('active');
         if (isActive) {
             $(this).removeClass('active');
         } else {
             $(this).addClass('active');
         }
-        console.log('click')
     })
+    $('html').click(function (e) {
+        if (!$(e.target).hasClass('profile-pic') && !$(e.target).hasClass('sub-item')) {
+            $('.nav-profile').removeClass('active');
+        }
+    });
 });
 
 /**
