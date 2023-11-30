@@ -1,0 +1,84 @@
+-----------------
+**[ IDENTITAS ]**
+-----------------
+NIM: 10121161
+Nama: Hanif Ahmad Syauqi
+Kelas: IF4-2021
+
+-------------------
+**[ TENTANG WEB ]**
+-------------------
+Saya membuat website tematik anime khususnya untuk streaming yang bernama Xnime, saya memberi nama seperti itu karna terinspirasi dari elon musk yang merubah nama brand twitter dengan X, dan juga memang terdengar keren :)
+
+Alasan saya membuat website ini memang sederhana, saya suka streaming anime, dan juga telah lama berlangganan pada aplikasi streaming namun di aplikasi tersebut saya tidak puas dengan fiturnya dan terdapat bug yang tidak kunjung diperbaiki, oleh karna itu saya memutuskan untuk membuat web ini.
+
+Web ini dibuat menggunakan API dari Vunime dan Base Template CSS dari animeXP, menggunakan plugin jquery dan player dari library vidstack-player, fitur tambahan dan tema warna dasar selebihnya saya custom sendiri.
+
+Website Xnime: https://xnime.mrhrtz.my.id
+Source Code: https://github.com/MRHRTZ/xnime
+Base Template: https://eubrunocoelho.github.io/animesXP/index.html
+Vunime LandingPage: https://vunime.my.id
+
+-----------------
+**[ FITUR WEB ]**
+-----------------
+Halaman yang bekerja:
+1. login
+2. register
+3. profile
+4. home
+5. anime (list anime)
+6. anime detail
+7. schedule/jadwal rilis
+8. episode (halaman streaming)
+9. search anime
+10. bookmark
+
+Dan adapun Fitur CRUD nya:
+- Login (Select User)
+- Register (Create User)
+- Profile (Update User)
+- Post Comment (Insert Comment)
+- View Comment (Select Comment)
+- Delete Comment (Delete Comment)
+- Like Comment (Update Comment)
+- Report Episode (Insert Report)
+- Add, Update, Delete History
+- Add, Update, Delete Bookmark
+
+-----------------
+**[ INSTALASI ]**
+-----------------
+Sebelum menginstall ada beberapa software yang perlu dipersiapkan, yaitu:
+1. PHP dengan versi >= 8.1
+2. Composer versi >= 2.5.5
+3. MySQL versi >= 15.1
+
+Tahap instalasi:
+1. Silahkan unduh terlebih dahulu sourcecode web https://github.com/MRHRTZ/xnime/archive/refs/heads/main.zip
+2. Extract menggunakan winrar atau alat archiver lainnya
+3. Rename .env.example menjadi .env
+4. Konfigurasi nama database dan creds sql pada .env sesuai dengan mysql yg anda punya
+5. Tambahkan Credential APIKEY Vunime pada .env dengan value ini:
+   VUNIME_BASEURL="https://air.vunime.my.id"
+   VUNIME_APIKEY="ThWmZq4t7w!z%C*F-JaNdRgUkXn2r5u8"
+
+   Note: Jika melihat VUNIME_USERID itu optional tidak wajib diisi
+
+6. Buka CMD/Terminal dan masuk ke directory project tsb
+7. Ketik pada cmd: composer install
+   Note: Jika terdapat error mungkin versi tidak cocok, silahkan tambahkan opsi --ignore-platform-reqs, maka perintahnya seperti ini: composer install --ignore-platform-reqs
+8. Ketik pada cmd: php artisan migrate
+   Note: Jangan lupa untuk menyalakan dahulu Service MySQL
+   Jika belum pernah membuat database, laravel versi terbaru bisa membuat database, cukup ketik Yes jika ada prompt untuk create database.
+   Skema DB web ini telah menggunakan fitur migration dari laravel, jadi tidak perlu import SQL apapun, semua tabel akan tercreate secara otomatis.
+9. Ketik pada cmd: php artisan key:generate
+   Untuk generate kunci aplikasi
+10. Dan terakhir jalankan, ketik: php artisan serve
+
+---------------
+**[ CATATAN ]**
+---------------
+- Jika terdapat error ketika mengambil data komen, harap nyalakan ekstensi pdo_mysql pada php.ini 
+- Vunime adalah web dengan kumpulan data anime dari berbagai web lainnya, menurut kebijakannya jika terdapat ada pihak yg dirugikan maka api vunime akan nonaktif, dan web ini tidak akan jalan seperti semestinya, jika seandainya itu terjadi dan web tidak bisa digunakan, saya membuat screenshot demo web disini https://docs.google.com/document/d/1Erfi6U1bKJqbk_x8kPfwdUBl9aAo9mV3Zk4XMkGTfzQ/edit?usp=sharing
+- Project ini dibuat sekitar 2 minggu dengan penuh pertimbangan oleh saya sendiri, terimakasih 😁
