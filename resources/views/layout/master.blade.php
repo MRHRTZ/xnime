@@ -58,23 +58,28 @@
                     <ul class="sidenav-menu__list">
                         @guest
                         <li class="sidenav-menu__item">
+                            <i class="fa-solid fa-right-to-bracket"></i>
                             <a href="{{ route('login') }}" class="sidenav-menu__link">Login</a>
                         </li>
                         @endguest
                         <li class="sidenav-menu__item">
+                            <i class="fa-solid fa-house-chimney"></i>
                             <a href="{{ route('beranda') }}"
                                 class="sidenav-menu__link {{ (request()->is('/')) ? 'text--active' : ''}}">Beranda</a>
                         </li>
                         <li class="sidenav-menu__item">
+                            <i class="fa-solid fa-bars-staggered"></i>
                             <a href="{{ route('anime') }}"
                                 class="sidenav-menu__link {{( (request()->is('anime')) || (request()->is('anime-detail')) || (request()->is('episode/*'))) ? 'text--active' : ''}}">Anime</a>
                         </li>
                         <li class="sidenav-menu__item">
+                            <i class="fa-solid fa-calendar-week"></i>
                             <a href="{{ route('schedule') }}"
                                 class="sidenav-menu__link {{ (request()->is('schedule')) ? 'text--active' : ''}}">Jadwal
                                 Rilis</a>
                         </li>
                         <li class="sidenav-menu__item">
+                            <i class="fa-solid fa-book-bookmark"></i>
                             <a href="{{ Auth::user() ? route('bookmark') : '#' }}"
                                 onclick="{{ Auth::user() ? '' : 'need_login("'.route('login').'")' }}"
                                 class="sidenav-menu__link {{ (request()->is('bookmark')) ? 'text--active' : ''}}">Bookmark</a>
@@ -82,9 +87,11 @@
                         @auth
                         <form id="logout-form" action="{{ route('logout_process') }}" method="post">@csrf</form>
                         <li class="sidenav-menu__item">
+                            <i class="fa-solid fa-gear"></i>
                             <a href="{{ route('profile') }}" class="sidenav-menu__link">Edit Profil</a>
                         </li>
                         <li class="sidenav-menu__item">
+                            <i class="fa-solid fa-right-from-bracket"></i>
                             <a href="#logout" onclick="confirm_logout();" class="sidenav-menu__link">Logout</a>
                         </li>
                         @endauth
