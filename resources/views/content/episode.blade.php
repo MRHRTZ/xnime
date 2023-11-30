@@ -62,7 +62,7 @@
                     <h2>Link Video Rusak :(</h2>
                     @if ($user_report != 'true')
                     <button type="{{ Auth::check() ? 'submit' : 'button' }}" class="button mt--10"
-                        onclick="{{ Auth::check() ? '' : 'need_login("'.route(' login').'")' }}">Laporkan</button>
+                        onclick="{{ Auth::check() ? '' : 'need_login("'.route('login').'")' }}">Laporkan</button>
                     @else
                     <br>
                     <p>Telah dilaporkan.</p>
