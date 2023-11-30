@@ -1,0 +1,1 @@
+import{k as i,d as t}from"./index-DsPXEYOx.js";class n{constructor(s){this.$b=s}da(){i(this.Zb)&&this._b()}ha(){t(this.Zb)&&window.cancelAnimationFrame(this.Zb),this.Zb=void 0}_b(){this.Zb=window.requestAnimationFrame(()=>{i(this.Zb)||(this.$b(),this._b())})}}export{n as R};
