@@ -63,23 +63,23 @@
                         </li>
                         @endguest
                         <li class="sidenav-menu__item">
-                            <i class="fa-solid fa-house-chimney"></i>
+                            <i class="fa-solid fa-house-chimney {{ (request()->is('/')) ? 'text--active' : ''}}"></i>
                             <a href="{{ route('beranda') }}"
                                 class="sidenav-menu__link {{ (request()->is('/')) ? 'text--active' : ''}}">Beranda</a>
                         </li>
                         <li class="sidenav-menu__item">
-                            <i class="fa-solid fa-bars-staggered"></i>
+                            <i class="fa-solid fa-bars-staggered {{ (request()->is('anime')) ? 'text--active' : ''}}"></i>
                             <a href="{{ route('anime') }}"
                                 class="sidenav-menu__link {{( (request()->is('anime')) || (request()->is('anime-detail')) || (request()->is('episode/*'))) ? 'text--active' : ''}}">Anime</a>
                         </li>
                         <li class="sidenav-menu__item">
-                            <i class="fa-solid fa-calendar-week"></i>
+                            <i class="fa-solid fa-calendar-week {{ (request()->is('schedule')) ? 'text--active' : ''}}"></i>
                             <a href="{{ route('schedule') }}"
                                 class="sidenav-menu__link {{ (request()->is('schedule')) ? 'text--active' : ''}}">Jadwal
                                 Rilis</a>
                         </li>
                         <li class="sidenav-menu__item">
-                            <i class="fa-solid fa-book-bookmark"></i>
+                            <i class="fa-solid fa-book-bookmark {{ (request()->is('bookmark')) ? 'text--active' : ''}}"></i>
                             <a href="{{ Auth::user() ? route('bookmark') : '#' }}"
                                 onclick="{{ Auth::user() ? '' : 'need_login("'.route('login').'")' }}"
                                 class="sidenav-menu__link {{ (request()->is('bookmark')) ? 'text--active' : ''}}">Bookmark</a>
