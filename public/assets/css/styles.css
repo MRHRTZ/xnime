@@ -3005,24 +3005,12 @@ body {
         padding: 0 10px 0 10px;
     }
 
-    .wrapper {
-        /* padding: 0 10px 0 10px; */
-    }
-
     .aside__box {
         padding: 28px 20px 30px 20px;
     }
 
     .popular__box {
         padding: 5px 0px 0px 0px;
-    }
-
-    .aside-eps__box {
-        /* padding: 28px 20px 30px 20px; */
-    }
-
-    .aside-eps__box {
-        /* padding: 28px 20px 20px 20px; */
     }
 
     .anime-list__item {
@@ -3370,10 +3358,6 @@ body {
 
     .letters {
         padding: 0 30px 0 30px;
-    }
-
-    .wrapper {
-        /* padding: 0 30px 0 30px; */
     }
 
     .footer__container {
