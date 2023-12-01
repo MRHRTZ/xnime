@@ -2,7 +2,7 @@
 
 @section('content')
 <section class="section auth">
-    <h1 class="section__title">Masuk Akun</h1>
+    <h1 class="section__title mb--40">Masuk Akun</h1>
     @if ($errors->any())
     <ul>
         @foreach ($errors->all() as $error)
@@ -42,5 +42,6 @@
             </div>
         </form>
     </div>
+    <div class="login-spacer"></div>
 </section>
 @endsection

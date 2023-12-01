@@ -139,20 +139,12 @@
     text-align: center;
 }
 
-/* .nav-profile:hover>ul,
-.nav-profile ul:hover {
-    visibility: visible;
-    opacity: 1;
-    display: flex;
-} */
-
-.nav-profile.active ul{
+.nav-profile.active ul {
     display: block;
     visibility: visible;
     opacity: 1;
     display: flex;
 }
-
 
 .profile-pic {
     height: 3rem;
@@ -245,6 +237,10 @@
 
 .profile-pic-big:hover {
     filter: brightness(50%);
+}
+
+.login-spacer {
+    margin-top: 90px;
 }
 
 /**
@@ -2666,7 +2662,7 @@ section.bookmark {
 }
 
 .schedule-panel .day.active,
-.schedule-panel .day.active + .week {
+.schedule-panel .day.active+.week {
     color: var(--primary-color);
     font-weight: 700;
 }
