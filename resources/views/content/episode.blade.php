@@ -62,20 +62,23 @@
         <div class="anime-info">
             <div class="anime-info__summary">
                 @if ($bookmark)
-                <div class="bookmark-area" data-bookmark="1" onclick="save_bookmark(this);">
+                <div class="bookmark-area bookmark-episode" data-bookmark="1" onclick="save_bookmark(this);">
                     <div class="bookmark-button-active">
-                        <i class="fa-solid fa-bookmark fa-2xl"></i>
-                        <i class="fa-regular fa-circle-check fa-sm"></i>
+                        <i class="fa-solid fa-bookmark fa-xl"></i>
                     </div>
                 </div>
                 @else
-                <div class="bookmark-area" data-bookmark="0" onclick="save_bookmark(this);">
+                <div class="bookmark-area bookmark-episode" data-bookmark="0" onclick="save_bookmark(this);">
                     <div class="bookmark-button">
-                        <i class="fa-regular fa-bookmark fa-2xl"></i>
-                        <i class="fa-solid fa-plus fa-sm"></i>
+                        <i class="fa-regular fa-bookmark fa-xl"></i>
                     </div>
                 </div>
                 @endif
+                <div class="download-area" onclick="window.open('{{ $video_url }}','_blank'); return false;">
+                    <div class="download-button">
+                        <i class="fa-solid fa-cloud-arrow-down fa-xl"></i>
+                    </div>
+                </div>
                 <a class="anime-info__title">{{
                     html_entity_decode($anime->title)
                     }}</a>
@@ -392,8 +395,6 @@
             src.onerror = player_onerror;
         })
     });
-
-    
         
     $(document).ready(function () {
         $("ul.episode-box__list").animate({ scrollTop : $('ul.episode-box__list li.box--active').position().top });
@@ -405,9 +406,11 @@
                 next_video()
             })
 
+            window.mediaplayer = player
             window.player = $('media-player video').get(0)
-        } else if ($('#embed-player').length) {
-            $('#embed-player').on('load', function() {
+        } else if ($('iframe').length) {
+            $('iframe').on('load', function() {
+                $('.download-area').remove()
                 @auth
                 Toast.fire({
                     icon: "warning",
@@ -417,7 +420,6 @@
                 @endauth    
             })
         }
-
         @auth
         if (!$('#embed-player').length) {
             @if ($history_data)  
@@ -766,14 +768,14 @@
             if (is_bookmark) {
                 $('.bookmark-area').html(`
                 <div class="bookmark-button">
-                    <i class="fa-regular fa-bookmark fa-2xl"></i>
+                    <i class="fa-regular fa-bookmark fa-xl"></i>
                     <i class="fa-solid fa-plus fa-sm"></i>
                 </div>`)
                 $(el).data('bookmark', 0);
             } else {
                 $('.bookmark-area').html(`
                 <div class="bookmark-button-active">
-                    <i class="fa-solid fa-bookmark fa-2xl"></i>
+                    <i class="fa-solid fa-bookmark fa-xl"></i>
                     <i class="fa-regular fa-circle-check fa-sm"></i>
                 </div>`)
                 $(el).data('bookmark', 1);
@@ -806,7 +808,7 @@
 </script>
 <script>
     $(document).ready(function () { 
-        $('title').text('Xnime - {!! htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->title))) !!}');
+        $('title').text('Xnime ID - {!! htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->title))) !!}');
     })
 </script>
 @endsection

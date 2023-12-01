@@ -120,7 +120,7 @@
 </script>
 <script>
     $(document).ready(function () { 
-        $('title').text('Xnime - Jadwal Rilis');
+        $('title').text('Xnime ID - Jadwal Rilis');
         var day_now = dayNow()
         $(`#day-${day_now} .day`).addClass('active');
         var week_now = weekNow()

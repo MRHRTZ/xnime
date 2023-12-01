@@ -210,7 +210,7 @@ if (!function_exists('getServer')) {
 }
 
 if (!function_exists('getUrlVideo')) {
-    function getUrlVideo($url, $quality = 'SD')
+    function getUrlVideo($url, $quality = 'SD', $position = 0)
     {
         try {
             $baseurl = \config('vunime.baseurl');
@@ -222,7 +222,8 @@ if (!function_exists('getUrlVideo')) {
                 ],
                 "form_params" => [
                     'url' => $url,
-                    'quality' => $quality
+                    'quality' => $quality,
+                    'position' => $position,
                 ]
             ]);
             $result = json_decode($res->getBody());

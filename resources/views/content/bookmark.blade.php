@@ -125,7 +125,7 @@
 </script>
 <script>
     $(document).ready(function () { 
-        $('title').text('Xnime - Bookmark');
+        $('title').text('Xnime ID - Bookmark');
     })
 </script>
 <script>

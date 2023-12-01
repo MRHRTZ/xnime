@@ -69,12 +69,15 @@ class EpisodeController extends Controller
             }
         } else {
             $server_id = $server_list[0]->id;
-            if (str_contains($server_video->serverurl, 'blogspot')) {
+            if (str_contains($server_video->serverurl, 'blogspot') || str_contains($server_video->serverurl, 'vuplayer')) {
                 $video_url = getUrlVideo($server_video->serverurl)->url;
                 $video_type = "source";
             } else if (str_contains($server_video->serverurl, 'm3u8')) {
                 $video_url = $server_video->serverurl;
                 $video_type = "stream";
+            } else if (str_contains($server_video->serverurl, 'googleusercontent')) {
+                $video_url = explode("=", $server_video->serverurl)[0] . "=dv";
+                $video_type = "source";
             } else {
                 $video_url = $server_video->serverurl;
                 $video_type = "embed";

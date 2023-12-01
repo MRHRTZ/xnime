@@ -2167,6 +2167,10 @@ section.bookmark {
     animation: float 6s ease-in-out infinite;
 }
 
+.bookmark-area.bookmark-episode {
+    animation: none;
+}
+
 .bookmark-area .bookmark-button,
 .bookmark-area .bookmark-button-active {
     padding: 12px;
@@ -2200,6 +2204,23 @@ section.bookmark {
 .delete-button:hover {
     color: #ff5d5d;
 }
+
+.download-area {
+    float: right;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.download-area .download-button,
+.download-area .download-button-active {
+    padding: 12px;
+}
+
+.download-button:hover {
+    color: #ff5d5d;
+    animation: none;
+}
+
 
 /**
  * =================================================================================
