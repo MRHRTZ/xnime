@@ -82,7 +82,7 @@
         </div>
     </aside>
     <section class="section anime-list">
-        <h1 class="section__title">List Anime</h1>
+        <h1 class="section__title mb--20">List Anime</h1>
         @if (count($animeList) == 0)
         <div class="datasheet__td">
             Data tidak ditemukan.

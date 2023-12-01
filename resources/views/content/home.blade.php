@@ -5,8 +5,8 @@
 @endsection
 
 @section('content')
-<section class="recommend section featured">
-    <h1 class="section__title">Rekomendasi</h1>
+<section class="recommend section featured mb--20">
+    <h1 class="section__title mb--10">Rekomendasi</h1>
     <div class="swiper mySwiper">
         <div class="swiper-wrapper">
             @foreach ($homepage->recommend as $recommend)
@@ -39,7 +39,7 @@
 </section>
 <div class="wrapper mt--none">
     <section class="section cards">
-        <h1 class="section__title">Update Terbaru</h1>
+        <h1 class="section__title mb--10">Update Terbaru</h1>
         <div class="cards__container">
             @foreach ($homepage->ongoing as $ongoing)
             <div class="episode-card card">
