@@ -5,9 +5,7 @@
 @endsection
 
 @section('link')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vidstack@^1.0.0/player/styles/default/theme.min.css" />
-<link rel="stylesheet" crossorigin href="/assets/css/index-xTQDPgBD.css">
-
+<link rel="stylesheet" href="{{ url('assets/css/index-xTQDPgBD.css') }}">
 @endsection
 
 @section('content')
@@ -39,13 +37,6 @@
                 </media-provider>
                 <media-video-layout></media-video-layout>
             </media-player>
-            {{-- <video id="normal-player" autoplay="true" playsinline controls data-poster="{{ $anime->image_video }}">
-                <source id="normal-source" src="{{ $video_url }}" type="video/mp4" onerror="player_onerror(event);">
-            </video>
-            @elseif ($video_type == 'stream')
-            <video id="stream-player" class="video-js vjs-fluid" controls preload poster="{{ $anime->image_video }}">
-                <source id="stream-source" src="{{ $video_url }}" type="application/x-mpegURL">
-            </video> --}}
             @elseif ($video_type == 'embed')
             <iframe id="embed-player" height="540px" src="{{ $video_url }}" title="{{ $anime->title }}">
             </iframe>
