@@ -25,7 +25,11 @@ class AuthController extends Controller
 
     public function view_profile()
     {
-        return view('auth.profile');
+        if (Auth::check()) {
+            return view('auth.profile');
+        } else {
+            return redirect()->route('beranda');
+        }
     }
 
     public function upload_profile(Request $request)
