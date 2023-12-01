@@ -46,7 +46,7 @@
     </div>
 </section>
 <div class="wrapper mt--none">
-    <section class="section cards">
+    <section class="bookmark section cards">
         <h1 class="section__title">Bookmark</h1>
         @if ($bookmark_data->count() > 0)
         <div class="bookmark cards__container mt--10">

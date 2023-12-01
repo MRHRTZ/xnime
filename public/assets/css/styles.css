@@ -933,7 +933,7 @@ body {
     border-radius: var(--default-radius);
     display: flex;
     margin: 0 0 30px 0;
-    padding: 18px 10px 18px 10px;
+    padding: 18px 10px 0px 10px;
     width: 100%;
 }
 
@@ -969,7 +969,7 @@ body {
 
 .search-box__icon {
     color: var(--primary-color);
-    font-size: 36px;
+    font-size: 20px;
 }
 
 /**
@@ -1987,6 +1987,11 @@ body {
  * Bookmark
  * =================================================================================
  */
+
+section.bookmark {
+    padding-left: 10px;
+    padding-right: 10px;
+}
 
 .history.cards__container {
     column-gap: 15px;
@@ -3018,7 +3023,7 @@ body {
     }
 
     .search-box {
-        padding: 28px 20px 28px 20px;
+        padding: 28px 20px 6px 20px;
     }
 
     .footer__container {
