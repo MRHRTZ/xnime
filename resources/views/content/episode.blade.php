@@ -74,11 +74,13 @@
                     </div>
                 </div>
                 @endif
+                @if ($video_type != 'broken')
                 <div class="download-area" onclick="window.open('{{ $video_url }}','_blank'); return false;">
                     <div class="download-button">
                         <i class="fa-solid fa-cloud-arrow-down fa-xl"></i>
                     </div>
                 </div>
+                @endif
                 <a class="anime-info__title">{{
                     html_entity_decode($anime->title)
                     }}</a>
@@ -311,6 +313,7 @@
         console.log(event)
         $('video').remove();
         $('iframe').remove();
+        $('.download-area').remove()
         let prependHtml = `
         <div class="player-error">
             <form action="{{ route('report-broken') }}" method="POST">
