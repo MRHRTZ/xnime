@@ -394,7 +394,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", function (event) {
-        document.querySelector('#stream-player source', function (src) {
+        document.querySelector('source', function (src) {
             src.onerror = player_onerror;
         })
     });

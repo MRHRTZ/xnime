@@ -817,6 +817,9 @@ body {
  * =================================================================================
  */
 
+.section.bookmark {
+    padding: 0;
+}
 
 .featured {
     margin: 0 auto;
@@ -2311,7 +2314,7 @@ section.bookmark {
     flex-wrap: wrap;
     margin: 0 0 0 0;
     row-gap: 10px;
-    max-height: 170px;
+    max-height: 180px;
     overflow: auto;
 }
 
@@ -2948,6 +2951,10 @@ section.bookmark {
         padding: 20px 10px 0 10px;
     }
 
+    .section.bookmark {
+        padding: 0;
+    }
+
     .featured {
         padding: 0 10px 0 10px;
     }
@@ -3158,6 +3165,10 @@ section.bookmark {
         padding: 20px 20px 0 20px;
     }
 
+    .section.bookmark {
+        padding: 0 10px 0 10px;
+    }
+
     .featured {
         padding: 0 20px 0 20px;
     }
@@ -3331,6 +3342,10 @@ section.bookmark {
 
     .breadcrumbs {
         padding: 20px 30px 0 30px;
+    }
+
+    .section.bookmark {
+        padding: 0 20px 0 20px;
     }
 
     .featured {
