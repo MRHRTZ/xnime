@@ -2311,7 +2311,7 @@ section.bookmark {
     flex-wrap: wrap;
     margin: 0 0 0 0;
     row-gap: 10px;
-    max-height: 300px;
+    max-height: 170px;
     overflow: auto;
 }
 
