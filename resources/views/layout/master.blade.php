@@ -87,8 +87,8 @@
                         @auth
                         <form id="logout-form" action="{{ route('logout_process') }}" method="post">@csrf</form>
                         <li class="sidenav-menu__item">
-                            <i class="fa-solid fa-gear"></i>
-                            <a href="{{ route('profile') }}" class="sidenav-menu__link">Edit Profil</a>
+                            <i class="fa-solid fa-gear {{ (request()->is('profile')) ? 'text--active' : ''}}"></i>
+                            <a href="{{ route('profile') }}" class="sidenav-menu__link {{ (request()->is('profile')) ? 'text--active' : ''}}">Edit Profil</a>
                         </li>
                         <li class="sidenav-menu__item">
                             <i class="fa-solid fa-right-from-bracket"></i>
