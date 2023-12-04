@@ -31,7 +31,6 @@ jobs:
         run: |
           php artisan config:cache
           rm bootstrap/cache/config.php
-          rm storage/logs/laravel.log
 
       - name: 🔑 Generate Laravel Key
         run: |
