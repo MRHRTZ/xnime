@@ -195,7 +195,7 @@
 @section('script')
 <script>
     $(document).ready(function () { 
-        $('title').text('Xnime ID - Daftar Anime');
+        $('title').text('Daftar Anime | Xnime ID');
     })
 </script>
 @endsection

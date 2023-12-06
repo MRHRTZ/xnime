@@ -105,7 +105,7 @@
 @section('script')
 <script>
     $(document).ready(function () { 
-        $('title').text('Xnime ID - Detail {!! htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->title))) !!}');
+        $('title').text('Detail {!! htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->title))) !!} | Xnime ID ');
     })
 </script>
 <script>

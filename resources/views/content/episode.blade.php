@@ -811,7 +811,7 @@
 </script>
 <script>
     $(document).ready(function () { 
-        $('title').text('Xnime ID - {!! htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->title))) !!}');
+        $('title').text('{!! htmlspecialchars_decode(htmlspecialchars_decode(html_entity_decode($anime->title))) !!} | Xnime ID ');
     })
 </script>
 @endsection

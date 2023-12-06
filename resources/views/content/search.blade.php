@@ -113,7 +113,7 @@
 @section('script')
 <script>
     $(document).ready(function () { 
-        $('title').text('Xnime ID - Cari anime {{ $keyword }}');
+        $('title').text('Cari anime {{ $keyword }} | Xnime ID');
     })
 </script>
 @endsection
