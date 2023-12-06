@@ -70,5 +70,9 @@
     $('input[type=file]').change(function (e) {
         $('#change-pic').submit()
     });
+
+    $(document).ready(function () { 
+        $('title').text('Profile | Xnime ID');
+    })
 </script>
 @endsection

@@ -47,3 +47,12 @@
     </div>
 </section>
 @endsection
+
+
+@section('script')
+    <script>
+        $(document).ready(function () { 
+            $('title').text('Register | Xnime ID');
+        })
+    </script>
+@endsection

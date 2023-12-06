@@ -45,3 +45,11 @@
     <div class="login-spacer"></div>
 </section>
 @endsection
+
+@section('script')
+    <script>
+        $(document).ready(function () { 
+            $('title').text('Login | Xnime ID');
+        })
+    </script>
+@endsection
