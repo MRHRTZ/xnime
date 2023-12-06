@@ -85,7 +85,7 @@
     </div>
 </section>
 <section class="section episodes mt--40">
-    <h1 class="section__title">Episode</h1>
+    <h1 class="section__title mb--10">Episode</h1>
     <div class="anime-episodes card">
         @foreach ($anime->episodes as $episode)
         <a class="anime-episodes__item episode__link"
