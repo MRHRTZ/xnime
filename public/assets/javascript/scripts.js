@@ -11,7 +11,7 @@ const Toast = Swal.mixin({
     timer: 3000,
     timerProgressBar: true,
     didOpen: (toast) => {
-        toast.addEventListener('click', ()=> Swal.close())
+        toast.addEventListener('click', () => Swal.close())
     }
 });
 
@@ -105,6 +105,9 @@ $(document).ready(function () {
             $('.nav-profile').removeClass('active');
         }
     });
+    $('.clear-filter').click(function () {
+        $(':radio').each((i, v) => { $(v).get(0).checked = false; })
+    })
 });
 
 /**

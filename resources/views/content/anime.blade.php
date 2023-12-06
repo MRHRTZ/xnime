@@ -77,7 +77,12 @@
                         </label>
                     </div>
                 </div>
-                <button type="submit" class="button">Terapkan Filter</button>
+                <div class="filter-button">
+                    <button type="submit" class="button">Terapkan Filter</button>
+                    <button type="button" class="clear-filter">
+                        <i class="fa-solid fa-broom"></i>
+                    </button>
+                </div>
             </form>
         </div>
     </aside>

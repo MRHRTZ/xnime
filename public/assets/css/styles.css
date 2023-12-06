@@ -2545,6 +2545,20 @@ section.bookmark {
     width: 14px;
 }
 
+.filter-button {
+    display: flex;
+    flex-direction: row;
+}
+
+.clear-filter {
+    color: var(--primary-color);
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: auto;
+    padding-left: 15px;
+}
+
 /**
  * =================================================================================
  * POPULAR
