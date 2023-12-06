@@ -35,7 +35,8 @@ class BookmarkController extends Controller
             $is_bookmark = $request->input('is_bookmark');
             $anime_id = $request->input('anime_id');
             if ($is_bookmark == '0') {
-                if (!Anime::find($anime_id)) {
+                $anime = Anime::find($anime_id);
+                if (!$anime) {
                     $animeDetail = getAnimeDetail($anime_id);
                     Anime::create([
                         'anime_id' => $animeDetail->id,
@@ -45,6 +46,14 @@ class BookmarkController extends Controller
                         'rating' => $animeDetail->rating,
                         'total_episode' => $animeDetail->total_episode,
                     ]);
+                } else if ($anime && $anime->total_episode == null) {
+                    $animeDetail = getAnimeDetail($anime_id);
+                    $anime->title = $animeDetail->title;
+                    $anime->image = $animeDetail->image_cover;
+                    $anime->year = $animeDetail->tahun;
+                    $anime->rating = $animeDetail->rating;
+                    $anime->total_episode = $animeDetail->total_episode;
+                    $anime->save();
                 }
                 Bookmark::create([
                     'anime_id' => $anime_id,
