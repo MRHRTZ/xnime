@@ -106,16 +106,8 @@ class EpisodeController extends Controller
 
         if (Auth::check()) {
             $user = Auth::user();
-            if (!Anime::where('anime_id', $anime_id)->exists()) {
-                Anime::create([
-                    'anime_id' => $animeDetail->id,
-                    'title' => $animeDetail->title,
-                    'image' => $animeDetail->image_cover,
-                    'year' => $animeDetail->tahun,
-                    'rating' => $animeDetail->rating,
-                    'total_episode' => $animeDetail->total_episode
-                ]);
-            }
+
+            $this->store_anime($anime_id, $animeDetail);
 
             $history_data = History::where('user_id', $user->user_id)
                 ->where('anime_id', $anime_id)
@@ -208,8 +200,13 @@ class EpisodeController extends Controller
             $history->max_time = $max_time;
             $history->is_ended = $is_ended;
             $history->save();
+            
         }
-
+        
+        if ($is_ended) {
+            $this->store_anime($anime_id);
+        }
+        
         return 'Ok';
     }
 
