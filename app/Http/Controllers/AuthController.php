@@ -63,27 +63,37 @@ class AuthController extends Controller
         $data = $request->all();
         $rules = [
             'name' => 'required|min:3|max:60',
-            'username' => 'required|string|regex:/^[a-zA-Z0-9_]+$/|max:30|unique:users,username,'.$user->user_id.',user_id',
+            'username' => 'required|string|regex:/^[a-zA-Z0-9_]+$/|min:3|max:30|unique:users,username,'.$user->user_id.',user_id',
         ];
         $messages = [
             'name.required' => 'Form nama tidak boleh kosong.',
             'name.min' => 'Nama minimal 3 karakter',
-            'name.max' => 'Nama minimal 60 karakter',
+            'name.max' => 'Nama maksimal 60 karakter',
             'username.required' => 'Form username tidak boleh kosong.',
+            'username.min' => 'Username minimal 3 karakter',
+            'username.max' => 'Username maksimal 30 karakter',
             'username.regex' => 'Format username yang dibolehkan: a-z, A-Z, 0-9, _',
             'username.unique' => 'Username ini telah dipakai.',
         ];
-        Validator::make($data, $rules, $messages)->validate();
 
         if ($request->password) {
-            $request->validate([
+            $rules += [
                 'password' => 'required|confirmed|min:6',
-            ]);
-            $user->password = Hash::make($request->password);
+            ];
+            $messages += [
+                'password.required' => 'Form password tidak boleh kosong.',
+                'password.confirmed' => 'Konfirmasi password tidak cocok.',
+                'password.min' => 'Password minimal 6 karakter.',
+            ];
         }
+
+        Validator::make($data, $rules, $messages)->validate();
 
         $user->name = $request->name;
         $user->username = $request->username;
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
         $user->save();
 
         $request->session()->flash('success', 'Ubah Profil Berhasil.');
@@ -101,7 +111,7 @@ class AuthController extends Controller
         $messages = [
             'name.required' => 'Form nama tidak boleh kosong.',
             'name.min' => 'Nama minimal 3 karakter',
-            'name.max' => 'Nama minimal 60 karakter',
+            'name.max' => 'Nama maksimal 60 karakter',
             'email.required' => 'Form email tidak boleh kosong.',
             'email.unique' => 'Email ini telah dipakai.',
             'password.required' => 'Form password tidak boleh kosong.',

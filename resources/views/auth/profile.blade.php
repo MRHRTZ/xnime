@@ -49,11 +49,11 @@
             <div class="form-control">
                 <label for="password" class="form-control__label">Password:</label>
                 <input type="password" name="password" class="form-control__input inputable"
-                    placeholder="Isi jika ingin mengubah password ...">
+                    placeholder="Ganti password ...">
             </div>
             <div class="form-control">
                 <label for="password_confirmation" class="form-control__label">Konfirmasi Password:</label>
-                <input type="password" name="password_confirmation" class="form-control__input inputable">
+                <input type="password" name="password_confirmation" class="form-control__input inputable" placeholder="Konfirmasi password baru ...">
             </div>
             <button type="submit" class="button mt--20">Simpan</button>
         </form>
