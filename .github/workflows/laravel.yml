@@ -47,11 +47,11 @@ jobs:
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASS }}
-          protocol: ${{ secrets.FTP_PROTOCOL }}
-          port: ${{ secrets.FTP_PORT }}
+          server: ftp.mrhrtz.my.id
+          username: xnime@mrhrtz.my.id
+          password: MyXnime@321
+          protocol: ftp
+          port: 21
           exclude: |
             **/.git/**
             **/.github/**
