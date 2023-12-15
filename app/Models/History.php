@@ -20,7 +20,7 @@ class History extends Model
         return DB::table('history')
             ->select('anime.title', 'anime.image', DB::raw('COALESCE(anime.total_episode, "-") as total_episode'), 'history.*', DB::raw('(history.play_time / history.max_time * 100) as progress'))
             ->join(
-                DB::raw('(SELECT anime_id, MAX(episode) AS max_episode
+                DB::raw('(SELECT anime_id, MAX(CAST(episode AS int)) AS max_episode
                             FROM history GROUP BY anime_id) history_sub'),
                 function ($cond) {
                     $cond->on('history.anime_id', 'history_sub.anime_id');
