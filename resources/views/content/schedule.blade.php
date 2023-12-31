@@ -14,6 +14,7 @@
                     <span class="day">{{ $day['day'] }}</span>
                     <span class="week"></span>
                     <div class="anime-list">
+                        @if (isset($schedules->{$day['no']}))
                         @foreach ($schedules->{$day['no']} as $schedule)
                         <div class="anime-item">
                             @auth
@@ -59,6 +60,11 @@
                             @endif
                         </div>
                         @endforeach
+                        @else
+                        <div class="anime-item">
+                            <p>Tidak tersedia</p>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
