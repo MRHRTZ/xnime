@@ -400,7 +400,9 @@
     });
         
     $(document).ready(function () {
-        $("ul.episode-box__list").animate({ scrollTop : $('ul.episode-box__list li.box--active').position().top });
+        const top_offset = 223.5
+        const scroll_pos = $('ul.episode-box__list li.box--active').offset().top - top_offset
+        $("ul.episode-box__list").animate({ scrollTop : Math.abs(scroll_pos) });
 
         if ($('media-player').length) {
             var player = $('media-player')
